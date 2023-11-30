@@ -1,8 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
-import Sidebar from '../components/bars/sideBar'
+import Sidebar from "@/src/components/bars/sidebar"
 import { ReactNode } from 'react'
-import Topbar from '../components/bars/topBar'
+// import Topbar from '../components/bars/topBar'
 
 export const metadata: Metadata = {
   title: 'Manager',
@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className='bg-[#0f1e17]'>
         <main className='relative'>
           <div className='flex'>
-            <div className='flex-initial w-72 pt-16'><Sidebar/></div>
+            <div className='flex-initial w-72 pt-20'><Sidebar/></div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 pt-14 relative'>
               {/*<Topbar/>*/}
               <div className='p-5'>{children}</div>
