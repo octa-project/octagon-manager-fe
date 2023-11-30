@@ -18,12 +18,12 @@ export default function RootLayout({
   return (
     
     <html lang="en">
-      <body className='bg-indigo-700'>        
+      <body className='bg-[#0f1e17]'>
         <main className='relative'>
           <div className='flex'>
-            <div className='flex-initial pt-16'><Sidebar/></div>
+            <div className='flex-initial w-72 pt-16'><Sidebar/></div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 pt-14 relative'>
-              <Topbar/>
+              {/*<Topbar/>*/}
               <div className='p-5'>{children}</div>
             </div>
           </div>
