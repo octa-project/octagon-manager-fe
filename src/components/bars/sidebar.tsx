@@ -43,11 +43,7 @@ const Sidebar = () => {
                             </div>
                         </MenuButton>
                         <Menu slots={{}}>
-                            <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
-                            <MenuItem onClick={createHandleMenuClick('Language settings')}>
-                                Language settings
-                            </MenuItem>
-                            <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
+                          
                         </Menu>
                     </div>
                 </Dropdown>
