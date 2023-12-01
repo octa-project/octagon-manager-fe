@@ -13,51 +13,52 @@ const Sidebar = () => {
     const pathname = usePathname()
     return (
         <div>
-            <ul className='text-left py-2'>
-                <li className='uppercase py-2 px-4'>
+            <ul className='py-2'>
+                <li className='py-2 px-4'>
                     <Tooltip title="Дашборд" placement="left">
-                        <Link className={`${pathname === '/dashboard' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/dashboard'>
-                            <Button className="w-full h-14 bg-[#97f676] text-black text-left" variant="contained">Дашборд</Button>
+                        <Link href='/dashboard'>
+                            <Button className={`${pathname === '/dashboard' ? 'w-full h-14 text-white bg-violet-600 text-left hover:bg-violet-400' : 'w-full h-14 text-black bg-violet-50 hover:text-black hover:bg-violet-400'}`}
+                             >Дашборд</Button>
                         </Link>
                     </Tooltip>
                 </li>
-                <li className='uppercase py-2 px-4'>
+                <li className='py-2 px-4'>
                     <Tooltip title="Бараа бүртгэл" placement="left">
-                        <Link
-                            className={`${pathname === '/item_manager' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/items'>
-                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Бараа бүртгэл</Button>
+                        <Link href='/items'>
+                            <Button className={`${pathname === '/items' ? 'w-full h-14 text-white bg-violet-600 hover:bg-violet-400' : 'w-full h-14 text-black bg-violet-50 hover:text-black hover:bg-violet-400'}`}
+                            >Бараа бүртгэл</Button>
                         </Link>
                     </Tooltip>
                 </li>
-                <li className='uppercase py-2 px-4'>
+                <li className='py-2 px-4'>
                     <Tooltip title="Татаг авалт" placement="left">
-                        <Link
-                            className={`${pathname === '/purchase' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/purchase'>
-                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Татан авалт</Button>
+                        <Link href='/purchase'>
+                            <Button className={`${pathname === '/purchase' ? 'w-full h-14 text-white bg-violet-600 hover:bg-violet-400' : 'w-full h-14 text-black bg-violet-50 hover:text-black hover:bg-violet-400'}`}
+                            >Татан авалт</Button>
                         </Link>
                     </Tooltip>
                 </li>
-                <li className='uppercase py-2 px-4'>
+                <li className='py-2 px-4'>
                     <Tooltip title="Тайлан" placement="left">
-                        <Link
-                            className={`${pathname === '/reports' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/reports'>
-                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Тайлан</Button>
+                        <Link href='/reports'>
+                            <Button className={`${pathname === '/reports' ? 'w-full h-14 text-white bg-violet-600 hover:bg-violet-400' : 'w-full h-14 text-black bg-violet-50 hover:text-black hover:bg-violet-400'}`}
+                            >Тайлан</Button>
                         </Link>
                     </Tooltip>
                 </li>
-                <li className='uppercase py-2 px-4'>
+                <li className='py-2 px-4'>
                     <Tooltip title="Түүх" placement="left">
-                        <Link
-                            className={`${pathname === '/history' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/history'>
-                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Түүх</Button>
+                        <Link href='/history'>
+                            <Button className={`${pathname === '/history' ? 'w-full h-14 text-white bg-violet-600 hover:bg-violet-400' : 'w-full h-14 text-black bg-violet-50 hover:text-black hover:bg-violet-400'}`}
+                            >Түүх</Button>
                         </Link>
                     </Tooltip>
                 </li>
-                <li className='uppercase py-2 px-4'>
-                    <Tooltip title="Тайлан" placement="left">
-                        <Link
-                            className={`${pathname === '/settings' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/settings'>
-                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Тохиргоо</Button>
+                <li className='py-2 px-4'>
+                    <Tooltip title="Тохиргоо" placement="left">
+                        <Link href='/settings'>
+                            <Button className={`${pathname === '/settings' ? 'w-full h-14 text-white bg-violet-600 hover:bg-violet-400' : 'w-full h-14 text-black bg-violet-50 hover:text-black hover:bg-violet-400'}`}
+                            >Тохиргоо</Button>
                         </Link>
                     </Tooltip>
                 </li>

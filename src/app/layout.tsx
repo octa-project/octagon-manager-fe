@@ -21,7 +21,9 @@ export default function RootLayout({
       <body>
         <main className='relative'>
           <div className='flex'>
-            <div className='bg-[#0f1e17] flex-initial w-72 pt-20'><Sidebar/></div>
+            <div className='bg-white flex-initial w-72 pt-20'>
+              <Sidebar/>
+              </div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 pt-14 relative'>
               {/*<Topbar/>*/}
               <div className='p-5'>{children}</div>
