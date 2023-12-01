@@ -6,7 +6,7 @@ import Link from "next/link";
 import {DescriptionRounded, FormatListBulletedOutlined, ShoppingCartOutlined} from "@mui/icons-material";
 import {usePathname} from 'next/navigation'
 
-class Menus extends Component {
+class ReportController extends Component {
     render() {
         const pathname = "/"
         return (
@@ -38,4 +38,4 @@ class Menus extends Component {
     }
 }
 
-export default Menus
+export default ReportController
