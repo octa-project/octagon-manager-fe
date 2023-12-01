@@ -4,6 +4,7 @@ import Sidebar from "@/src/components/bars/sidebar"
 import { ReactNode } from 'react'
 // import Topbar from '../components/bars/topBar'
 
+
 export const metadata: Metadata = {
   title: 'Manager',
   description: 'Manager'
