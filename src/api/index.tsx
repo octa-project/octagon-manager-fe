@@ -1,16 +1,8 @@
-import apiBankTerminal from "./apiBankTerminal"
-import apiItem from "./apiBuilder"
+import apiItem from "./apiItem";
+import apiItemCode from "./apiItemCode"
 import apiTransaction from "./apiTransaction"
+import api from '@/src/api';
 
-const get_by_barcode = apiItem("get-item-by-barcode")
-const get_by_barcode_like = apiItem("get-item-by-barcode-like")
-const get_by_name_like = apiItem("get-item-by-name-like")
-
-const save_sale = apiItem('save-sale')
-const get_sale_by_id = apiItem('get-sale-by-id')
-const add_sale_item_to_sale = apiItem('add-sale-item-to-sale')
-const get_sale_items_by_sale_id = apiItem('get-sale-items-by-sale-id')
-const update_sale_item_from_sale = apiItem('update-sale-item-from-sale')
 
 const transaction_save = apiTransaction("save-transaction")
 const transaction_update = apiTransaction("update-transaction")
@@ -27,21 +19,24 @@ const bank_transaction_get_transactions = apiTransaction("get-bank-transactions"
 const bank_transaction_get_by_id = apiTransaction("get-bank-transaction-by-id")
 
 
-const bank_terminal_transaction = apiBankTerminal("bank")
-const bank_print_transaction = apiBankTerminal("print")
+const itemCode_get_all_itemcodes = apiItemCode("get-all-itemCodes")
+const itemCode_save_itemCode = apiItemCode("save-itemCode")
+const itemCode_update_itemCode = apiItemCode("update-itemCode")
+const itemCode_get_by_id = apiItemCode("get-itemCode-by-id")
+const itemCode_get_by_barcode = apiItemCode("get-itemCode-by-barcode")
+const itemCode_delete = apiItemCode("delete-itemCode_by_id")
+
+
+const item_save = apiItem("save-item")
+const item_update = apiItem("update-item")
+const item_get_all_items = apiItem("get-all-items")
+const item_get_item_by_id = apiItem("get-item-by-id")
+const item_get_item_by_code = apiItem("get-item-by-code")
+const item_delete = apiItem("delete-item-by-id")
 
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
-    get_by_barcode,
-    get_by_barcode_like,
-    get_by_name_like,
-    
-    save_sale,
-    get_sale_by_id,
-    add_sale_item_to_sale,
-    get_sale_items_by_sale_id,
-    update_sale_item_from_sale,
 
     transaction_save,
     transaction_update,
@@ -56,7 +51,18 @@ export default {
     bank_transaction_delete,
     bank_transaction_get_transactions,
     bank_transaction_get_by_id,
+    
+    itemCode_get_all_itemcodes,
+    itemCode_save_itemCode,
+    itemCode_update_itemCode,
+    itemCode_get_by_id,
+    itemCode_get_by_barcode,
+    itemCode_delete,
 
-    bank_terminal_transaction,
-    bank_print_transaction,
+    item_save,
+    item_update,
+    item_get_all_items,
+    item_get_item_by_id,
+    item_get_item_by_code,
+    item_delete,
 }
