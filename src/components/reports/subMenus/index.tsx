@@ -6,7 +6,7 @@ import Link from "next/link";
 import {DescriptionRounded, FormatListBulletedOutlined, ShoppingCartOutlined} from "@mui/icons-material";
 import {usePathname} from 'next/navigation'
 
-class Menus extends Component {
+class ReportController extends Component {
     render() {
         const pathname = "/"
         return (
@@ -14,7 +14,7 @@ class Menus extends Component {
                 <ul className='text-center w-28 py-2'>
                     <li className='uppercase py-2 px-4'>
                         <div className='mb-1'><FormatListBulletedOutlined className='text-3xl'/></div>
-                        <div className='text-xs'>Борлуулалт түүх</div>
+                        <div className='text-xs'>aaaaa түүх</div>
                     </li>
                     <li className='uppercase py-2 px-4'>
                         <div className='mb-1'><FormatListBulletedOutlined className='text-3xl'/></div>
@@ -38,4 +38,4 @@ class Menus extends Component {
     }
 }
 
-export default Menus
+export default ReportController

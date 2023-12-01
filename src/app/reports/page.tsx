@@ -1,9 +1,9 @@
-import Menus from "@/src/components/reports/subMenus";
+import ReportController from "@/src/components/reports/subMenus";
 
 const subMenus = () => {
     return (
         <div>
-            <Menus/>
+            <ReportController/>
         </div>
     )
 }
