@@ -18,10 +18,10 @@ export default function RootLayout({
   return (
     
     <html lang="en">
-      <body className='bg-[#0f1e17]'>
+      <body>
         <main className='relative'>
           <div className='flex'>
-            <div className='flex-initial w-72 pt-20'><Sidebar/></div>
+            <div className='bg-[#0f1e17] flex-initial w-72 pt-20'><Sidebar/></div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 pt-14 relative'>
               {/*<Topbar/>*/}
               <div className='p-5'>{children}</div>

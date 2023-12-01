@@ -13,11 +13,11 @@ const Sidebar = () => {
     const pathname = usePathname()
     return (
         <div>
-            <ul className='text-center w-28 py-2'>
+            <ul className='text-left py-2'>
                 <li className='uppercase py-2 px-4'>
                     <Tooltip title="Дашборд" placement="left">
                         <Link className={`${pathname === '/dashboard' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/dashboard'>
-                            <Button className="w-60 h-14 bg-[#97f676] text-black" variant="contained">Дашборд</Button>
+                            <Button className="w-full h-14 bg-[#97f676] text-black text-left" variant="contained">Дашборд</Button>
                         </Link>
                     </Tooltip>
                 </li>
@@ -25,7 +25,7 @@ const Sidebar = () => {
                     <Tooltip title="Бараа бүртгэл" placement="left">
                         <Link
                             className={`${pathname === '/item_manager' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/items'>
-                            <Button className="w-60 h-14 bg-[#97f676] text-black" variant="contained">Бараа бүртгэл</Button>
+                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Бараа бүртгэл</Button>
                         </Link>
                     </Tooltip>
                 </li>
@@ -33,7 +33,7 @@ const Sidebar = () => {
                     <Tooltip title="Татаг авалт" placement="left">
                         <Link
                             className={`${pathname === '/purchase' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/purchase'>
-                            <Button className="w-60 h-14 bg-[#97f676] text-black" variant="contained">Татан авалт</Button>
+                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Татан авалт</Button>
                         </Link>
                     </Tooltip>
                 </li>
@@ -41,7 +41,7 @@ const Sidebar = () => {
                     <Tooltip title="Тайлан" placement="left">
                         <Link
                             className={`${pathname === '/reports' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/reports'>
-                            <Button className="w-60 h-14 bg-[#97f676] text-black" variant="contained">Тайлан</Button>
+                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Тайлан</Button>
                         </Link>
                     </Tooltip>
                 </li>
@@ -49,7 +49,7 @@ const Sidebar = () => {
                     <Tooltip title="Түүх" placement="left">
                         <Link
                             className={`${pathname === '/history' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/history'>
-                            <Button className="w-60 h-14 bg-[#97f676] text-black" variant="contained">Түүх</Button>
+                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Түүх</Button>
                         </Link>
                     </Tooltip>
                 </li>
@@ -57,7 +57,7 @@ const Sidebar = () => {
                     <Tooltip title="Тайлан" placement="left">
                         <Link
                             className={`${pathname === '/settings' ? 'text-black' : 'text-slate-400 hover:text-white'}`} href='/settings'>
-                            <Button className="w-60 h-14 bg-[#97f676] text-black" variant="contained">Тохиргоо</Button>
+                            <Button className="w-full h-14 bg-[#97f676] text-black" variant="contained">Тохиргоо</Button>
                         </Link>
                     </Tooltip>
                 </li>
