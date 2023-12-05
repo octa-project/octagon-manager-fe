@@ -5,8 +5,8 @@ import { MenuButton } from '@mui/base/MenuButton';
 import Tooltip from '@mui/material/Tooltip'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Button, MenuItem, Typography, IconButton } from '@mui/material';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import { Button, MenuItem, Typography, IconButton, Avatar } from '@mui/material';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 
 const Sidebar = () => {
     const pathname = usePathname()
@@ -25,29 +25,28 @@ const Sidebar = () => {
             <div>
                 <Dropdown >
                     <div className='px-4'>
-                        <MenuButton className='w-full h-20 py-4 px-4 bg-white border-b border-violet-100'>
+                        <MenuButton className='font-sans rounded-md w-full h-20 py-4 px-4 bg-[#28332d] text-white border-violet-100'>
                             <div className='grid grid-cols-4 gap-8'>
                                 <div className='col-span-3'>
-                                    <Typography className='text-lg text-left' component="div">
-                                        Салбар: Дэлгүүр 1
-                                    </Typography>
-                                    <Typography className='text-xs text-left pt-2' color="text.secondary" gutterBottom>
-                                        Ө.Золжаргал
+                                    <div>
+                                        <Avatar
+                                            alt="Remy Sharp"
+                                            className="w-7 h-7"
+                                        />
+                                    </div>
+                                    <Typography className='font-sans text-white text-xs text-left pt-2' color="text.secondary" gutterBottom>
+                                        Zoljargal
                                     </Typography>
                                 </div>
                                 <div>
                                     <IconButton>
-                                        <ArrowDropDownIcon />
+                                        <KeyboardArrowDownIcon className='text-white' />
                                     </IconButton>
                                 </div>
                             </div>
                         </MenuButton>
                         <Menu slots={{}}>
-                            <MenuItem onClick={createHandleMenuClick('Profile')}>Profile</MenuItem>
-                            <MenuItem onClick={createHandleMenuClick('Language settings')}>
-                                Language settings
-                            </MenuItem>
-                            <MenuItem onClick={createHandleMenuClick('Log out')}>Log out</MenuItem>
+
                         </Menu>
                     </div>
                 </Dropdown>
