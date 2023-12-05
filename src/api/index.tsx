@@ -2,6 +2,7 @@ import apiItem from "./apiItem";
 import apiItemCode from "./apiItemCode"
 import apiTransaction from "./apiTransaction"
 import api from '@/src/api';
+import apiItemGroup from './apiItemGroup';
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -34,6 +35,12 @@ const item_get_item_by_id = apiItem("get-item-by-id")
 const item_get_item_by_code = apiItem("get-item-by-code")
 const item_delete = apiItem("delete-item-by-id")
 
+const itemGroup_save_itemGroup = apiItemGroup("save-itemGroup")
+const itemGroup_update_itemGroup = apiItemGroup("update-itemGroup")
+const itemGroup_get_itemGroup_by_id = apiItemGroup("get-itemGroup-by-id")
+const itemGroup_get_all_itemGroups = apiItemGroup("get-all-itemGroups")
+const itemGroup_delete = apiItemGroup("delete-itemGroup-by-id")
+
 
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
@@ -65,4 +72,10 @@ export default {
     item_get_item_by_id,
     item_get_item_by_code,
     item_delete,
+
+    itemGroup_save_itemGroup,
+    itemGroup_update_itemGroup,
+    itemGroup_get_itemGroup_by_id,
+    itemGroup_get_all_itemGroups,
+    itemGroup_delete,
 }
