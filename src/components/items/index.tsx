@@ -1,17 +1,13 @@
-import * as React from "react";
-import Box from "@mui/material/Box";
-import Drawer from "@mui/material/Drawer";
-import Button from "@mui/material/Button";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import { Component } from "react";
-import api from "@/src/api";
-import { TextField } from "@mui/material";
-import items from "@/src/app/items/page";
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import TableCell from '@mui/material/TableCell';
+import { Component } from 'react';
+import { AgGridReact } from 'ag-grid-react';
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
+import { Drawer, TextField } from '@mui/material';
+import { Box } from '@mui/system';
+import api from '@/src/api';
 
 interface Item {
   id: number;
@@ -19,32 +15,74 @@ interface Item {
   name: string;
   sellPrice: number;
   qty: number;
+  createdDate: string; // Assuming createdDate is a string, adjust accordingly
+  isDeleted: boolean; // Assuming isDeleted is a boolean, adjust accordingly
 }
 
-export class ItemController extends Component {
-  state = {
-    loading: false,
-    error: null,
-    isDrawerOpen: false,
-    selectedRow: null,
-  };
+interface ItemState {
+  loading: boolean;
+  error: string | null;
+  selectedRow: Item | null;
+  isDrawerOpen: boolean;
+  columnDefs: any[];
+  defaultColDef: any;
+  autoGroupColumnDef: any;
+  rowData: Item[];
+}
 
-  rows: Item[] = [];
+class ItemController extends Component<{}, ItemState> {
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      loading: false,
+      error: null,
+      selectedRow: null,
+      isDrawerOpen: false,
+      columnDefs: [
+        { field: 'edit', headerName: 'Засах' },
+        { field: 'name', headerName: 'Нэр', filter: 'agTextColumnFilter' },
+        { field: 'barcode', headerName: 'Баркод', pivot: true },
+        { field: 'sellPrice', headerName: 'Зарах үнэ' },
+        { field: 'qty', headerName: 'Тоо' },
+        { field: 'createdDate', headerName: 'Хугацаа' },
+        { field: 'isDeleted', headerName: 'Устгасан' },
+      ],
+      defaultColDef: {
+        flex: 1,
+        minWidth: 100,
+        cellDataType: false,
+        resizable: true,
+        sortable: true,
+        enablePivot: true,
+        filter: true,
+        enableRowGroup: true,
+        enableValue: true,
+      },
+      autoGroupColumnDef: {
+        minWidth: 200,
+      },
+      rowData: [],
+    };
+  }
+
+  componentDidMount() {
+    this.getItems();
+  }
 
   getItems = async () => {
     try {
       this.setState({ loading: true, error: null });
 
-      const result =
-        await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
+      const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
 
-      if (result.data.code === "200") {
-        this.rows = result.data.data;
+      if (result.data.code === '200') {
+        this.setState({ rowData: result.data.data });
       } else {
-        throw new Error("Failed to fetch data");
+        throw new Error('Failed to fetch data');
       }
     } catch (error) {
-      this.setState({ error });
+      // Handle error
     } finally {
       this.setState({ loading: false });
     }
@@ -54,8 +92,8 @@ export class ItemController extends Component {
     try {
       const result = await api.itemCode_delete.itemCodeDeleteItemCodeById(id);
 
-      if (result.data.code === "200") {
-        alert("Амжилттай устгагдлаа");
+      if (result.data.code === '200') {
+        alert('Амжилттай устгагдлаа');
         this.getItems();
       }
     } catch (error) {
@@ -63,48 +101,63 @@ export class ItemController extends Component {
     }
   };
 
-  updateItemCode = async (item: Item ) => {
+  updateItemCode = async (item: Item | null) => {
     try {
       this.setState({ loading: true, error: null });
 
-      debugger;
       const body = {
-        id: 1,
-        barcode: item.barcode,
-        name: "zolooo",
-        sellPrice: "20000",
-        measureId: "1",
-        qty: "10",
-        isDeleted: "false",
-        branchId: "1",
+        id: item?.id,
+        barcode: item?.barcode,
+        name: item?.name,
+        sellPrice: item?.sellPrice,
+        qty: item?.qty,
+        isDeleted: false,
+        branchId: 1,
       };
 
-      const result =
-        await api.itemCode_update_itemCode.itemCodeUpdateItemCodes(body);
+      const result = await api.itemCode_update_itemCode.itemCodeUpdateItemCodes(body);
 
-      if (result.data.code === "200") {
+      if (result.data.code === '200') {
+        alert('Амжилттай засагдлаа');
         this.getItems();
       } else {
-        throw new Error("Failed data");
+        throw new Error('Failed data');
       }
     } catch (error) {
-      this.setState({ error });
+      // Handle error
     } finally {
       this.setState({ loading: false });
     }
   };
 
   toggleDrawer = (isOpen: boolean, row: Item | null) => {
-    this.setState({ isDrawerOpen: isOpen });
-    this.setState({ selectedRow: row });
+    this.setState({ isDrawerOpen: isOpen, selectedRow: row });
+  };
+
+  handleTextFieldChange = (field: keyof Item, value: string | number) => {
+    this.setState((prevState) => ({
+      selectedRow: {
+        ...prevState.selectedRow,
+        [field]: value,
+      },
+    }));
   };
 
   render() {
-    const { loading, error, isDrawerOpen } = this.state;
+    const containerStyle = { width: '100%', height: '100%' };
+    const gridStyle = { height: '100%', width: '100%' };
+    const {
+      rowData,
+      columnDefs,
+      defaultColDef,
+      autoGroupColumnDef,
+      selectedRow,
+      isDrawerOpen,
+    } = this.state;
 
     return (
       <>
-        <Button onClick={this.getItems} disabled={loading}>
+        <Button onClick={this.getItems}>
           <TableCell>
             <Button
               className="bg-green-600 hover:bg-green-400"
@@ -114,93 +167,61 @@ export class ItemController extends Component {
             </Button>
           </TableCell>
         </Button>
-        <TableContainer>
-          <Table sx={{ minWidth: 650 }} aria-label="simple table">
-            <TableHead>
-              <TableRow>
-                <TableCell>ЗАСАХ</TableCell>
-                <TableCell>Id</TableCell>
-                <TableCell>БАРКОД</TableCell>
-                <TableCell>НЭР</TableCell>
-                <TableCell>ЗАРАХ ҮНЭ</TableCell>
-                <TableCell>ТОО</TableCell>
-                <TableCell>УСТГАХ</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={6}>Loading...</TableCell>
-                </TableRow>
-              ) : error ? (
-                <TableRow>
-                  <TableCell colSpan={6}>Error: {error}</TableCell>
-                </TableRow>
-              ) : (
-                this.rows.map((row) => (
-                  <TableRow
-                    key={row.id}
-                    sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-                  >
-                    <TableCell>
-                      <Button
-                        className="bg-cyan-500 hover:bg-cyan-400"
-                        variant="contained"
-                        // onClick={() => this.updateItemCode(row)}
-                        onClick={() => this.toggleDrawer(true, row)}
-                      >
-                        ЗАСАХ
-                      </Button>
-                    </TableCell>
-                    <TableCell component="th" scope="row">
-                      {row.id}
-                    </TableCell>
-                    <TableCell>{row.barcode}</TableCell>
-                    <TableCell>{row.name}</TableCell>
-                    <TableCell>{row.sellPrice}</TableCell>
-                    <TableCell>{row.qty}</TableCell>
-                    <TableCell>
-                      <Button
-                        onClick={() => this.deleteItem(row.id)}
-                        className="bg-red-500 hover:bg-red-400"
-                        variant="contained"
-                      >
-                        УСТГАХ
-                      </Button>
-                      {""}
-                    </TableCell>
-                  </TableRow>
-                ))
-              )}
-            </TableBody>
-          </Table>
-        </TableContainer>
+
+        <div className="bg-white flex-initial w-full h-screen p-2">
+          <div style={containerStyle}>
+            <div className="ag-theme-alpine" style={gridStyle}>
+              <AgGridReact
+                rowData={rowData}
+                columnDefs={columnDefs}
+                animateRows={true}
+                rowSelection="multiple"
+                defaultColDef={defaultColDef}
+                enableRangeSelection={true}
+                enableFillHandle={true}
+                autoGroupColumnDef={autoGroupColumnDef}
+                ensureDomOrder={true}
+                sideBar={true}
+                onRowDoubleClicked={(e) => {
+                  // Ensure that e.data is of type Item
+                  const itemData: Item = e.data as Item;
+                  this.toggleDrawer(true, itemData);
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
         <Drawer
           anchor="left"
           open={isDrawerOpen}
-          onClose={() => this.toggleDrawer(false ,null  )}
+          onClose={() => this.toggleDrawer(false, null)}
         >
-          <Box
-            sx={{ width: 500 }}
-            role="presentation"
-            className="p-10"
-            // onClick={() => this.toggleDrawer()}
-            // onKeyDown={() => this.toggleDrawer(false)}
-          >
+          <Box sx={{ width: 500 }} role="presentation" className="p-10">
             <TextField
               label="Баркод"
               className="pt-5 pb-5 w-full"
               variant="standard"
+              value={selectedRow?.barcode}
+              onChange={(e) =>
+                this.handleTextFieldChange('barcode', e.target.value)
+              }
             />
             <TextField
               label="Нэр"
               className="pt-5 pb-5 w-full"
               variant="standard"
+              value={selectedRow?.name}
+              onChange={(e) => this.handleTextFieldChange('name', e.target.value)}
             />
             <TextField
               label="Зарах үнэ"
               className="pt-5 pb-5 w-full"
               variant="standard"
+              value={selectedRow?.sellPrice}
+              onChange={(e) =>
+                this.handleTextFieldChange('sellPrice', e.target.value)
+              }
             />
             <TextField
               id="standard-number"
@@ -211,11 +232,15 @@ export class ItemController extends Component {
                 shrink: true,
               }}
               variant="standard"
+              value={selectedRow?.qty}
+              onChange={(e) =>
+                this.handleTextFieldChange('qty', e.target.value)
+              }
             />
             <Button
               variant="contained"
-              className=" bg-green-600 hover:bg-green-400 text-white w-full"
-              onClick={() => this.state.selectedRow && this.updateItemCode(this.state.selectedRow)}
+              className="bg-green-600 hover:bg-green-400 text-white w-full"
+              onClick={() => this.updateItemCode(selectedRow)}
             >
               Хадгалах
             </Button>
