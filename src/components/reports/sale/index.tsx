@@ -3,6 +3,30 @@ import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
+interface OutcomeReportModel {
+
+    startDate: Date;
+    endDate: Date;
+    totalSalesAmount: number;
+    totalSalesQty: number;
+
+    sales: SaleModel[];
+
+}
+
+interface SaleModel {
+
+    id: number;
+    date: Date;
+    totalQty: number;
+    totalAmount: number;
+    isPaid: boolean;
+    isDeleted: boolean;
+    branchId: number;
+    createdUserId: number;
+
+}
+
 class SaleReport extends Component<{}, AgReportState> {
     constructor(props: any) {
         super(props);
