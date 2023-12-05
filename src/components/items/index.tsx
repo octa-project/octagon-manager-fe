@@ -1,16 +1,17 @@
-import api from "@/src/api";
-import {
-  Button,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-} from "@mui/material";
-import { Result } from "postcss";
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import Button from "@mui/material/Button";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
 import { Component } from "react";
-import { get } from "http";
+import api from "@/src/api";
+import { TextField } from "@mui/material";
+import items from "@/src/app/items/page";
 
 interface Item {
   id: number;
@@ -19,10 +20,13 @@ interface Item {
   sellPrice: number;
   qty: number;
 }
+
 export class ItemController extends Component {
   state = {
     loading: false,
     error: null,
+    isDrawerOpen: false,
+    selectedRow: null,
   };
 
   rows: Item[] = [];
@@ -50,15 +54,53 @@ export class ItemController extends Component {
     try {
       const result = await api.itemCode_delete.itemCodeDeleteItemCodeById(id);
 
-      if (result.data.code == "200") {
+      if (result.data.code === "200") {
         alert("Амжилттай устгагдлаа");
         this.getItems();
       }
-    } catch (error) {}
+    } catch (error) {
+      // Handle error
+    }
+  };
+
+  updateItemCode = async (item: Item ) => {
+    try {
+      this.setState({ loading: true, error: null });
+
+      debugger;
+      const body = {
+        id: 1,
+        barcode: item.barcode,
+        name: "zolooo",
+        sellPrice: "20000",
+        measureId: "1",
+        qty: "10",
+        isDeleted: "false",
+        branchId: "1",
+      };
+
+      const result =
+        await api.itemCode_update_itemCode.itemCodeUpdateItemCodes(body);
+
+      if (result.data.code === "200") {
+        this.getItems();
+      } else {
+        throw new Error("Failed data");
+      }
+    } catch (error) {
+      this.setState({ error });
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  toggleDrawer = (isOpen: boolean, row: Item | null) => {
+    this.setState({ isDrawerOpen: isOpen });
+    this.setState({ selectedRow: row });
   };
 
   render() {
-    const { loading, error } = this.state;
+    const { loading, error, isDrawerOpen } = this.state;
 
     return (
       <>
@@ -104,6 +146,8 @@ export class ItemController extends Component {
                       <Button
                         className="bg-cyan-500 hover:bg-cyan-400"
                         variant="contained"
+                        // onClick={() => this.updateItemCode(row)}
+                        onClick={() => this.toggleDrawer(true, row)}
                       >
                         ЗАСАХ
                       </Button>
@@ -131,6 +175,52 @@ export class ItemController extends Component {
             </TableBody>
           </Table>
         </TableContainer>
+        <Drawer
+          anchor="left"
+          open={isDrawerOpen}
+          onClose={() => this.toggleDrawer(false ,null  )}
+        >
+          <Box
+            sx={{ width: 500 }}
+            role="presentation"
+            className="p-10"
+            // onClick={() => this.toggleDrawer()}
+            // onKeyDown={() => this.toggleDrawer(false)}
+          >
+            <TextField
+              label="Баркод"
+              className="pt-5 pb-5 w-full"
+              variant="standard"
+            />
+            <TextField
+              label="Нэр"
+              className="pt-5 pb-5 w-full"
+              variant="standard"
+            />
+            <TextField
+              label="Зарах үнэ"
+              className="pt-5 pb-5 w-full"
+              variant="standard"
+            />
+            <TextField
+              id="standard-number"
+              label="Тоо"
+              type="number"
+              className="pt-5 pb-20 w-full"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="standard"
+            />
+            <Button
+              variant="contained"
+              className=" bg-green-600 hover:bg-green-400 text-white w-full"
+              onClick={() => this.state.selectedRow && this.updateItemCode(this.state.selectedRow)}
+            >
+              Хадгалах
+            </Button>
+          </Box>
+        </Drawer>
       </>
     );
   }
