@@ -2,6 +2,8 @@ import apiItem from "./apiItem";
 import apiItemCode from "./apiItemCode"
 import apiReport from "./apiReport";
 import apiTransaction from "./apiTransaction"
+import api from '@/src/api';
+import apiItemGroup from './apiItemGroup';
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -34,6 +36,12 @@ const item_get_all_items = apiItem("get-all-items")
 const item_get_item_by_id = apiItem("get-item-by-id")
 const item_get_item_by_code = apiItem("get-item-by-code")
 const item_delete = apiItem("delete-item-by-id")
+
+const itemGroup_save_itemGroup = apiItemGroup("save-itemGroup")
+const itemGroup_update_itemGroup = apiItemGroup("update-itemGroup")
+const itemGroup_get_itemGroup_by_id = apiItemGroup("get-itemGroup-by-id")
+const itemGroup_get_all_itemGroups = apiItemGroup("get-all-itemGroups")
+const itemGroup_delete = apiItemGroup("delete-itemGroup-by-id")
 
 
 const report_get_cashier_report_between_date = apiReport("get-cashier-report-between-date")
@@ -79,4 +87,10 @@ export default {
     report_get_price_report_between_date,
     report_get_sale_report_between_date,
     report_get_transactions_report_between_date,
+    
+    itemGroup_save_itemGroup,
+    itemGroup_update_itemGroup,
+    itemGroup_get_itemGroup_by_id,
+    itemGroup_get_all_itemGroups,
+    itemGroup_delete,
 }
