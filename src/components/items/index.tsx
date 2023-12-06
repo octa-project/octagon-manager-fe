@@ -13,11 +13,16 @@ import {
   TextField,
   IconButton,
   ButtonGroup,
+  Typography,
+  Divider,
+  MenuItem,
+  Select,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import api from "@/src/api";
 import items from "@/src/app/items/page";
 import { GroupAdd } from "@mui/icons-material";
+import Image from "next/image";
 
 interface Item {
   id: number;
@@ -65,28 +70,15 @@ class ItemController extends Component<{}, ItemState> {
       drawerType: 0,
       open: false,
       columnDefs: [
-        {
-          field: "edit",
-          headerName: "Засах",
-          icons: {
-            sortAscending: '<i class="fa fa-sort-alpha-up"/>',
-            sortDescending: '<i class="fa fa-sort-alpha-down"/>',
-          },
-        },
+
+        { field: "id", headerName: "№" },
         { field: "name", headerName: "Нэр", filter: "agTextColumnFilter" },
-        { field: "barcode", headerName: "Баркод", pivot: true },
+        { field: "barcode", headerName: "Баркод", },
         { field: "sellPrice", headerName: "Зарах үнэ" },
         { field: "qty", headerName: "Тоо" },
-        { field: "createdDate", headerName: "Хугацаа" },
         { field: "itemGroup", headerName: "Бүлэг" },
-        {
-          field: "isDeleted",
-          headerName: "Устгасан",
-          checkboxSelection: false,
-          headerCheckboxSelection: false,
-          width: 50,
-          editable: false,
-        },
+        { field: "createdDate", headerName: "Бүртгэсэн огноо" },
+
       ],
       defaultColDef: {
         flex: 1,
@@ -121,21 +113,79 @@ class ItemController extends Component<{}, ItemState> {
     this.setState({ open: false });
   };
 
-  getItems = async () => {
+  getItemCodes = async () => {
     try {
       this.setState({ loading: true, error: null });
 
-      const result =
-        await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
+      const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
 
       if (result.data.code === "200") {
-        this.setState({ rowData: result.data.data });
+        const rowData: Item[] = result.data.data.map((item: { id: any; barcode: any; name: any; sellPrice: any; qty: any; createdDate: any; isDeleted: string; }) => ({
+          id: item.id,
+          barcode: item.barcode,
+          name: item.name,
+          sellPrice: item.sellPrice,
+          qty: item.qty,
+          createdDate: item.createdDate,
+          isDeleted: item.isDeleted === 'true',
+        }));
+
+        this.setState({ rowData });
         this.handleClick();
       } else {
         throw new Error("Failed to fetch data");
       }
     } catch (error) {
       // Handle error
+      console.error("Error fetching data:", error);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  // getItems = async () => {
+  //   try {
+  //     const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
+  //     if (result.data.code === '200') {
+  //       const items = result.data.data.map((item) => ({
+  //         ...item,
+  //         expander: true,
+  //         expanded: false,
+  //       }));
+  //       setRowData(items);
+  //     } else {
+  //       throw new Error('Failed to fetch data');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching data:', error);
+  //   }
+  // };
+
+  getItems = async () => {
+    try {
+      this.setState({ loading: true, error: null });
+
+      const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
+
+      if (result.data.code === "200") {
+        const rowData: Item[] = result.data.data.map((item: { id: any; barcode: any; name: any; sellPrice: any; qty: any; createdDate: any; isDeleted: string; }) => ({
+          id: item.id,
+          barcode: item.barcode,
+          name: item.name,
+          sellPrice: item.sellPrice,
+          qty: item.qty,
+          createdDate: item.createdDate,
+          isDeleted: item.isDeleted === 'true',
+        }));
+
+        this.setState({ rowData });
+        this.handleClick();
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      // Handle error
+      console.error("Error fetching data:", error);
     } finally {
       this.setState({ loading: false });
     }
@@ -252,59 +302,134 @@ class ItemController extends Component<{}, ItemState> {
 
     return (
       <>
-        <div className="flex">
-          <div className="p-5">
-            <Button
-              className="bg-green-600 hover:bg-green-400"
-              variant="contained"
-              onClick={() => this.toggleDrawer(true, null, 0)}
-            >
-              {" "}
-              БАРАА БҮРТГЭХ
-            </Button>
-          </div>
-          <div className="p-5">
-            <Button
-              className="bg-green-600 hover:bg-green-400"
-              variant="contained"
-              onClick={() => this.toggleDrawer(true, null, 1)}
-            >
-              {" "}
-              БҮЛЭГ НЭМЭХ
-            </Button>
-          </div>
-          <div className="p-5">
-            <Button
-              className="bg-green-600 hover:bg-green-400"
-              variant="contained"
-              onClick={() => this.getItems}
-            >
-              {" "}
-              БАРАА ТАТАХ
-            </Button>
-          </div>
-        </div>
+        <div className="grid grid-cols-4 gap-3">
 
-        <div className="bg-white flex-initial w-full h-screen p-2">
-          <div style={containerStyle}>
-            <div className="ag-theme-alpine" style={gridStyle}>
-              <AgGridReact
-                rowData={rowData}
-                columnDefs={columnDefs}
-                animateRows={true}
-                rowSelection="single"
-                defaultColDef={defaultColDef}
-                enableRangeSelection={true}
-                enableFillHandle={true}
-                autoGroupColumnDef={autoGroupColumnDef}
-                ensureDomOrder={true}
-                sideBar={true}
-                onRowDoubleClicked={(e) => {
-                  // Ensure that e.data is of type Item
-                  const itemData: Item = e.data as Item;
-                  this.toggleDrawer(true, itemData, 0);
-                }}
+          <div className="col-span-1 bg-white shadow-md h-screen">
+            <Typography className="font-sans text-center font-semibold pt-2 pb-3 text-[#6d758f]">
+              Шинэ бараа бүртгэх
+            </Typography>
+            <Divider className="bg-[#c5cee0] shadow"></Divider>
+            <div className="flex flex-col items-center justify-center h-52">
+              <Image
+                src="/itemstand.svg"
+                alt="octa logo"
+                className="p-5"
+                width={180}
+                height={180}
               />
+              <Button
+                variant="contained"
+                className="font-sans bg-[#6d758e] text-xs text-center capitalize hover:bg-[#6d758e] text-white w-32 h-8"
+              >
+                Зураг оруулах
+              </Button>
+            </div>
+
+            <div className="flex flex-col items-center gap-4 justify-center pt-5">
+              <div className="w-9/12">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  Барааны бүлэг
+                </Typography>
+
+                <Select
+                  className="w-full"
+                >
+                  <MenuItem value={10}>Ус ундаа</MenuItem>
+                  <MenuItem value={20}>Төмс</MenuItem>
+                  <MenuItem value={30}>Архи</MenuItem>
+                </Select>
+              </div>
+              <div className="w-9/12">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  Нийлүүлэгч
+                </Typography>
+
+                <Select
+                  className="w-full"
+                >
+                  <MenuItem value={10}>Золжаргал</MenuItem>
+                  <MenuItem value={20}>Төгөлдөр</MenuItem>
+                  <MenuItem value={30}>Үүрээ</MenuItem>
+                </Select>
+              </div>
+              <div className="w-9/12">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  Барааны нэр
+                </Typography>
+                <TextField className="w-full" value={selectedRow?.name} />
+              </div>
+              <div className="w-9/12">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  Баркод
+                </Typography>
+                <TextField variant="outlined" className="w-full" value={selectedRow?.barcode} />
+              </div>
+              <div className="w-9/12">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  Хэмжих нэгж
+                </Typography>
+                <Select
+                  className="w-full"
+                >
+                  <MenuItem value={10}>Ten</MenuItem>
+                  <MenuItem value={20}>Twenty</MenuItem>
+                  <MenuItem value={30}>Thirty</MenuItem>
+                </Select>
+              </div>
+              <div className="w-9/12">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  Үнэ
+                </Typography>
+                <TextField variant="outlined" type="number" className="w-full" value={selectedRow?.sellPrice} />
+              </div>
+              <div className="w-9/12 pt-5">
+                <Button
+                  variant="contained"
+                  className="font-sans bg-[#6d758e] text-base text-center capitalize text-white w-full h-11 hover:bg-[#6d758e]"
+                >
+                  Хадгалах
+                </Button>
+              </div>
+              <div className="w-9/12">
+                <Button
+                  className="font-sans text-[#6d758e] text-base text-center capitalize w-full h-8"
+                >
+                  Болих
+                </Button>
+              </div>
+
+            </div>
+          </div>
+
+          <div className="flex flex-col col-span-3">
+            <div className="flex h-1/5">
+              <div className="p-2">
+
+              </div>
+            </div>
+
+            <div className="bg-white flex-initial w-full h-4/5 p-2">
+              <div style={containerStyle}>
+                <div className="ag-theme-alpine" style={gridStyle}>
+                  <AgGridReact
+                    rowData={rowData}
+                    columnDefs={columnDefs}
+                    animateRows={true}
+                    rowSelection="single"
+                    defaultColDef={defaultColDef}
+                    enableRangeSelection={true}
+                    enableFillHandle={true}
+                    autoGroupColumnDef={autoGroupColumnDef}
+                    ensureDomOrder={true}
+                    sideBar={true}
+                    onRowDoubleClicked={(e) => {
+
+                      const itemData: Item = e.data as Item;
+                      this.toggleDrawer(false, itemData, 0);
+                    }}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
