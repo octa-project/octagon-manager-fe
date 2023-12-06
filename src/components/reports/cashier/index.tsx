@@ -2,6 +2,30 @@ import React, { Component, useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import api from "@/src/api";
+
+interface CashierReportModel {
+
+    cards: TransactionReportModel[];
+    cashiers: TransactionReportModel[];
+
+    totalAmount: number;
+    totalCashAmount: number;
+    totalNonCashAmount: number;
+    totalCardAmount: number;
+    totalAccountAmount: number;
+
+}
+
+interface TransactionReportModel {
+
+    date: Date;
+    name: string;
+    amount: number;
+    transactionType: number;
+
+}
+
 
 class CashierReport extends Component<{}, AgReportState> {
     constructor(props: any) {
@@ -40,6 +64,24 @@ class CashierReport extends Component<{}, AgReportState> {
 
     componentDidMount() {
         this.getGridItems();
+    }
+
+    getCashierReportByBetweenDate = async () => {
+
+        const body = {
+            stardDate: "2023-12-05",
+            endDate: "2023-12-06"
+        }
+
+        const result = await api.report_get_cashier_report_between_date.getCashierReportByBetweenDate(body);
+
+        if (result.data.code === "200") {
+            
+            
+
+        }
+
+
     }
 
     getGridItems = async () => {

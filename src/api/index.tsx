@@ -1,5 +1,6 @@
 import apiItem from "./apiItem";
 import apiItemCode from "./apiItemCode"
+import apiReport from "./apiReport";
 import apiTransaction from "./apiTransaction"
 import api from '@/src/api';
 import apiItemGroup from './apiItemGroup';
@@ -12,6 +13,7 @@ const transaction_get_by_id = apiTransaction("get-transaction-by-id")
 const transaction_get_transactions = apiTransaction("get-transactions")
 const transaction_get_transactions_amount_sale_id = apiTransaction("get-transaction-amount-by-sale-id")
 const transaction_get_transactions_sale_id = apiTransaction("get-transaction-by-sale-id")
+
 
 const bank_transaction_save = apiTransaction("save-bank-transaction")
 const bank_transaction_update = apiTransaction("update-bank-transaction")
@@ -42,7 +44,13 @@ const itemGroup_get_all_itemGroups = apiItemGroup("get-all-itemGroups")
 const itemGroup_delete = apiItemGroup("delete-itemGroup-by-id")
 
 
-// eslint-disable-next-line import/no-anonymous-default-export
+const report_get_cashier_report_between_date = apiReport("get-cashier-report-between-date")
+const report_get_income_report_between_date = apiReport("get-income-report-between-date")
+const report_get_outcome_report_between_date = apiReport("get-outcome-report-between-date")
+const report_get_price_report_between_date = apiReport("get-price-report-between-date")
+const report_get_sale_report_between_date = apiReport("get-sale-report-between-date")
+const report_get_transactions_report_between_date = apiReport("get-transacrions-report-between-date")
+
 export default {
 
     transaction_save,
@@ -58,7 +66,7 @@ export default {
     bank_transaction_delete,
     bank_transaction_get_transactions,
     bank_transaction_get_by_id,
-    
+
     itemCode_get_all_itemcodes,
     itemCode_save_itemCode,
     itemCode_update_itemCode,
@@ -73,6 +81,13 @@ export default {
     item_get_item_by_code,
     item_delete,
 
+    report_get_cashier_report_between_date,
+    report_get_income_report_between_date,
+    report_get_outcome_report_between_date,
+    report_get_price_report_between_date,
+    report_get_sale_report_between_date,
+    report_get_transactions_report_between_date,
+    
     itemGroup_save_itemGroup,
     itemGroup_update_itemGroup,
     itemGroup_get_itemGroup_by_id,

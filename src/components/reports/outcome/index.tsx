@@ -3,6 +3,25 @@ import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
+interface OutcomeReportModel {
+
+    startDate: Date;
+    endDate: Date;
+
+    datas: InvoiceModel[];
+
+}
+
+interface InvoiceModel {
+
+    barcode: string;
+    name: string;
+    qty: number;
+    attribute: number;
+    invoiceType: number;
+
+}
+
 class OutComeReport extends Component<{}, AgReportState> {
     constructor(props: any) {
         super(props);

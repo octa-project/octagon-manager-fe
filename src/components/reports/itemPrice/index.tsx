@@ -3,6 +3,24 @@ import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 
+interface PriceReportModel {
+
+    id: number;
+    name: string;
+    barcode: string;
+
+    prices: ItemPriceModel[];
+
+}
+
+interface ItemPriceModel {
+
+    date: string;
+    type: string;
+    amount: number;
+
+}
+
 class ItemPriceReport extends Component<{}, AgReportState> {
     constructor(props: any) {
         super(props);
