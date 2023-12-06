@@ -18,6 +18,7 @@ import { Box } from "@mui/system";
 import api from "@/src/api";
 import items from "@/src/app/items/page";
 import { GroupAdd } from "@mui/icons-material";
+import apiItem from "@/src/api/apiItem";
 
 interface Item {
   id: number;
@@ -37,12 +38,21 @@ interface ItemGroup {
   isDeleted: boolean;
   branchId: number;
 }
+interface Item {
+   code: number;
+   name: string;
+   isActive: boolean;
+   isDeleted: boolean;
+   branchId: number;
+}
+
 
 interface ItemState {
   loading: boolean;
   error: string | null;
   selectedRow: Item | null;
   selectedItemGroup: ItemGroup | null;
+  selectedItemSave: Item | null;
   isDrawerOpen: boolean;
   drawerType: number;
   open: boolean;
@@ -61,6 +71,7 @@ class ItemController extends Component<{}, ItemState> {
       error: null,
       selectedRow: null,
       selectedItemGroup: null,
+      selectedItemSave: null,
       isDrawerOpen: false,
       drawerType: 0,
       open: false,
@@ -77,7 +88,7 @@ class ItemController extends Component<{}, ItemState> {
         { field: "barcode", headerName: "Баркод", pivot: true },
         { field: "sellPrice", headerName: "Зарах үнэ" },
         { field: "qty", headerName: "Тоо" },
-        { field: "createdDate", headerName: "Хугацаа" },
+        { field: "createdDate", headerName: "Үүсгэсэн хугацаа" },
         { field: "itemGroup", headerName: "Бүлэг" },
         {
           field: "isDeleted",
@@ -209,6 +220,30 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
+   itemSave = async (item: Item | null) =>{
+    try {
+      this.setState({loading: true, error: null });
+
+      const body = {
+        code: item?.code,
+        name: item?.name,
+        isActive: item?.isActive,
+        isDeleted: item?.isDeleted,
+        branchId: item?.branchId,
+      };
+      const result = await api.item_save.itemSave(body);
+      if (result.data.code === "200") {
+        alert("Амжилттай бараа бүртэглээ");
+      } else {
+        throw new Error("Failed data");
+      }
+    } catch (error) {
+      // Handle error
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
   toggleDrawer = (isOpen: boolean, row: Item | null, DrawerType: number) => {
     this.setState({
       isDrawerOpen: isOpen,
@@ -234,6 +269,15 @@ class ItemController extends Component<{}, ItemState> {
       },
     }));
   };
+  
+  handleTextFieldItem = (field: keyof Item, value: string | number) => {
+    this.setState((prevState) => ({
+      selectedItem: {
+        ...prevState.selectedItem,
+        [field]: value,
+      },
+    }));
+  };
 
   render() {
     const containerStyle = { width: "100%", height: "100%" };
@@ -245,6 +289,7 @@ class ItemController extends Component<{}, ItemState> {
       autoGroupColumnDef,
       selectedRow,
       selectedItemGroup,
+      selectedItemSave,
       isDrawerOpen,
       drawerType,
       open,
@@ -302,7 +347,7 @@ class ItemController extends Component<{}, ItemState> {
                 onRowDoubleClicked={(e) => {
                   // Ensure that e.data is of type Item
                   const itemData: Item = e.data as Item;
-                  this.toggleDrawer(true, itemData, 0);
+                  this.toggleDrawer(true, itemData, 2);
                 }}
               />
             </div>
@@ -321,7 +366,7 @@ class ItemController extends Component<{}, ItemState> {
               variant="standard"
               value={selectedRow?.barcode}
               InputProps={{
-                readOnly: true,
+                readOnly: false,
               }}
               onChange={(e) =>
                 this.handleTextFieldChange("barcode", e.target.value)
@@ -362,7 +407,7 @@ class ItemController extends Component<{}, ItemState> {
             <Button
               variant="contained"
               className="bg-green-600 hover:bg-green-400 text-white w-full"
-              onClick={() => this.updateItemCode(selectedRow)}
+              onClick={() => this.itemSave(selectedRow)}
             >
               Хадгалах
             </Button>
@@ -403,6 +448,66 @@ class ItemController extends Component<{}, ItemState> {
               onClick={() => this.saveItemGroup(selectedItemGroup)}
             >
               Бүлэг хадгалах
+            </Button>
+          </Box>
+        </Drawer>
+
+        <Drawer
+          anchor="left"
+          open={isDrawerOpen && drawerType == 2}
+          onClose={() => this.toggleDrawer(false, null, 0)}
+        >
+          <Box sx={{ width: 500 }} role="presentation" className="p-10">
+            <TextField
+              label="Баркод"
+              className="pt-5 pb-5 w-full"
+              variant="standard"
+              value={selectedRow?.barcode}
+              InputProps={{
+                readOnly: false,
+              }}
+              onChange={(e) =>
+                this.handleTextFieldItem("code", e.target.value)
+              }
+            />
+            <TextField
+              label="Нэр"
+              className="pt-5 pb-5 w-full"
+              variant="standard"
+              value={selectedRow?.name}
+              onChange={(e) =>
+                this.handleTextFieldItem("name", e.target.value)
+              }
+            />
+            <TextField
+              label="Зарах үнэ"
+              className="pt-5 pb-5 w-full"
+              variant="standard"
+              value={selectedRow?.sellPrice}
+              onChange={(e) =>
+                this.handleTextFieldItem("sellPrice", e.target.value)
+              }
+            />
+            <TextField
+              id="standard-number"
+              label="Тоо"
+              type="number"
+              className="pt-5 pb-20 w-full"
+              InputLabelProps={{
+                shrink: true,
+              }}
+              variant="standard"
+              value={selectedRow?.qty}
+              onChange={(e) =>
+                this.handleTextFieldItem("qty", e.target.value)
+              }
+            />
+            <Button
+              variant="contained"
+              className="bg-green-600 hover:bg-green-400 text-white w-full"
+              onClick={() => this.item(selectedItemSave)}
+            >
+              Хадгалах
             </Button>
           </Box>
         </Drawer>
