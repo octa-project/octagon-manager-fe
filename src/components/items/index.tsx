@@ -64,8 +64,24 @@ class ItemController extends Component<{}, ItemState> {
     this.state = {
       loading: false,
       error: '',
-      selectedRow: null,
-      selectedItemGroup: null,
+      selectedRow: {
+        id: 0,
+        barcode: '',
+        name: '',
+        sellPrice: 0,
+        qty: 0,
+        createdDate: '',
+        isDeleted: false,
+      },
+      selectedItemGroup: {
+        id: 0,
+        name: '',
+        code: 0,
+        parentId: 0,
+        color: '',
+        isDeleted: false,
+        branchId: 0,
+      },
       isDrawerOpen: false,
       drawerType: 0,
       open: false,
@@ -115,7 +131,7 @@ class ItemController extends Component<{}, ItemState> {
 
   getItemCodes = async () => {
     try {
-      this.setState({ loading: true, error: null });
+      this.setState({ loading: true, error: '' });
 
       const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
 
@@ -205,7 +221,7 @@ class ItemController extends Component<{}, ItemState> {
 
   updateItemCode = async (item: Item | null) => {
     try {
-      this.setState({ loading: true, error: null });
+      this.setState({ loading: true, error: '' });
 
       const body = {
         id: item?.id,
@@ -235,7 +251,7 @@ class ItemController extends Component<{}, ItemState> {
 
   saveItemGroup = async (itemGroup: ItemGroup | null) => {
     try {
-      this.setState({ loading: true, error: null });
+      this.setState({ loading: true, error: '' });
 
       const body = {
         name: itemGroup?.name,
@@ -258,7 +274,7 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
-  toggleDrawer = (isOpen: boolean, row: Item | null, DrawerType: number) => {
+  toggleDrawer = (isOpen: boolean, row: Item, DrawerType: number) => {
     this.setState({
       isDrawerOpen: isOpen,
       selectedRow: row,
@@ -436,7 +452,15 @@ class ItemController extends Component<{}, ItemState> {
         <Drawer
           anchor="left"
           open={isDrawerOpen && drawerType == 0}
-          onClose={() => this.toggleDrawer(false, null, 0)}
+          onClose={() => this.toggleDrawer(false, {
+            id: 0,
+            barcode: '',
+            name: '',
+            sellPrice: 0,
+            qty: 0,
+            createdDate: '',
+            isDeleted: false,
+          }, 0)}
         >
           <Box sx={{ width: 500 }} role="presentation" className="p-10">
             <TextField
@@ -496,8 +520,17 @@ class ItemController extends Component<{}, ItemState> {
         <Drawer
           anchor="right"
           open={isDrawerOpen && drawerType == 1}
-          onClose={() => this.toggleDrawer(false, null, 0)}
+          onClose={() => this.toggleDrawer(false, {
+            id: 0,
+            barcode: '',
+            name: '',
+            sellPrice: 0,
+            qty: 0,
+            createdDate: '',
+            isDeleted: false,
+          }, 0)}
         >
+
           <Box sx={{ width: 500 }} role="presentation" className="p-10">
             <TextField
               label="Нэр"
