@@ -11,8 +11,8 @@ import Image from 'next/image'
 
 const Sidebar = () => {
     const pathname = usePathname()
-    const selected = 'font-sans text-base rounded-2xl w-full h-10 capitalize text-[#6d758f] bg-[#f8f7f5] hover:bg-violet-200';
-    const notselected = 'font-sans text-base rounded-2xl w-full h-10 capitalize text-white bg-[#6d758f]  hover:text-white hover:bg-violet-200';
+    const selected = 'font-sans text-base rounded-xl w-full h-10 capitalize text-[#6d758f] bg-[#f8f7f5] hover:bg-violet-200';
+    const notselected = 'font-sans text-base rounded-xl w-full h-10 capitalize text-white bg-[#6d758f]  hover:text-white hover:bg-violet-200';
 
     const createHandleMenuClick = (menuItem: string) => {
         return () => {
