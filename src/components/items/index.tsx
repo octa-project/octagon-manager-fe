@@ -30,6 +30,7 @@ interface Item {
   name: string;
   sellPrice: number;
   qty: number;
+  measureName: string;
   createdDate: string;
   isDeleted: boolean;
 }
@@ -42,7 +43,11 @@ interface ItemGroup {
   isDeleted: boolean;
   branchId: number;
 }
-
+interface Measure {
+  id: number;
+  name: string;
+  code: string;
+}
 interface ItemState {
   loading: boolean;
   error: string;
@@ -55,6 +60,7 @@ interface ItemState {
   defaultColDef: any;
   autoGroupColumnDef: any;
   rowData: Item[];
+  measures: Measure[];
 }
 
 class ItemController extends Component<{}, ItemState> {
@@ -70,9 +76,11 @@ class ItemController extends Component<{}, ItemState> {
         name: '',
         sellPrice: 0,
         qty: 0,
+        measureName: "",
         createdDate: '',
         isDeleted: false,
       },
+
       selectedItemGroup: {
         id: 0,
         name: '',
@@ -92,6 +100,7 @@ class ItemController extends Component<{}, ItemState> {
         { field: "barcode", headerName: "Баркод", },
         { field: "sellPrice", headerName: "Зарах үнэ" },
         { field: "qty", headerName: "Тоо" },
+        { field: "measureName", headerName: "Хэмжих нэгж" },
         { field: "itemGroup", headerName: "Бүлэг" },
         { field: "createdDate", headerName: "Бүртгэсэн огноо" },
 
@@ -111,11 +120,80 @@ class ItemController extends Component<{}, ItemState> {
         minWidth: 200,
       },
       rowData: [],
+      measures: [],
     };
   }
 
   componentDidMount() {
     this.getItems();
+    this.getMeasures();
+
+  }
+
+  getItemGroups = async () => {
+    try {
+      this.setState({ loading: true, error: '' });
+
+      const result = await api.itemGroup_get_all_itemGroups.getAllItemGroups();
+
+      if (result.data.code === "200") {
+        const rowData: ItemGroup[] = result.data.data.map((item: { 
+          id: any; 
+          code: any; 
+          name: any; 
+          parentId: any; 
+          color: any; 
+          createdDate: any; 
+          isDeleted: string; }) => ({
+
+          id: item.id,
+          barcode: item.barcode,
+          name: item.name,
+          sellPrice: item.sellPrice,
+          qty: item.qty,
+          measureName: item.measureName,
+          createdDate: item.createdDate,
+          isDeleted: item.isDeleted === 'true',
+        }));
+
+        console.log(result.data.data)
+
+        this.setState({ rowData });
+        this.handleClick();
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  getMeasures = async () => {
+    try {
+      this.setState({ loading: true, error: '' });
+
+      debugger
+      const result = await api.measure_get_all.getMeasures();
+      if (result.data.code === "200") {
+        const measures: Measure[] = result.data.data.map((measure: { id: any; name: any; code: any; }) => ({
+          id: measure.id,
+          code: measure.code,
+          name: measure.name,
+        }));
+
+        console.log(result.data.data)
+        this.setState({ measures });
+        this.handleClick();
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      this.setState({ loading: false });
+    }
   }
 
   handleClick = () => {
@@ -159,24 +237,6 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
-  // getItems = async () => {
-  //   try {
-  //     const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
-  //     if (result.data.code === '200') {
-  //       const items = result.data.data.map((item) => ({
-  //         ...item,
-  //         expander: true,
-  //         expanded: false,
-  //       }));
-  //       setRowData(items);
-  //     } else {
-  //       throw new Error('Failed to fetch data');
-  //     }
-  //   } catch (error) {
-  //     console.error('Error fetching data:', error);
-  //   }
-  // };
-
   getItems = async () => {
     try {
       this.setState({ loading: true, error: '' });
@@ -184,15 +244,18 @@ class ItemController extends Component<{}, ItemState> {
       const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
 
       if (result.data.code === "200") {
-        const rowData: Item[] = result.data.data.map((item: { id: any; barcode: any; name: any; sellPrice: any; qty: any; createdDate: any; isDeleted: string; }) => ({
+        const rowData: Item[] = result.data.data.map((item: { id: any; barcode: any; name: any; sellPrice: any; qty: any; measureName: any; createdDate: any; isDeleted: string; }) => ({
           id: item.id,
           barcode: item.barcode,
           name: item.name,
           sellPrice: item.sellPrice,
           qty: item.qty,
+          measureName: item.measureName,
           createdDate: item.createdDate,
           isDeleted: item.isDeleted === 'true',
         }));
+
+        console.log(result.data.data)
 
         this.setState({ rowData });
         this.handleClick();
@@ -341,20 +404,7 @@ class ItemController extends Component<{}, ItemState> {
             </div>
 
             <div className="flex flex-col items-center gap-4 justify-center pt-5">
-              <div className="w-9/12">
-                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                  Барааны бүлэг
-                </Typography>
-
-                <Select
-                  className="w-full"
-                >
-                  <MenuItem value={10}>Ус ундаа</MenuItem>
-                  <MenuItem value={20}>Төмс</MenuItem>
-                  <MenuItem value={30}>Архи</MenuItem>
-                </Select>
-              </div>
-              <div className="w-9/12">
+              {/* <div className="w-9/12">
                 <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   Нийлүүлэгч
                 </Typography>
@@ -366,7 +416,7 @@ class ItemController extends Component<{}, ItemState> {
                   <MenuItem value={20}>Төгөлдөр</MenuItem>
                   <MenuItem value={30}>Үүрээ</MenuItem>
                 </Select>
-              </div>
+              </div> */}
               <div className="w-9/12">
                 <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   Барааны нэр
@@ -386,9 +436,25 @@ class ItemController extends Component<{}, ItemState> {
                 <Select
                   className="w-full"
                 >
-                  <MenuItem value={10}>Ten</MenuItem>
-                  <MenuItem value={20}>Twenty</MenuItem>
-                  <MenuItem value={30}>Thirty</MenuItem>
+                  {this.state.measures.map((measure) => (
+                    <MenuItem key={measure.id} value={measure.id}>
+                      {measure.name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </div>
+              <div className="w-9/12">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  Барааны бүлэг
+                </Typography>
+
+                <Select
+                  className="w-full"
+                >
+
+                  <MenuItem value={10}>Ус ундаа</MenuItem>
+                  <MenuItem value={20}>Төмс</MenuItem>
+                  <MenuItem value={30}>Архи</MenuItem>
                 </Select>
               </div>
               <div className="w-9/12">
@@ -458,6 +524,7 @@ class ItemController extends Component<{}, ItemState> {
             name: '',
             sellPrice: 0,
             qty: 0,
+            measureName: "",
             createdDate: '',
             isDeleted: false,
           }, 0)}
@@ -526,6 +593,7 @@ class ItemController extends Component<{}, ItemState> {
             name: '',
             sellPrice: 0,
             qty: 0,
+            measureName: "",
             createdDate: '',
             isDeleted: false,
           }, 0)}

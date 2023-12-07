@@ -4,6 +4,7 @@ import apiReport from "./apiReport";
 import apiTransaction from "./apiTransaction"
 import api from '@/src/api';
 import apiItemGroup from './apiItemGroup';
+import apiMeasure from "./apiMeasure";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -51,6 +52,9 @@ const report_get_price_report_between_date = apiReport("get-price-report-between
 const report_get_sale_report_between_date = apiReport("get-sale-report-between-date")
 const report_get_transactions_report_between_date = apiReport("get-transacrions-report-between-date")
 
+const measure_get_all = apiMeasure("get-all-measures")
+const measure_get_by_id = apiMeasure("get-measure-by-id")
+
 export default {
 
     transaction_save,
@@ -87,10 +91,13 @@ export default {
     report_get_price_report_between_date,
     report_get_sale_report_between_date,
     report_get_transactions_report_between_date,
-    
+
     itemGroup_save_itemGroup,
     itemGroup_update_itemGroup,
     itemGroup_get_itemGroup_by_id,
     itemGroup_get_all_itemGroups,
     itemGroup_delete,
+
+    measure_get_all,
+    measure_get_by_id,
 }
