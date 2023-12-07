@@ -45,9 +45,9 @@ interface ItemGroup {
 
 interface ItemState {
   loading: boolean;
-  error: string | null;
-  selectedRow: Item | null;
-  selectedItemGroup: ItemGroup | null;
+  error: string;
+  selectedRow: Item;
+  selectedItemGroup: ItemGroup;
   isDrawerOpen: boolean;
   drawerType: number;
   open: boolean;
@@ -63,7 +63,7 @@ class ItemController extends Component<{}, ItemState> {
 
     this.state = {
       loading: false,
-      error: null,
+      error: '',
       selectedRow: null,
       selectedItemGroup: null,
       isDrawerOpen: false,
@@ -163,7 +163,7 @@ class ItemController extends Component<{}, ItemState> {
 
   getItems = async () => {
     try {
-      this.setState({ loading: true, error: null });
+      this.setState({ loading: true, error: '' });
 
       const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
 
@@ -184,7 +184,6 @@ class ItemController extends Component<{}, ItemState> {
         throw new Error("Failed to fetch data");
       }
     } catch (error) {
-      // Handle error
       console.error("Error fetching data:", error);
     } finally {
       this.setState({ loading: false });
