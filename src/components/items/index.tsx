@@ -13,6 +13,8 @@ import {
   TextField,
   IconButton,
   ButtonGroup,
+  MenuItem,
+  Menu,
 } from "@mui/material";
 import { Box } from "@mui/system";
 import api from "@/src/api";
@@ -39,13 +41,12 @@ interface ItemGroup {
   branchId: number;
 }
 interface Item {
-   code: number;
-   name: string;
-   isActive: boolean;
-   isDeleted: boolean;
-   branchId: number;
+  code: number;
+  name: string;
+  isActive: boolean;
+  isDeleted: boolean;
+  branchId: number;
 }
-
 
 interface ItemState {
   loading: boolean;
@@ -220,9 +221,9 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
-   itemSave = async (item: Item | null) =>{
+  itemSave = async (item: Item | null) => {
     try {
-      this.setState({loading: true, error: null });
+      this.setState({ loading: true, error: null });
 
       const body = {
         code: item?.code,
@@ -261,7 +262,10 @@ class ItemController extends Component<{}, ItemState> {
     }));
   };
 
-  handleTextFieldItemGroupChange = (field: keyof ItemGroup, value: string | number) => {
+  handleTextFieldItemGroupChange = (
+    field: keyof ItemGroup,
+    value: string | number
+  ) => {
     this.setState((prevState) => ({
       selectedItemGroup: {
         ...prevState.selectedItemGroup,
@@ -269,7 +273,7 @@ class ItemController extends Component<{}, ItemState> {
       },
     }));
   };
-  
+
   handleTextFieldItem = (field: keyof Item, value: string | number) => {
     this.setState((prevState) => ({
       selectedItem: {
@@ -411,6 +415,25 @@ class ItemController extends Component<{}, ItemState> {
             >
               Хадгалах
             </Button>
+            <Button
+              id="basic-button"
+              aria-controls={open ? "basic-menu" : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? "true" : undefined}
+              onClick={this.handleClick}
+            >
+              Бүлэг
+            </Button>
+            <Menu
+           
+              open={open}
+              // onClose={this.handleClose}
+             
+            >
+              <MenuItem onClick={this.handleClose}>Profile</MenuItem>
+              <MenuItem onClick={this.handleClose}>My account</MenuItem>
+              <MenuItem onClick={this.handleClose}>Logout</MenuItem>
+            </Menu>
           </Box>
         </Drawer>
 
@@ -466,18 +489,14 @@ class ItemController extends Component<{}, ItemState> {
               InputProps={{
                 readOnly: false,
               }}
-              onChange={(e) =>
-                this.handleTextFieldItem("code", e.target.value)
-              }
+              onChange={(e) => this.handleTextFieldItem("code", e.target.value)}
             />
             <TextField
               label="Нэр"
               className="pt-5 pb-5 w-full"
               variant="standard"
               value={selectedRow?.name}
-              onChange={(e) =>
-                this.handleTextFieldItem("name", e.target.value)
-              }
+              onChange={(e) => this.handleTextFieldItem("name", e.target.value)}
             />
             <TextField
               label="Зарах үнэ"
@@ -498,14 +517,12 @@ class ItemController extends Component<{}, ItemState> {
               }}
               variant="standard"
               value={selectedRow?.qty}
-              onChange={(e) =>
-                this.handleTextFieldItem("qty", e.target.value)
-              }
+              onChange={(e) => this.handleTextFieldItem("qty", e.target.value)}
             />
             <Button
               variant="contained"
               className="bg-green-600 hover:bg-green-400 text-white w-full"
-              onClick={() => this.item(selectedItemSave)}
+              onClick={() => this.itemSave(selectedItemSave)}
             >
               Хадгалах
             </Button>
