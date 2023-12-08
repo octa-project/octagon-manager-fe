@@ -3,7 +3,7 @@ import DashboardController from "@/src/components/dashboard";
 
 const dashboard = () => {
     return (
-        <div className='p-5'>
+        <div>
         <DashboardController/>
       </div>
     )
