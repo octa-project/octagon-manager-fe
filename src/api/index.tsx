@@ -5,6 +5,7 @@ import apiTransaction from "./apiTransaction"
 import api from '@/src/api';
 import apiItemGroup from './apiItemGroup';
 import apiMeasure from "./apiMeasure";
+import apiSale from "./apiSale";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -55,6 +56,10 @@ const report_get_transactions_report_between_date = apiReport("get-transacrions-
 const measure_get_all = apiMeasure("get-all-measures")
 const measure_get_by_id = apiMeasure("get-measure-by-id")
 
+const saleGetMany = apiSale("get-many")
+const saleGetOne = apiSale("get-one")
+const saleDelete = apiSale("delete")
+
 export default {
 
     transaction_save,
@@ -100,4 +105,8 @@ export default {
 
     measure_get_all,
     measure_get_by_id,
+    
+    saleGetMany,
+    saleGetOne,
+    saleDelete,
 }

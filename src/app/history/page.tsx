@@ -1,10 +1,10 @@
 "use client"
-import ItemController from "@/src/components/items";
+import HistoryController from "@/src/components/history";
 
 const History = () => {
     return (
         <div className='p-5'>
-            Түүх
+            <HistoryController/>
       </div>
     )
 }
