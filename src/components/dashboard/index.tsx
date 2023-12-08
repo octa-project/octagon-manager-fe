@@ -1,22 +1,53 @@
-import { Card, Fab, TextField, Typography } from "@mui/material";
+import {
+  Avatar,
+  Card,
+  Divider,
+  Fab,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem,
+  TextField,
+  Typography,
+} from "@mui/material";
 import { Component } from "react";
 import AddIcon from "@mui/icons-material/Add";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Image from "next/image";
 import { pink } from "@mui/material/colors";
+import { PersonAdd, Settings, Logout } from "@mui/icons-material";
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import SouthWestIcon from '@mui/icons-material/SouthWest';
+import SavingsIcon from '@mui/icons-material/Savings';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 
-class DashboardController extends Component {
-  state = {};
+interface DashboardControllerState {
+  anchorEl: HTMLElement | null;
+}
 
-//   handleClick = (event: React.MouseEvent<HTMLElement>) => {
-//     setAnchorEl(event.currentTarget);
-//   };
-//   handleClose = () => {
-//     setAnchorEl(null);
-//   };
+class DashboardController extends Component<{}, DashboardControllerState> {
+  constructor(props: any) {
+    super(props);
+
+    this.state = {
+      anchorEl: null,
+    };
+  }
+
+  handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleClose = () => {
+    this.setState({ anchorEl: null });
+  };
 
   render() {
+    const { anchorEl } = this.state;
+    const open = Boolean(anchorEl);
+
     return (
       <div className="grid grid-cols-5">
         <div className="col-span-4 h-screen bg-[#f7f7f5ff] p-5">
@@ -67,18 +98,77 @@ class DashboardController extends Component {
                     </Card>
                   </div>
                   <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
-                    {" "}
-                    <Fab
-                      className="bg-[#6d758fff] h-[#f7f7f5ff]"
-                      color="primary"
-                      aria-label="add"
+                    <IconButton
+                      onClick={this.handleClick}
+                      className="h-14 w-14 bg-[#6d758fff] shadow-lg hover:bg-[#45433fff]"
+                      aria-controls={open ? "account-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
                     >
-                      <AddIcon />
-                    </Fab>
-                    <Typography
-                      className="font-sans text-[#6d758f] text-md text-center pt-5 align-bottom"
-                      gutterBottom
+                      <AddIcon className="text-white" />
+                    </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      id="account-menu"
+                      open={open}
+                      onClose={this.handleClose}
+                      onClick={this.handleClose}
+                      PaperProps={{
+                        elevation: 0,
+                        sx: {
+                          overflow: "visible",
+                          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
+                          mt: 1.5,
+                          "& .MuiAvatar-root": {
+                            width: 32,
+                            height: 32,
+                            ml: -0.5,
+                            mr: 1,
+                          },
+                          "&:before": {
+                            content: '""',
+                            display: "block",
+                            position: "absolute",
+                            top: 0,
+                            right: 14,
+                            width: 10,
+                            height: 10,
+                            bgcolor: "background.paper",
+                            transform: "translateY(-50%) rotate(45deg)",
+                            zIndex: 0,
+                          },
+                        },
+                      }}
+                      transformOrigin={{ horizontal: "right", vertical: "top" }}
+                      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
                     >
+                      <MenuItem onClick={this.handleClose}>
+                        <Avatar /> Нийт орлого
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClose}>
+                        <Avatar /> Өнөөдрийн орлого
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon>
+                          <PersonAdd fontSize="small" />
+                        </ListItemIcon>
+                        Нийт ашиг /сар/
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon>
+                          <Settings fontSize="small" />
+                        </ListItemIcon>
+                        Эрэлт ихтэй бараа
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon>
+                          <Logout fontSize="small" />
+                        </ListItemIcon>
+                        Дуусаж буй барааны жагсаалт
+                      </MenuItem>
+                    </Menu>
+                    <Typography className="font-sans text-[#6d758f] text- text-center pt-5 align-bottom">
                       Та өөрийн хэрэгцээнд зохицуулан хүссэн датагаа харах
                       боломжтой
                     </Typography>
@@ -101,23 +191,51 @@ class DashboardController extends Component {
                   </Card>
 
                   <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
-                    <Fab
-                      className="bg-[#6d758fff]"
-                      color="primary"
-                      aria-label="add"
+                    <IconButton
+                      onClick={this.handleClick}
+                      className="h-14 w-14 bg-[#6d758fff] shadow-lg hover:bg-[#45433fff]"
+                      aria-controls={open ? "account-menu" : undefined}
+                      aria-haspopup="true"
+                      aria-expanded={open ? "true" : undefined}
                     >
-                      {/* <IconButton
-                        onClick={handleClick}
-                        size="small"
-                        sx={{ ml: 2 }}
-                        aria-controls={open ? "account-menu" : undefined}
-                        aria-haspopup="true"
-                        aria-expanded={open ? "true" : undefined}
-                      >
-                        <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
-                      </IconButton> */}
-                      <AddIcon />
-                    </Fab>
+                      <AddIcon className="text-white" />
+                    </IconButton>
+                    <Menu
+                      anchorEl={anchorEl}
+                      id="account-menu"
+                      open={open}
+                      onClose={this.handleClose}
+                      onClick={this.handleClose}
+                      transformOrigin={{ horizontal: "right", vertical: "top" }}
+                      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
+                    >
+                      <MenuItem onClick={this.handleClose}>
+                        <SavingsIcon color="success" align-left /> Нийт
+                        орлого
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClose}>
+                        <AttachMoneyIcon color="success" /> Өнөөдрийн орлого
+                      </MenuItem>
+                      <Divider />
+                      <MenuItem onClick={this.handleClose}>
+                        <MenuItem>
+                          <AutoGraphIcon color="success" align-left />
+                        </MenuItem>
+                        Нийт ашиг /сар/
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon>
+                          <LocalShippingIcon color="success" />
+                        </ListItemIcon>
+                        Эрэлт ихтэй бараа
+                      </MenuItem>
+                      <MenuItem onClick={this.handleClose}>
+                        <ListItemIcon>
+                          <SouthWestIcon sx={{ color: pink[500] }}/>
+                        </ListItemIcon>
+                        Дуусаж буй барааны жагсаалт
+                      </MenuItem>
+                    </Menu>
                     <Typography className="font-sans text-[#6d758f] text- text-center pt-5 align-bottom">
                       Та өөрийн хэрэгцээнд зохицуулан хүссэн датагаа харах
                       боломжтой

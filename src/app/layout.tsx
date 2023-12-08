@@ -28,7 +28,6 @@ export default function RootLayout({
             </div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 relative'>
               {/*<Topbar/>*/}
-              <Divider variant='middle' />
               <div>{children}</div>
             </div>
           </div>

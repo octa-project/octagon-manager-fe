@@ -36,7 +36,7 @@ class HistoryController extends Component {
             <Divider orientation="vertical" variant="middle" />
             <div className="flex-initial w-full h-screen">
 
-                <div className="bg-white p-2 flex-initial w-full ">
+                {/* <div className="bg-white p-2 flex-initial w-full ">
                     <div className="grid grid-cols-3 gap-5">
                         <div className="col-span-1">
                             <h1 >Хайх</h1>
@@ -46,7 +46,7 @@ class HistoryController extends Component {
                            
                         </div>
                     </div>
-                </div>
+                </div> */}
                 <div className="flex-initial w-full h-screen">
                     {this.state.historyIndex === 0 ? <SaleHistory /> : null}
                     {/* {this.state.reportIndex === 1 ? <OutComeReport /> : null}
