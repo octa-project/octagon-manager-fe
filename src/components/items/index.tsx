@@ -61,6 +61,7 @@ interface ItemState {
   autoGroupColumnDef: any;
   rowData: Item[];
   measures: Measure[];
+  itemGroups: ItemGroup[];
 }
 
 class ItemController extends Component<{}, ItemState> {
@@ -121,6 +122,7 @@ class ItemController extends Component<{}, ItemState> {
       },
       rowData: [],
       measures: [],
+      itemGroups: [],
     };
   }
 
@@ -137,7 +139,7 @@ class ItemController extends Component<{}, ItemState> {
       const result = await api.itemGroup_get_all_itemGroups.getAllItemGroups();
 
       if (result.data.code === "200") {
-        const rowData: ItemGroup[] = result.data.data.map((item: { 
+        const itemGroups: ItemGroup[] = result.data.data.map((itemGroup: { 
           id: any; 
           code: any; 
           name: any; 
@@ -146,19 +148,18 @@ class ItemController extends Component<{}, ItemState> {
           createdDate: any; 
           isDeleted: string; }) => ({
 
-          id: item.id,
-          barcode: item.barcode,
-          name: item.name,
-          sellPrice: item.sellPrice,
-          qty: item.qty,
-          measureName: item.measureName,
-          createdDate: item.createdDate,
-          isDeleted: item.isDeleted === 'true',
+          id: itemGroup.id,
+          code: itemGroup.code,
+          name: itemGroup.name,
+          parentId: itemGroup.parentId,
+          color: itemGroup.color,
+          createdDate: itemGroup.createdDate,
+          isDeleted: itemGroup.isDeleted === 'true',
         }));
 
         console.log(result.data.data)
 
-        this.setState({ rowData });
+        this.setState({ itemGroups });
         this.handleClick();
       } else {
         throw new Error("Failed to fetch data");
