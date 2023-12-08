@@ -1,3 +1,4 @@
+"use client"
 import { Card, Fab, TextField, Typography } from "@mui/material";
 import { Component } from "react";
 import AddIcon from "@mui/icons-material/Add";

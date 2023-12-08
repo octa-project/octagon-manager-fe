@@ -5,16 +5,11 @@ import moment from "moment"
 
 const Topbar = () => {
   return (
-    <div className='fixed top-0 left-0 right-0 grid grid-cols-3 z-10 bg-white text-indigo-800 p-3'>
+    <div className='fixed top-0 right-0 grid grid-cols-3 z-10 bg-white text-indigo-800 p-3'>
       <div className='flex gap-3'>
-        <Avatar
-          alt="Болорчимэг"
-          src=""
-          sx={{ width: 34, height: 34 }} />
-        <div className='text-base flex flex-col'>
-          <span className='text-gray-500 leading-none'>Касс</span>
-          <strong className='leading-none'>Болорчимэг</strong>
-        </div>
+
+        <strong className='leading-none'>Болорчимэг</strong>
+
       </div>
       <div className='text-center py-[5px]'>
         <span className='text-gray-500'>Manager:</span> <strong>Салбар 1</strong>

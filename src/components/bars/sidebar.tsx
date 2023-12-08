@@ -83,7 +83,7 @@ const Sidebar = () => {
                         </Link>
                     </Tooltip>
                 </li>
-                <li className='py-2 px-4'>
+                {/* <li className='py-2 px-4'>
                     <Tooltip title="Татаг авалт" placement="left">
                         <Link href='/purchase'>
                             <Button className={`${pathname === '/purchase'
@@ -92,7 +92,7 @@ const Sidebar = () => {
                             >Татан авалт</Button>
                         </Link>
                     </Tooltip>
-                </li>
+                </li> */}
                 <li className='py-2 px-4'>
                     <Tooltip title="Тайлан" placement="left">
                         <Link href='/reports'>
