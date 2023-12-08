@@ -3,7 +3,7 @@ import './globals.css'
 import Sidebar from "@/src/components/bars/sidebar"
 import { ReactNode } from 'react'
 import { Divider } from '@mui/material'
-// import Topbar from '../components/bars/topBar'
+import Topbar from '../components/bars/topbar'
 
 
 export const metadata: Metadata = {
@@ -27,8 +27,9 @@ export default function RootLayout({
               <Sidebar />
             </div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 relative'>
-              {/*<Topbar/>*/}
-              <div>{children}</div>
+              <div>
+                {children}
+              </div>
             </div>
           </div>
         </main>

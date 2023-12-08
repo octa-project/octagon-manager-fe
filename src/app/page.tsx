@@ -1,11 +1,12 @@
-import { Sale } from '../components/sale'
+import Topbar from '../components/bars/topbar'
+import DashboardController from '../components/dashboard'
 
- const Home = () => {
+const Home = () => {
 
-  return (
-      <div>
-          <Sale/>
-      </div>
-  )
+    return (
+        <div>
+            <DashboardController />
+        </div>
+    )
 }
 export default Home

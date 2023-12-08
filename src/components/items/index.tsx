@@ -24,6 +24,7 @@ import items from "@/src/app/items/page";
 import { GroupAdd } from "@mui/icons-material";
 import Image from "next/image";
 
+//#region interfaces
 interface Item {
   id: number;
   barcode: string;
@@ -63,8 +64,11 @@ interface ItemState {
   measures: Measure[];
   itemGroups: ItemGroup[];
 }
+//#endregion
 
 class ItemController extends Component<{}, ItemState> {
+
+  //#region Constructer and props
   constructor(props: any) {
     super(props);
 
@@ -81,7 +85,6 @@ class ItemController extends Component<{}, ItemState> {
         createdDate: '',
         isDeleted: false,
       },
-
       selectedItemGroup: {
         id: 0,
         name: '',
@@ -95,7 +98,6 @@ class ItemController extends Component<{}, ItemState> {
       drawerType: 0,
       open: false,
       columnDefs: [
-
         { field: "id", headerName: "№" },
         { field: "name", headerName: "Нэр", filter: "agTextColumnFilter" },
         { field: "barcode", headerName: "Баркод", },
@@ -104,7 +106,6 @@ class ItemController extends Component<{}, ItemState> {
         { field: "measureName", headerName: "Хэмжих нэгж" },
         { field: "itemGroup", headerName: "Бүлэг" },
         { field: "createdDate", headerName: "Бүртгэсэн огноо" },
-
       ],
       defaultColDef: {
         flex: 1,
@@ -129,9 +130,54 @@ class ItemController extends Component<{}, ItemState> {
   componentDidMount() {
     this.getItems();
     this.getMeasures();
+    this.getItemGroups();
 
   }
 
+  //#endregion
+
+  //#region Event
+
+  handleTextFieldChange = (field: keyof Item, value: string | number) => {
+    this.setState((prevState) => ({
+      selectedRow: {
+        ...prevState.selectedRow,
+        [field]: value,
+      },
+    }));
+  };
+
+  handleTextFieldItemGroupChange = (field: keyof ItemGroup, value: string | number) => {
+    this.setState((prevState) => ({
+      selectedItemGroup: {
+        ...prevState.selectedItemGroup,
+        [field]: value,
+      },
+    }));
+  };
+
+  handleClick = () => {
+    this.setState({ open: true });
+  };
+
+  handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === "clickaway") {
+      return;
+    }
+    this.setState({ open: false });
+  };
+
+  setItemState = (isOpen: boolean, row: Item, DrawerType: number) => {
+    this.setState({
+      isDrawerOpen: isOpen,
+      selectedRow: row,
+      drawerType: DrawerType,
+    });
+  };
+
+  //#endregion
+
+  //#region Functions - ( get,set,delete,update )
   getItemGroups = async () => {
     try {
       this.setState({ loading: true, error: '' });
@@ -139,22 +185,20 @@ class ItemController extends Component<{}, ItemState> {
       const result = await api.itemGroup_get_all_itemGroups.getAllItemGroups();
 
       if (result.data.code === "200") {
-        const itemGroups: ItemGroup[] = result.data.data.map((itemGroup: { 
-          id: any; 
-          code: any; 
-          name: any; 
-          parentId: any; 
-          color: any; 
-          createdDate: any; 
-          isDeleted: string; }) => ({
-
+        const itemGroups: ItemGroup[] = result.data.data.map((itemGroup: {
+          id: any;
+          code: any;
+          name: any;
+          parentId: any;
+          color: any;
+          createdDate: any;
+        }) => ({
           id: itemGroup.id,
           code: itemGroup.code,
           name: itemGroup.name,
           parentId: itemGroup.parentId,
           color: itemGroup.color,
           createdDate: itemGroup.createdDate,
-          isDeleted: itemGroup.isDeleted === 'true',
         }));
 
         console.log(result.data.data)
@@ -196,17 +240,6 @@ class ItemController extends Component<{}, ItemState> {
       this.setState({ loading: false });
     }
   }
-
-  handleClick = () => {
-    this.setState({ open: true });
-  };
-
-  handleClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-    if (reason === "clickaway") {
-      return;
-    }
-    this.setState({ open: false });
-  };
 
   getItemCodes = async () => {
     try {
@@ -338,35 +371,16 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
-  toggleDrawer = (isOpen: boolean, row: Item, DrawerType: number) => {
-    this.setState({
-      isDrawerOpen: isOpen,
-      selectedRow: row,
-      drawerType: DrawerType,
-    });
-  };
-
-  handleTextFieldChange = (field: keyof Item, value: string | number) => {
-    this.setState((prevState) => ({
-      selectedRow: {
-        ...prevState.selectedRow,
-        [field]: value,
-      },
-    }));
-  };
-
-  handleTextFieldItemGroupChange = (field: keyof ItemGroup, value: string | number) => {
-    this.setState((prevState) => ({
-      selectedItemGroup: {
-        ...prevState.selectedItemGroup,
-        [field]: value,
-      },
-    }));
-  };
+  //#endregion
 
   render() {
+
+    //#region styles
     const containerStyle = { width: "100%", height: "100%" };
     const gridStyle = { height: "100%", width: "100%" };
+    //#endregion
+
+    //#region state
     const {
       rowData,
       columnDefs,
@@ -378,14 +392,15 @@ class ItemController extends Component<{}, ItemState> {
       drawerType,
       open,
     } = this.state;
-
+    //#endregion
+   
     return (
       <>
         <div className="grid grid-cols-4 gap-3">
 
           <div className="col-span-1 bg-white shadow-md h-screen">
             <Typography className="font-sans text-center font-semibold pt-2 pb-3 text-[#6d758f]">
-              Шинэ бараа бүртгэх
+              {this.state.selectedRow.id === 0 ? "Шинэ бараа бүртгэх" : "Бараа засах"}
             </Typography>
             <Divider className="bg-[#c5cee0] shadow"></Divider>
             <div className="flex flex-col items-center justify-center h-52">
@@ -452,10 +467,11 @@ class ItemController extends Component<{}, ItemState> {
                 <Select
                   className="w-full"
                 >
-
-                  <MenuItem value={10}>Ус ундаа</MenuItem>
-                  <MenuItem value={20}>Төмс</MenuItem>
-                  <MenuItem value={30}>Архи</MenuItem>
+                  {this.state.itemGroups.map((itemgroup) => (
+                    <MenuItem key={itemgroup.id} value={itemgroup.id}>
+                      {itemgroup.name}
+                    </MenuItem>
+                  ))}
                 </Select>
               </div>
               <div className="w-9/12">
@@ -475,6 +491,16 @@ class ItemController extends Component<{}, ItemState> {
               <div className="w-9/12">
                 <Button
                   className="font-sans text-[#6d758e] text-base text-center capitalize w-full h-8"
+                  onClick={() => this.setItemState(false, {
+                    id: 0,
+                    barcode: '',
+                    name: '',
+                    sellPrice: 0,
+                    qty: 0,
+                    measureName: "",
+                    createdDate: '',
+                    isDeleted: false,
+                  }, 0)}
                 >
                   Болих
                 </Button>
@@ -507,7 +533,7 @@ class ItemController extends Component<{}, ItemState> {
                     onRowDoubleClicked={(e) => {
 
                       const itemData: Item = e.data as Item;
-                      this.toggleDrawer(false, itemData, 0);
+                      this.setItemState(false, itemData, 0);
                     }}
                   />
                 </div>
@@ -516,10 +542,11 @@ class ItemController extends Component<{}, ItemState> {
           </div>
         </div>
 
+
         <Drawer
           anchor="left"
           open={isDrawerOpen && drawerType == 0}
-          onClose={() => this.toggleDrawer(false, {
+          onClose={() => this.setItemState(false, {
             id: 0,
             barcode: '',
             name: '',
@@ -588,7 +615,7 @@ class ItemController extends Component<{}, ItemState> {
         <Drawer
           anchor="right"
           open={isDrawerOpen && drawerType == 1}
-          onClose={() => this.toggleDrawer(false, {
+          onClose={() => this.setItemState(false, {
             id: 0,
             barcode: '',
             name: '',
