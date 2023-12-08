@@ -3,7 +3,7 @@ import HistoryController from "@/src/components/history";
 
 const History = () => {
     return (
-        <div className='p-5'>
+        <div>
             <HistoryController/>
       </div>
     )
