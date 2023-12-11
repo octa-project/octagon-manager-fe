@@ -652,8 +652,9 @@ class ItemController extends Component<{}, ItemState> {
                             <div>
                               <IconButton
                                 onClick={() => selectedRow === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
-                              >
-                                {selectedRow === row.id ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                                className={selectedRow === row.id ? "bg-[#8a91a5]" : "bg-white"}
+                                >
+                                {selectedRow === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
                               </IconButton>
                             </div>
                           </TableCell>
@@ -679,7 +680,7 @@ class ItemController extends Component<{}, ItemState> {
                         </TableRow>
                         {selectedRow === row.id && row.itemcodes && row.itemcodes.length > 0 && (
                           row.itemcodes.map((itemCode) => (
-                            <TableRow key={itemCode.id}>
+                            <TableRow key={itemCode.id} className="bg-[#f1f3f7]">
                               <TableCell>
                                 <IconButton className="w-8 h-8">
                                   <EditIcon />
