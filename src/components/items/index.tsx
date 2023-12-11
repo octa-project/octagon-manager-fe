@@ -18,11 +18,16 @@ import {
   TableRow,
   TableCell,
   TableBody,
+  IconButton,
+  Checkbox,
 } from "@mui/material";
 import api from "@/src/api";
 import Image from "next/image";
 import "ag-grid-enterprise";
-import items from '../../app/items/page';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
+import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
+import EditIcon from '@mui/icons-material/Edit';
+import ChecklistIcon from '@mui/icons-material/Checklist';
 
 //#region interfaces
 interface Item {
@@ -204,6 +209,15 @@ class ItemController extends Component<{}, ItemState> {
     } else {
       console.log("itemcodes is undefined");
     }
+  };
+
+  handleUndoRowClick = () => {
+    this.setState({ selectedRow: 0 });
+  };
+
+  handleItemRowDoubleClick = (row: Item) => {
+    const itemData: Item = row;
+    this.setItemState(false, itemData, 0);
   };
 
 
@@ -616,11 +630,11 @@ class ItemController extends Component<{}, ItemState> {
             </div>
 
             <div className="bg-white flex-initial w-full h-4/5 shadow-lg rounded-lg">
-              <div style={containerStyle}>
+              <div>
                 <Table className="font-sans">
                   <TableHead className="" >
                     <TableRow className="bg-[#8a91a5]">
-                      <TableCell className="font-sans text-white "></TableCell>
+                      <TableCell className="font-sans text-white "><ChecklistIcon /></TableCell>
                       <TableCell className="font-sans text-white ">Засах</TableCell>
                       <TableCell className="font-sans text-white ">№</TableCell>
                       <TableCell className="font-sans text-white ">Код</TableCell>
@@ -633,22 +647,25 @@ class ItemController extends Component<{}, ItemState> {
                   <TableBody>
                     {rowData.map((row) => (
                       <React.Fragment key={row.id}>
-                        <TableRow>
-                          <TableCell>
+                        <TableRow key={row.id}>
+                          <TableCell className="w-4">
                             <div>
-                              <Button
-                                onClick={() => this.handleRowClick(row)}
-                                className="bg-[#8a91a5] w text-white hover:bg-black"
+                              <IconButton
+                                onClick={() => selectedRow === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
                               >
-                                {selectedRow === row.id ? 'V' : '>'}
-                              </Button>
+                                {selectedRow === row.id ? <ArrowDropDownIcon /> : <ArrowRightIcon />}
+                              </IconButton>
                             </div>
                           </TableCell>
                           <TableCell>
                             <div>
-                              <Button className="bg-[#8a91a5] text-white hover:bg-black">
+                              {/* <Button className="bg-[#8a91a5] capitalize text-white hover:bg-black">
                                 Засах
-                              </Button>
+                              </Button> */}
+                              <IconButton onClick={() => this.handleItemRowDoubleClick(row)}
+                              >
+                                <EditIcon />
+                              </IconButton>
                             </div>
                           </TableCell>
                           <TableCell className="font-sans">{row.id}</TableCell>
@@ -656,7 +673,9 @@ class ItemController extends Component<{}, ItemState> {
                           <TableCell className="font-sans">{row.name}</TableCell>
                           <TableCell className="font-sans">{row.measureName}</TableCell>
                           <TableCell className="font-sans">{row.itemgroupName}</TableCell>
-                          <TableCell className="font-sans">{row.isActive}</TableCell>
+                          <TableCell className="font-sans">
+                            <Checkbox defaultChecked={row.isActive} />
+                          </TableCell>
                         </TableRow>
                         {selectedRow === row.id && row.itemcodes && row.itemcodes.length > 0 && (
                           row.itemcodes.map((itemCode) => (
