@@ -647,7 +647,7 @@ class ItemController extends Component<{}, ItemState> {
                   <TableBody>
                     {rowData.map((row) => (
                       <React.Fragment key={row.id}>
-                        <TableRow key={row.id}>
+                        <TableRow key={row.id} >
                           <TableCell className="w-4">
                             <div>
                               <IconButton
@@ -680,6 +680,11 @@ class ItemController extends Component<{}, ItemState> {
                         {selectedRow === row.id && row.itemcodes && row.itemcodes.length > 0 && (
                           row.itemcodes.map((itemCode) => (
                             <TableRow key={itemCode.id}>
+                              <TableCell>
+                                <IconButton className="w-8 h-8">
+                                  <EditIcon />
+                                </IconButton>
+                              </TableCell>
                               <TableCell>{itemCode.name}</TableCell>
                               <TableCell>{itemCode.barcode}</TableCell>
                               <TableCell>{itemCode.sellPrice}</TableCell>
