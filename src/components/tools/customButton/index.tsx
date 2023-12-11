@@ -24,7 +24,6 @@ export default function CustomButton(props: any) {
         <Fragment>
             <div>
                 <Button className={`${renderStyle(type)} text-lg py-4 px-8 ${classes}`} {...prop}>{label}</Button>
-
             </div>
         </Fragment>
     )

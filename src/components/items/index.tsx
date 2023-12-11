@@ -1,6 +1,6 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
-import { Component } from "react";
+import { Component, Fragment } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
@@ -20,6 +20,9 @@ import {
   TableBody,
   IconButton,
   Checkbox,
+  Box,
+  Collapse,
+  TableContainer,
 } from "@mui/material";
 import api from "@/src/api";
 import Image from "next/image";
@@ -622,86 +625,122 @@ class ItemController extends Component<{}, ItemState> {
             </div>
           </div>
 
-          <div className="flex flex-col col-span-3">
-            <div className="flex h-1/5">
-              <div className="p-2">
-
+          <div className="flex flex-col col-span-3 ">
+            <div className="flex h-1/5 p-3">
+              <div className="bg-white flex-initial w-full h-full shadow rounded-lg">
+                <div className="grid grid-cols-4 gap-4 p-5">
+                  <div className="col-span-2">
+                    <TextField className="w-full"
+                    ></TextField>
+                  </div>
+                  <div>
+                    bb
+                  </div>
+                  <div>
+                    cc
+                  </div>
+                </div>
               </div>
             </div>
 
-            <div className="bg-white flex-initial w-full h-4/5 shadow-lg rounded-lg">
-              <div>
-                <Table className="font-sans">
-                  <TableHead className="" >
-                    <TableRow className="bg-[#8a91a5]">
-                      <TableCell className="font-sans text-white "><ChecklistIcon /></TableCell>
-                      <TableCell className="font-sans text-white ">Засах</TableCell>
-                      <TableCell className="font-sans text-white ">№</TableCell>
-                      <TableCell className="font-sans text-white ">Код</TableCell>
-                      <TableCell className="font-sans text-white ">Нэр</TableCell>
-                      <TableCell className="font-sans text-white ">Хэмжих нэгж</TableCell>
-                      <TableCell className="font-sans text-white ">Бүлэг</TableCell>
-                      <TableCell className="font-sans text-white ">Идэвхгүй</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {rowData.map((row) => (
-                      <React.Fragment key={row.id}>
-                        <TableRow key={row.id} >
-                          <TableCell className="w-4">
-                            <div>
-                              <IconButton
-                                onClick={() => selectedRow === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
-                                className={selectedRow === row.id ? "bg-[#8a91a5]" : "bg-white"}
+            <div className="h-4/5 p-3">
+              <div className="bg-white flex-initial w-full h-full shadow rounded-lg overflow-auto">
+                <div className="flex">
+                  <Table>
+                    <TableHead className="" >
+                      <TableRow className="bg-[#8a91a5]">
+                        <TableCell className="font-sans text-white "><ChecklistIcon /></TableCell>
+                        <TableCell className="font-sans text-white ">Засах</TableCell>
+                        <TableCell className="font-sans text-white ">№</TableCell>
+                        <TableCell className="font-sans text-white ">Код</TableCell>
+                        <TableCell className="font-sans text-white ">Нэр</TableCell>
+                        <TableCell className="font-sans text-white ">Хэмжих нэгж</TableCell>
+                        <TableCell className="font-sans text-white ">Бүлэг</TableCell>
+                        <TableCell className="font-sans text-white ">Идэвхгүй</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {rowData.map((row) => (
+                        <Fragment key={row.id}>
+                          <TableRow key={row.id} className="h-2">
+                            <TableCell className="w-4">
+                              <div>
+                                <IconButton
+                                  onClick={() => selectedRow === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
+                                  className={selectedRow === row.id ? "bg-[#8a91a5]" : "bg-white"}
                                 >
-                                {selectedRow === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
-                              </IconButton>
-                            </div>
-                          </TableCell>
-                          <TableCell>
-                            <div>
-                              {/* <Button className="bg-[#8a91a5] capitalize text-white hover:bg-black">
+                                  {selectedRow === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
+                                </IconButton>
+                              </div>
+                            </TableCell>
+                            <TableCell>
+                              <div>
+                                {/* <Button className="bg-[#8a91a5] capitalize text-white hover:bg-black">
                                 Засах
                               </Button> */}
-                              <IconButton onClick={() => this.handleItemRowDoubleClick(row)}
-                              >
-                                <EditIcon />
-                              </IconButton>
-                            </div>
-                          </TableCell>
-                          <TableCell className="font-sans">{row.id}</TableCell>
-                          <TableCell className="font-sans">{row.code}</TableCell>
-                          <TableCell className="font-sans">{row.name}</TableCell>
-                          <TableCell className="font-sans">{row.measureName}</TableCell>
-                          <TableCell className="font-sans">{row.itemgroupName}</TableCell>
-                          <TableCell className="font-sans">
-                            <Checkbox defaultChecked={row.isActive} />
-                          </TableCell>
-                        </TableRow>
-                        {selectedRow === row.id && row.itemcodes && row.itemcodes.length > 0 && (
-                          row.itemcodes.map((itemCode) => (
-                            <TableRow key={itemCode.id} className="bg-[#f1f3f7]">
-                              <TableCell>
-                                <IconButton className="w-8 h-8">
+                                <IconButton onClick={() => this.handleItemRowDoubleClick(row)}
+                                >
                                   <EditIcon />
                                 </IconButton>
-                              </TableCell>
-                              <TableCell>{itemCode.name}</TableCell>
-                              <TableCell>{itemCode.barcode}</TableCell>
-                              <TableCell>{itemCode.sellPrice}</TableCell>
-                              <TableCell>{itemCode.qty}</TableCell>
-                              <TableCell>{itemCode.createdDate}</TableCell>
-                            </TableRow>
-                          ))
-                        )}
-                      </React.Fragment>
-                    ))}
-                  </TableBody>
-                </Table>
+                              </div>
+                            </TableCell>
+                            <TableCell className="font-sans">{row.id}</TableCell>
+                            <TableCell className="font-sans">{row.code}</TableCell>
+                            <TableCell className="font-sans">{row.name}</TableCell>
+                            <TableCell className="font-sans">{row.measureName}</TableCell>
+                            <TableCell className="font-sans">{row.itemgroupName}</TableCell>
+                            <TableCell className="font-sans">
+                              <Checkbox defaultChecked={row.isActive} disabled />
+                            </TableCell>
+                          </TableRow>
+                          <Collapse in={selectedRow === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-5">
+                            <Box className="w-full rounded-2xl border border-gray-200 p-2">
+                              <Typography variant="h6" className="text-center">
+                                Барааны төрлүүд
+                              </Typography>
+                              <Table className="w-max">
+                                <TableHead>
+                                  <TableRow>
+                                    <TableCell className="font-sans">Засах</TableCell>
+                                    <TableCell className="font-sans">Баркод</TableCell>
+                                    <TableCell className="font-sans">Нэр</TableCell>
+                                    <TableCell className="font-sans">Зарах үнэ</TableCell>
+                                    <TableCell className="font-sans">Тоо</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {selectedRow === row.id && row.itemcodes && row.itemcodes.length > 0 &&
+                                    (row.itemcodes.map((itemCode) => (
+                                      <TableRow key={itemCode.id}>
+                                        <TableCell>
+                                          <IconButton className="w-8 h-8">
+                                            <EditIcon />
+                                          </IconButton>
+                                        </TableCell>
+                                        <TableCell className="font-sans">{itemCode.barcode}</TableCell>
+                                        <TableCell className="font-sans">{itemCode.name}</TableCell>
+                                        <TableCell className="font-sans">{itemCode.sellPrice}</TableCell>
+                                        <TableCell className="font-sans">{itemCode.qty}</TableCell>
+                                      </TableRow>
+                                    ))
+                                    )}
+                                </TableBody>
+                              </Table>
+                            </Box>
+                          </Collapse>
+                        </Fragment>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
 
 
-                {/* <div className="ag-theme-alpine" style={gridStyle}>
+        {/* <div className="ag-theme-alpine" style={gridStyle}>
                   <AgGridReact
                     // ref={gridRef}
                     rowData={rowData}
@@ -726,12 +765,6 @@ class ItemController extends Component<{}, ItemState> {
                   // }}
                   />
                 </div> */}
-
-              </div>
-            </div>
-          </div>
-        </div>
-
 
         {/* <Drawer
           anchor="left"
