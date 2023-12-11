@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import {
   Avatar,
   Card,
@@ -12,20 +12,22 @@ import {
   Typography,
 } from "@mui/material";
 import { Component } from "react";
-import AddIcon from "@mui/icons-material/Add";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
 import Image from "next/image";
 import { pink } from "@mui/material/colors";
-import { PersonAdd, Settings, Logout } from "@mui/icons-material";
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import LocalShippingIcon from '@mui/icons-material/LocalShipping';
-import SouthWestIcon from '@mui/icons-material/SouthWest';
-import SavingsIcon from '@mui/icons-material/Savings';
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
+import { LineChart } from "@mui/x-charts/LineChart";
+import ChooseCard from "./chooseCard";
+import TopSales from "./topSales";
+import TopdaysSales from "./todaysSales";
+import TotalProfit from "./totalProfit";
+import TotalSales from "./totalSales";
 
 interface DashboardControllerState {
-  anchorEl: HTMLElement | null;
+  topLeft: number;
+  topRight: number;
+  bottomLeft: number;
+  bottomRight: number;
 }
 
 class DashboardController extends Component<{}, DashboardControllerState> {
@@ -33,22 +35,29 @@ class DashboardController extends Component<{}, DashboardControllerState> {
     super(props);
 
     this.state = {
-      anchorEl: null,
+      topLeft: 1,
+      topRight: 0,
+      bottomLeft: 0,
+      bottomRight: 0,
     };
   }
-
-  handleClick = (event: React.MouseEvent<HTMLElement>) => {
-    this.setState({ anchorEl: event.currentTarget });
+  chartsParams = {
+    margin: { bottom: 20, left: 25, right: 5 },
+    height: 300,
   };
+  componentDidMount() {
+    this.handleCardStates(0, 0, 0, 0);
+  }
 
-  handleClose = () => {
-    this.setState({ anchorEl: null });
+  handleCardStates = (tl: number, tr: number, bl: number, br: number) => {
+    this.setState({
+      topLeft: tl,
+      topRight: tr,
+      bottomLeft: bl,
+      bottomRight: br,
+    });
   };
-
   render() {
-    const { anchorEl } = this.state;
-    const open = Boolean(anchorEl);
-
     return (
       <div className="grid grid-cols-5">
         <div className="col-span-4 h-screen bg-[#f7f7f5ff] p-5">
@@ -98,156 +107,49 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                       </Typography>
                     </Card>
                   </div>
-                  <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
-                    <IconButton
-                      onClick={this.handleClick}
-                      className="h-14 w-14 bg-[#6d758fff] shadow-lg hover:bg-[#45433fff]"
-                      aria-controls={open ? "account-menu" : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
-                    >
-                      <AddIcon className="text-white" />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      id="account-menu"
-                      open={open}
-                      onClose={this.handleClose}
-                      onClick={this.handleClose}
-                      PaperProps={{
-                        elevation: 0,
-                        sx: {
-                          overflow: "visible",
-                          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
-                          mt: 1.5,
-                          "& .MuiAvatar-root": {
-                            width: 32,
-                            height: 32,
-                            ml: -0.5,
-                            mr: 1,
-                          },
-                          "&:before": {
-                            content: '""',
-                            display: "block",
-                            position: "absolute",
-                            top: 0,
-                            right: 14,
-                            width: 10,
-                            height: 10,
-                            bgcolor: "background.paper",
-                            transform: "translateY(-50%) rotate(45deg)",
-                            zIndex: 0,
-                          },
-                        },
-                      }}
-                      transformOrigin={{ horizontal: "right", vertical: "top" }}
-                      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                    >
-                      <MenuItem onClick={this.handleClose}>
-                        <Avatar /> Нийт орлого
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClose}>
-                        <Avatar /> Өнөөдрийн орлого
-                      </MenuItem>
-                      <Divider />
-                      <MenuItem onClick={this.handleClose}>
-                        <ListItemIcon>
-                          <PersonAdd fontSize="small" />
-                        </ListItemIcon>
-                        Нийт ашиг /сар/
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClose}>
-                        <ListItemIcon>
-                          <Settings fontSize="small" />
-                        </ListItemIcon>
-                        Эрэлт ихтэй бараа
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClose}>
-                        <ListItemIcon>
-                          <Logout fontSize="small" />
-                        </ListItemIcon>
-                        Дуусаж буй барааны жагсаалт
-                      </MenuItem>
-                    </Menu>
-                    <Typography className="font-sans text-[#6d758f] text- text-center pt-5 align-bottom">
-                      Та өөрийн хэрэгцээнд зохицуулан хүссэн датагаа харах
-                      боломжтой
-                    </Typography>
-                  </Card>
-                  <Card className="w-full h-52 shadow-md rounded-lg ">
-                    <Typography className="font-sans text-[#6d758f] text-xl text-center pt-5 align-top">
-                      Өндөр борлуулалттай
-                    </Typography>
-                  </Card>
+                  {this.state.topLeft === 0 ? <ChooseCard /> : null}
+                  {this.state.topLeft === 1 ? <TopSales /> : null}
+                  {this.state.topLeft === 2 ? <TopdaysSales /> : null}
+                  {this.state.topLeft === 3 ? <TotalProfit /> : null}
+                  {this.state.topLeft === 4 ? <TotalSales /> : null}
                 </div>
                 <div className="col-span-2 flex flex-col gap-5">
                   <Card className="w-full shadow-md h-72 rounded-lg items-center justify-center flex flex-col">
-                    <Image
-                      src="/board.svg"
-                      alt="dashboard logo"
-                      className="p-5"
-                      width={500}
-                      height={4 / 5}
+                    <Typography className="font-sans font-bold text-[#6d758f] text-xl align-top">
+                      Борлуулалт
+                    </Typography>
+                    <LineChart
+                      {...this.chartsParams}
+                      xAxis={[
+                        {
+                          id: "barCategories",
+                          data: [
+                            "Даваа",
+                            "Мягмар",
+                            "Лхагва",
+                            "Пүрэв",
+                            "Баасан",
+                            "Бямба",
+                            "Ням",
+                          ],
+                          scaleType: "band",
+                        },
+                      ]}
+                      series={[
+                        {
+                          data: [150, 130, 297, 98, 423, 80, 176],
+                          color: "#6d758f",
+                        },
+                      ]}
+                      width={450}
+                      height={250}
                     />
                   </Card>
-
-                  <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
-                    <IconButton
-                      onClick={this.handleClick}
-                      className="h-14 w-14 bg-[#6d758fff] shadow-lg hover:bg-[#45433fff]"
-                      aria-controls={open ? "account-menu" : undefined}
-                      aria-haspopup="true"
-                      aria-expanded={open ? "true" : undefined}
-                    >
-                      <AddIcon className="text-white" />
-                    </IconButton>
-                    <Menu
-                      anchorEl={anchorEl}
-                      id="account-menu"
-                      open={open}
-                      onClose={this.handleClose}
-                      onClick={this.handleClose}
-                      transformOrigin={{ horizontal: "right", vertical: "top" }}
-                      anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
-                    >
-                      <MenuItem onClick={this.handleClose}>
-                        <SavingsIcon color="success" align-left /> Нийт
-                        орлого
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClose}>
-                        <AttachMoneyIcon color="success" /> Өнөөдрийн орлого
-                      </MenuItem>
-                      <Divider />
-                      <MenuItem onClick={this.handleClose}>
-                        <MenuItem>
-                          <AutoGraphIcon color="success" align-left />
-                        </MenuItem>
-                        Нийт ашиг /сар/
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClose}>
-                        <ListItemIcon>
-                          <LocalShippingIcon color="success" />
-                        </ListItemIcon>
-                        Эрэлт ихтэй бараа
-                      </MenuItem>
-                      <MenuItem onClick={this.handleClose}>
-                        <ListItemIcon>
-                          <SouthWestIcon sx={{ color: pink[500] }}/>
-                        </ListItemIcon>
-                        Дуусаж буй барааны жагсаалт
-                      </MenuItem>
-                    </Menu>
-                    <Typography className="font-sans text-[#6d758f] text- text-center pt-5 align-bottom">
-                      Та өөрийн хэрэгцээнд зохицуулан хүссэн датагаа харах
-                      боломжтой
-                    </Typography>
-                  </Card>
-
-                  <Card className="w-full h-52 shadow-md rounded-lg">
-                    <Typography className="font-sans text-[#6d758f] text-xl text-center pt-5 align-top">
-                      Дуусаж буй барааны жагсаалт
-                    </Typography>
-                  </Card>
+                  {this.state.topLeft === 0 ? <ChooseCard /> : null}
+                  {this.state.topLeft === 1 ? <TopSales /> : null}
+                  {this.state.topLeft === 2 ? <TopdaysSales /> : null}
+                  {this.state.topLeft === 3 ? <TotalProfit /> : null}
+                  {this.state.topLeft === 4 ? <TotalSales /> : null}
                 </div>
               </div>
             </div>
