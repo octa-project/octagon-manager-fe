@@ -659,7 +659,7 @@ class ItemController extends Component<{}, ItemState> {
             </Button>
           </Box>
         </Drawer>
-        <Snackbar
+        {/* <Snackbar
           open={open}
           autoHideDuration={6000}
           onClose={this.handleClose}
@@ -668,7 +668,7 @@ class ItemController extends Component<{}, ItemState> {
             <AlertTitle>Амжилттай</AlertTitle>
             Бараа шинэчлэгдлээ
           </Alert>
-        </Snackbar>
+        </Snackbar> */}
       </>
     );
   }
