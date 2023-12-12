@@ -94,23 +94,23 @@ class ChooseCard extends Component<{}, CardControllerState> {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem onClick={this.handleClose}>
-              <Avatar /> Нийт орлого
+              <Avatar /> Өндөр боруулалттай 10 Бараа
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
-              <Avatar /> Өнөөдрийн орлого
+              <Avatar /> Сарын өндөр боруулалттай 10 Бараа
             </MenuItem>
             <Divider />
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
                 <PersonAdd fontSize="small" />
               </ListItemIcon>
-              Нийт ашиг /сар/
+              Өдрийн орлого
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
                 <Settings fontSize="small" />
               </ListItemIcon>
-              Эрэлт ихтэй бараа
+              Сарын нийт ашиг
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
@@ -119,8 +119,8 @@ class ChooseCard extends Component<{}, CardControllerState> {
               Дуусаж буй барааны жагсаалт
             </MenuItem>
           </Menu>
-          <Typography className="font-sans text-[#6d758f] text- text-center pt-5 align-bottom">
-            Та өөрийн хэрэгцээнд зохицуулан
+          <Typography className="font-sans text-[#6d758f] text- text-center pt-6 align-bottom">
+            Та өөрийн хэрэгцээнд зохицуулан хүссэн датагаа харах боложтой
           </Typography>
         </Card>
       </div>
