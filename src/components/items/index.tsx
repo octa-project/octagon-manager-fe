@@ -626,24 +626,24 @@ class ItemController extends Component<{}, ItemState> {
           </div>
 
           <div className="flex flex-col col-span-3 ">
-            <div className="flex h-1/5 p-3">
+            <div className="flex h-1/6 p-3">
               <div className="bg-white flex-initial w-full h-full shadow rounded-lg">
-                <div className="grid grid-cols-4 gap-4 p-5">
-                  <div className="col-span-2">
+                <div className="grid grid-cols-3 gap-4 p-5">
+                  <div className="col-span-1">
                     <TextField className="w-full"
                     ></TextField>
                   </div>
-                  <div>
+                  <div className="col-span-1">
                     bb
                   </div>
-                  <div>
+                  <div className="col-span-1">
                     cc
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="h-4/5 p-3">
+            <div className="h-5/6 p-3">
               <div className="bg-white flex-initial w-full h-full shadow rounded-lg overflow-auto">
                 <div className="flex">
                   <Table>
@@ -675,9 +675,6 @@ class ItemController extends Component<{}, ItemState> {
                             </TableCell>
                             <TableCell>
                               <div>
-                                {/* <Button className="bg-[#8a91a5] capitalize text-white hover:bg-black">
-                                Засах
-                              </Button> */}
                                 <IconButton onClick={() => this.handleItemRowDoubleClick(row)}
                                 >
                                   <EditIcon />
