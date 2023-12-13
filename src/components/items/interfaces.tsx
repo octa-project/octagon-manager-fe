@@ -58,5 +58,4 @@ interface ItemState {
   measures: Measure[];
   itemGroups: ItemGroup[];
   selectedRowItemCodes: ItemCode[];
-  didMount: boolean;
 }
