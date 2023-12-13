@@ -81,8 +81,8 @@ class SaleReport extends Component<{}, AgReportState> {
         const gridStyle = { height: '100%', width: '100%' };
 
         return (
-            <div className="flex">
-                <div className='bg-white flex-initial w-full h-screen p-2'>
+            <div className="h-full">
+                <div className='bg-white flex-initial w-full h-full shadow overflow-auto'>
                     <div style={containerStyle}>
                         <div className="ag-theme-alpine" style={gridStyle}>
                             <AgGridReact

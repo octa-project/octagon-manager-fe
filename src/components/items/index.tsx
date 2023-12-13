@@ -1,7 +1,7 @@
 import * as React from "react";
 import Button from "@mui/material/Button";
 import { Component, Fragment } from "react";
-import { AgGridReact } from "ag-grid-react";
+import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import {
@@ -22,22 +22,18 @@ import {
   Checkbox,
   Box,
   Collapse,
-  TableContainer,
-  Menu,
-  InputAdornment,
   Drawer,
-  Card,
 } from "@mui/material";
+import {
+  ArrowRight as ArrowRightIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+  Edit as EditIcon,
+  Checklist as ChecklistIcon,
+  Add as AddIcon,
+} from '@mui/icons-material';
 import api from "@/src/api";
 import Image from "next/image";
-import "ag-grid-enterprise";
-import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
-import EditIcon from '@mui/icons-material/Edit';
-import ChecklistIcon from '@mui/icons-material/Checklist';
-import AddIcon from '@mui/icons-material/Add';
-import { DatePicker, Dropdown, Input } from 'antd';
-import Purchase from '../../app/purchase/page';
+import { DatePicker, Input } from 'antd';
 import Item from "antd/es/list/Item";
 
 const { RangePicker } = DatePicker;
@@ -332,7 +328,7 @@ class ItemController extends Component<{}, ItemState> {
   //#endregion
 
   //#region Functions - ( get,set,delete,update )
- 
+
   getItemGroups = async () => {
     try {
       this.setState({ loading: true, error: '' });
@@ -770,7 +766,7 @@ class ItemController extends Component<{}, ItemState> {
 
             </div>
           </div>
-          <div className="flex flex-col col-span-4 ">
+          <div className="flex flex-col col-span-4">
             <div className="flex h-24 p-3">
               <div className="flex-initial w-full h-full">
                 <div className="grid grid-cols-4 gap-4 pt-5">
@@ -823,7 +819,6 @@ class ItemController extends Component<{}, ItemState> {
                 </div>
               </div>
             </div>
-
             <div className="h-full p-3">
               <div className="bg-white flex-initial w-full h-full shadow rounded-lg overflow-auto">
                 <div className="flex">
