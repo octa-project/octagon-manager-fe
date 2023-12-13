@@ -154,6 +154,7 @@ class ItemController extends Component<{}, ItemState> {
         minWidth: 200,
       },
       rowData: [],
+      rowSearchData: [],
       measures: [],
       itemGroups: [],
       selectedRowItemCodes: [],
@@ -222,6 +223,26 @@ class ItemController extends Component<{}, ItemState> {
     this.setItemCodeState(true, itemCodeData);
   };
 
+  handleTextSearch = (text: string) => {
+    const lowercaseText = text.toLowerCase();
+
+    if (text === '') {
+      this.setState({ rowSearchData: this.state.rowData });
+    } else {
+      const filteredRowData = this.state.rowData.filter((item) => {
+        return Object.values(item).some((value) => {
+          if (typeof value === 'string') {
+            const lowercaseValue = value.toLowerCase();
+            return lowercaseValue.includes(lowercaseText);
+          }
+          return false;
+        });
+      });
+
+      this.setState({ rowSearchData: filteredRowData });
+    }
+  };
+
   setItemState = (isOpen: boolean, Item: Item) => {
     this.setState({
       isDrawerOpen: isOpen,
@@ -274,7 +295,6 @@ class ItemController extends Component<{}, ItemState> {
         console.log(result.data.data)
 
         this.setState({ itemGroups });
-        this.handleClick();
       } else {
         throw new Error("Failed to fetch data");
       }
@@ -299,7 +319,6 @@ class ItemController extends Component<{}, ItemState> {
 
         console.log(result.data.data)
         this.setState({ measures });
-        this.handleClick();
       } else {
         throw new Error("Failed to fetch data");
       }
@@ -338,7 +357,6 @@ class ItemController extends Component<{}, ItemState> {
         }));
 
         this.setState({ rowData });
-        this.handleClick();
       } else {
         throw new Error("Failed to fetch data");
       }
@@ -388,7 +406,7 @@ class ItemController extends Component<{}, ItemState> {
 
         console.log(result.data.data);
         this.setState({ rowData });
-        this.handleClick();
+        this.setState({ rowSearchData: rowData });
       } else {
         throw new Error("Failed to fetch data");
       }
@@ -553,6 +571,7 @@ class ItemController extends Component<{}, ItemState> {
     //#region state
     const {
       rowData,
+      rowSearchData,
       columnDefs,
       defaultColDef,
       // gridRef,
@@ -695,6 +714,9 @@ class ItemController extends Component<{}, ItemState> {
                       <Input
                         className="capitalize text-[#6d758f] w-full h-full rounded-2xl border-none pl-3 pr-8"
                         placeholder="Хайх..."
+                        onChange={(e) =>
+                          this.handleTextSearch(e.target.value)
+                        }
                       />
                       <Image
                         src="/items/search.svg"
@@ -758,7 +780,7 @@ class ItemController extends Component<{}, ItemState> {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {rowData.map((row) => (
+                      {rowSearchData.map((row) => (
                         <Fragment key={row.id}>
                           <TableRow key={row.id} className="h-2">
                             <TableCell className="w-4">

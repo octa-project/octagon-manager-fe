@@ -55,6 +55,7 @@ interface ItemState {
   defaultColDef: any;
   autoGroupColumnDef: any;
   rowData: Item[];
+  rowSearchData: Item[],
   measures: Measure[];
   itemGroups: ItemGroup[];
   selectedRowItemCodes: ItemCode[];
