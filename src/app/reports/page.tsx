@@ -1,4 +1,4 @@
-import ReportController from "@/src/components/reports/subMenus";
+import ReportController from "@/src/components/reports"
 
 const subMenus = () => {
     return (

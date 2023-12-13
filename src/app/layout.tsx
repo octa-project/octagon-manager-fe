@@ -2,7 +2,9 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Sidebar from "@/src/components/bars/sidebar"
 import { ReactNode } from 'react'
-// import Topbar from '../components/bars/topBar'
+import { Divider } from '@mui/material'
+import Topbar from '../components/bars/topbar'
+
 
 export const metadata: Metadata = {
   title: 'Manager',
@@ -16,15 +18,16 @@ export default function RootLayout({
   children: ReactNode
 }) {
   return (
-    
+
     <html lang="en">
       <body>
         <main className='relative'>
           <div className='flex'>
-            <div className='bg-[#0f1e17] flex-initial w-72 pt-20'><Sidebar/></div>
-            <div className='flex-auto min-h-screen overflow-auto bg-slate-100 pt-14 relative'>
-              {/*<Topbar/>*/}
-              <div className='p-5'>{children}</div>
+            <div className='bg-[#6d758f] flex-initial w-72 pt-10'>
+              <Sidebar />
+            </div>
+            <div className='flex-auto min-h-screen overflow-auto bg-slate-100 relative'>
+                {children}
             </div>
           </div>
         </main>
