@@ -27,9 +27,7 @@ export default function RootLayout({
               <Sidebar />
             </div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 relative'>
-              <div>
                 {children}
-              </div>
             </div>
           </div>
         </main>

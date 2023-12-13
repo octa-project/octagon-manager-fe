@@ -44,12 +44,12 @@ const Sidebar = () => {
         />
         <Dropdown>
           <div className="px-4 pt-5">
-            <MenuButton className="font-sans rounded-md w-full h-16 py-4 px-4 bg-white text-white">
+            <div className="font-sans rounded-md w-full h-16 py-4 px-4 bg-white text-white">
               <div className="grid grid-cols-5 gap-8">
                 <div className="col-span-1">
                   <Avatar alt="Remy Sharp" className="w-7 h-7" />
                 </div>
-                <div className="col-span-3">
+                <div className="col-span-4">
                   <Typography
                     className="font-sans text-[#6d758f] text-xs text-left pt"
                     gutterBottom
@@ -63,14 +63,16 @@ const Sidebar = () => {
                     Менежер эрх
                   </Typography>
                 </div>
-                <div className="col-span-1">
+                {/* <div className="col-span-1">
                   <IconButton className="">
                     <KeyboardArrowDownIcon className="text-[#6d758f]" />
                   </IconButton>
-                </div>
+                </div> */}
               </div>
-            </MenuButton>
-            <Menu slots={{}}></Menu>
+            </div>
+            <Menu slots={{}}>
+              <MenuItem>Test</MenuItem>
+            </Menu>
           </div>
         </Dropdown>
       </div>
@@ -175,7 +177,8 @@ const Sidebar = () => {
             Тохиргоо
           </Button>
         </div>
-      </div></div>
+      </div>
+    </div>
   );
 };
 export default Sidebar;
