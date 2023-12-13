@@ -2,8 +2,6 @@ import type { Metadata } from 'next'
 import './globals.css'
 import Sidebar from "@/src/components/bars/sidebar"
 import { ReactNode } from 'react'
-import { Divider } from '@mui/material'
-import Topbar from '../components/bars/topbar'
 
 
 export const metadata: Metadata = {
@@ -12,13 +10,8 @@ export const metadata: Metadata = {
 }
 
 
-export default function RootLayout({
-  children,
-}: {
-  children: ReactNode
-}) {
+export default function RootLayout({ children, }: { children: ReactNode }) {
   return (
-
     <html lang="en">
       <body>
         <main className='relative'>
@@ -27,7 +20,7 @@ export default function RootLayout({
               <Sidebar />
             </div>
             <div className='flex-auto min-h-screen overflow-auto bg-slate-100 relative'>
-                {children}
+              {children}
             </div>
           </div>
         </main>

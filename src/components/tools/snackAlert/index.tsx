@@ -1,4 +1,4 @@
-import { enqueueSnackbar, VariantType } from "notistack";
+import { enqueueSnackbar, VariantType } from 'notistack';
 
 export default {
   default(msg: string) {
