@@ -64,6 +64,8 @@ interface ItemCode {
   name: string;
   sellPrice: number;
   purchasePrice: number;
+  measureId: number;
+  measureName: string;
   qty: number;
   createdDate: string;
   isDeleted: boolean;
@@ -148,7 +150,9 @@ class ItemController extends Component<{}, ItemState> {
         name: '',
         sellPrice: 0,
         purchasePrice: 0,
-        qty: 0,
+        qty: 1,
+        measureId: 0,
+        measureName: "",
         createdDate: '',
         isDeleted: false,
       },
@@ -159,7 +163,9 @@ class ItemController extends Component<{}, ItemState> {
         name: '',
         sellPrice: 0,
         purchasePrice: 0,
-        qty: 0,
+        qty: 1,
+        measureId: 0,
+        measureName: "",
         createdDate: '',
         isDeleted: false,
       },
@@ -205,7 +211,6 @@ class ItemController extends Component<{}, ItemState> {
           label: "aa"
         },
       ],
-
       defaultColDef: {
         flex: 1,
         minWidth: 100,
@@ -248,8 +253,8 @@ class ItemController extends Component<{}, ItemState> {
 
   handleItemCodeTextFieldChange = (field: keyof ItemCode, value: string | number) => {
     this.setState((prevState) => ({
-      selectedItem: {
-        ...prevState.selectedItem,
+      selectedItemCode: {
+        ...prevState.selectedItemCode,
         [field]: value,
       },
     }));
@@ -457,6 +462,8 @@ class ItemController extends Component<{}, ItemState> {
               sellPrice: itemCode.sellPrice,
               purchasePrice: itemCode.purchasePrice,
               qty: itemCode.qty,
+              measureId: itemCode?.measureId,
+              measureName: itemCode?.measureName,
               createdDate: itemCode.createdDate,
               isDeleted: itemCode.isDeleted,
             })),
@@ -476,7 +483,6 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
-
   deleteItem = async (id: number) => {
     try {
       const result = await api.itemCode_delete.itemCodeDeleteItemCodeById(id);
@@ -493,7 +499,6 @@ class ItemController extends Component<{}, ItemState> {
   saveUpdateItemCode = async (itemCode: ItemCode) => {
     try {
       this.setState({ loading: true, error: '' });
-
       const body = {
         ...(itemCode?.id !== 0 && { id: itemCode?.id }),
         itemId: itemCode?.itemId,
@@ -501,19 +506,30 @@ class ItemController extends Component<{}, ItemState> {
         name: itemCode?.name,
         sellPrice: itemCode?.sellPrice,
         purchasePrice: itemCode?.purchasePrice,
+        measureId: itemCode?.measureId,
         qty: itemCode?.qty,
         isDeleted: false,
         branchId: 1,
       };
 
-      const result =
-        await api.itemCode_update_itemCode.itemCodeUpdateItemCodes(body);
-
-      if (result.data.code === "200") {
-        alert("Амжилттай засагдлаа");
-        this.getItems();
+      if (itemCode?.id === 0) {
+        const result = await api.itemCode_save_itemCode.itemCodeSaveItemCode(body);
+        if (result.data.code === "200") {
+          alert("Амжилттай хадгаллаа");
+          this.setItemCodeState(false, this.state.nonSelectedItemCode);
+          this.getItems();
+        } else {
+          throw new Error("Failed data");
+        }
       } else {
-        throw new Error("Failed data");
+        const result = await api.itemCode_update_itemCode.itemCodeUpdateItemCodes(body);
+        if (result.data.code === "200") {
+          alert("Амжилттай засагдлаа");
+          this.setItemCodeState(false, this.state.nonSelectedItemCode);
+          this.getItems();
+        } else {
+          throw new Error("Failed data");
+        }
       }
     } catch (error) {
       // Handle error
@@ -847,7 +863,11 @@ class ItemController extends Component<{}, ItemState> {
                             </TableCell>
                             <TableCell className="w-4" align="center">
                               <div>
-                                <IconButton onClick={() => this.handleItemRowAddClick(nonSelectedItemCode)}>
+                                <IconButton onClick={() => this.handleItemRowAddClick({
+                                  id: 0, itemId: row.id, barcode: '',
+                                  name: '', sellPrice: 0, purchasePrice: 0,
+                                  qty: 0, measureId: 1, measureName: "", createdDate: '', isDeleted: false,
+                                })}>
                                   <AddIcon />
                                 </IconButton>
                               </div>
@@ -875,6 +895,7 @@ class ItemController extends Component<{}, ItemState> {
                                         <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
                                         <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
                                         <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                                        <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
                                         <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
                                         <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
                                         <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
@@ -892,6 +913,7 @@ class ItemController extends Component<{}, ItemState> {
                                             </TableCell>
                                             <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
                                             <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
+                                            <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
                                             <TableCell className="font-sans text-[#8a91a5] " align="right">{this.formatMoney(itemCode.sellPrice)}</TableCell>
                                             <TableCell className="font-sans text-[#8a91a5] " align="right">{this.formatMoney(itemCode.purchasePrice)}</TableCell>
                                             <TableCell className="font-sans text-[#8a91a5] " align="right">{this.formatQty(itemCode.qty)}</TableCell>
@@ -949,12 +971,15 @@ class ItemController extends Component<{}, ItemState> {
           <Box sx={{ width: 400 }}
             role="presentation"
             className="flex flex-col bg-[#f1f2f4] h-full">
-            <div className="flex flex-col w-full h-1/5 items-center justify-center bg-[#8a91a5]">
+            <div className="flex flex-col w-full h-1/6 items-center justify-center bg-[#8a91a5]">
               <Typography className="w-full font-sans font-semibold text-lg text-center text-white">
                 {selectedItemCode.id === 0 ? "БАРААНЫ ТӨРӨЛ НЭМЭХ" : "БАРААНЫ ТӨРӨЛ ЗАСАХ"}
               </Typography>
+              <Typography className="w-full font-sans font-semibold text-lg text-center text-white">
+                {selectedItem.name}
+              </Typography>
             </div>
-            <div className="flex flex-col items-center justify-start h-4/5 gap-5 p-7">
+            <div className="flex flex-col items-center justify-start h-5/6 gap-5 p-7">
 
               <div className="w-full">
                 <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
@@ -987,6 +1012,7 @@ class ItemController extends Component<{}, ItemState> {
                   ЗАРАХ ҮНЭ
                 </Typography>
                 <TextField
+                  type="number"
                   className="w-full"
                   variant="outlined"
                   value={selectedItemCode?.sellPrice}
@@ -1000,6 +1026,7 @@ class ItemController extends Component<{}, ItemState> {
                   АВАХ ҮНЭ
                 </Typography>
                 <TextField
+                  type="number"
                   className="w-full"
                   variant="outlined"
                   value={selectedItemCode?.purchasePrice}
@@ -1007,6 +1034,21 @@ class ItemController extends Component<{}, ItemState> {
                     this.handleItemCodeTextFieldChange("purchasePrice", e.target.value)
                   }
                 />
+              </div>
+              <div className="w-full">
+                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                  ХЭМЖИХ НЭГЖ
+                </Typography>
+                <Select className="w-full" value={selectedItemCode?.measureId}
+                  onChange={(e) =>
+                    this.handleItemCodeTextFieldChange("measureId", e.target.value)
+                  }>
+                  {this.state.measures.map((measure) => (
+                    <MenuItem key={measure.id} value={measure.id}>
+                      {measure.name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </div>
               <div className="w-full">
                 <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
@@ -1029,9 +1071,15 @@ class ItemController extends Component<{}, ItemState> {
                 <Button
                   variant="contained"
                   className="font-sans bg-[#6d758e] text-base text-center capitalize text-white w-full h-11 hover:bg-[#6d758e]"
-                  // onClick={this.saveUpdateItemCode(selectedItem)}
-                >
+                  onClick={() => this.saveUpdateItemCode(selectedItemCode)}>
                   {selectedItemCode.id === 0 ? "БҮРТГЭХ" : "ШИНЭЧЛЭХ"}
+                </Button>
+              </div>
+              <div className="w-9/12">
+                <Button
+                  className="font-sans text-[#6d758e] text-base text-center capitalize w-full h-8"
+                  onClick={() => this.setItemCodeState(false, nonSelectedItemCode)}>
+                  БОЛИХ
                 </Button>
               </div>
             </div>
