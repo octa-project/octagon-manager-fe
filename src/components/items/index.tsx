@@ -162,9 +162,11 @@ class ItemController extends Component<{}, ItemState> {
   }
 
   componentDidMount() {
+
     this.getItems();
     this.getMeasures();
     this.getItemGroups();
+
   }
 
   //#endregion
