@@ -84,7 +84,7 @@ class HistoryController extends Component {
                 </div>
             </div>
             <div className="h-full p-3">
-                {this.state.historyIndex === 0 ? <SaleHistory /> : null}
+                {this.state.historyIndex === 0 ? <SaleReport /> : null}
                 {/* {this.state.historyIndex === 1 ? <OutComeReport /> : null}
                 {this.state.historyIndex === 2 ? <ItemPriceReport /> : null}
                 {this.state.historyIndex === 3 ? <SaleReport /> : null}

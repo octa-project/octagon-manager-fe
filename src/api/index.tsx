@@ -53,6 +53,7 @@ const report_get_outcome_report_between_date = apiReport("get-outcome-report-bet
 const report_get_price_report_between_date = apiReport("get-price-report-between-date")
 const report_get_sale_report_between_date = apiReport("get-sale-report-between-date")
 const report_get_transactions_report_between_date = apiReport("get-transacrions-report-between-date")
+const get_sale_report = apiReport("get-sale-report")
 
 const measure_get_all = apiMeasure("get-all-measures")
 const measure_get_by_id = apiMeasure("get-measure-by-id")
@@ -100,6 +101,7 @@ export default {
     report_get_price_report_between_date,
     report_get_sale_report_between_date,
     report_get_transactions_report_between_date,
+    get_sale_report,
 
     itemGroup_save_itemGroup,
     itemGroup_update_itemGroup,
@@ -116,4 +118,5 @@ export default {
 
     get_dashboard,
     get_dashboard_data_weekly,
+
 }
