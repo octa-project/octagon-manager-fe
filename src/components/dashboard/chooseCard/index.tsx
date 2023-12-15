@@ -1,3 +1,9 @@
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import MovingIcon from '@mui/icons-material/Moving';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import {
   AssuredWorkloadSharp,
   Logout,
@@ -16,6 +22,7 @@ import {
 } from "@mui/material";
 import { Component, ReactNode } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import { green, orange, pink, red } from '@mui/material/colors';
 
 interface CardControllerState {
     anchorEl: HTMLElement | null;
@@ -94,27 +101,27 @@ class ChooseCard extends Component<{}, CardControllerState> {
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
             <MenuItem onClick={this.handleClose}>
-              <Avatar /> Өндөр боруулалттай 10 Бараа
+              <LocalFireDepartmentIcon sx={{ color: orange[600] }}/> Өндөр боруулалттай 10 Бараа
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
-              <Avatar /> Сарын өндөр боруулалттай 10 Бараа
+              <ArrowOutwardIcon sx={{ color: green[800] }} /> Сарын өндөр боруулалттай 10 Бараа
             </MenuItem>
             <Divider />
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
-                <PersonAdd fontSize="small" />
+                <AttachMoneyIcon sx={{ color: green[800] }} fontSize="small" />
               </ListItemIcon>
               Өдрийн орлого
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
-                <Settings fontSize="small" />
+                <AutoGraphIcon sx={{ color: green[800] }} fontSize="small" />
               </ListItemIcon>
               Сарын нийт ашиг
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
-                <Logout fontSize="small" />
+                <LocalShippingIcon sx={{ color: red[800] }} fontSize="small" />
               </ListItemIcon>
               Дуусаж буй барааны жагсаалт
             </MenuItem>
