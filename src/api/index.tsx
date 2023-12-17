@@ -6,6 +6,7 @@ import api from '@/src/api';
 import apiItemGroup from './apiItemGroup';
 import apiMeasure from "./apiMeasure";
 import apiSale from "./apiSale";
+import apiDashboard from "./apiDashboard";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -52,6 +53,7 @@ const report_get_outcome_report_between_date = apiReport("get-outcome-report-bet
 const report_get_price_report_between_date = apiReport("get-price-report-between-date")
 const report_get_sale_report_between_date = apiReport("get-sale-report-between-date")
 const report_get_transactions_report_between_date = apiReport("get-transacrions-report-between-date")
+const get_sale_report = apiReport("get-sale-report")
 
 const measure_get_all = apiMeasure("get-all-measures")
 const measure_get_by_id = apiMeasure("get-measure-by-id")
@@ -59,6 +61,9 @@ const measure_get_by_id = apiMeasure("get-measure-by-id")
 const saleGetMany = apiSale("get-many")
 const saleGetOne = apiSale("get-one")
 const saleDelete = apiSale("delete")
+
+const get_dashboard = apiDashboard("get-dashboard-data")
+const get_dashboard_data_weekly = apiDashboard("get-dashboard-data-weekly")
 
 export default {
 
@@ -96,6 +101,7 @@ export default {
     report_get_price_report_between_date,
     report_get_sale_report_between_date,
     report_get_transactions_report_between_date,
+    get_sale_report,
 
     itemGroup_save_itemGroup,
     itemGroup_update_itemGroup,
@@ -109,4 +115,8 @@ export default {
     saleGetMany,
     saleGetOne,
     saleDelete,
+
+    get_dashboard,
+    get_dashboard_data_weekly,
+
 }
