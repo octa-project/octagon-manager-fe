@@ -6,6 +6,7 @@ import api from '@/src/api';
 import apiItemGroup from './apiItemGroup';
 import apiMeasure from "./apiMeasure";
 import apiSale from "./apiSale";
+import apiSettings from "@/src/api/apiSettings";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -60,6 +61,15 @@ const saleGetMany = apiSale("get-many")
 const saleGetOne = apiSale("get-one")
 const saleDelete = apiSale("delete")
 
+const insertMainSetting = apiSettings("save-setting")
+const updateMainSetting = apiSettings("save-setting")
+const getMainSetting = apiSettings("get-setting-by-id")
+
+const insertDeviceSetting = apiSettings("device-settings")
+const updateDeviceSetting = apiSettings("device-settings")
+const getDeviceSetting = apiSettings("device-settings")
+
+const GetPrinterList = apiSettings("get-printer-list")
 export default {
 
     transaction_save,
@@ -109,4 +119,14 @@ export default {
     saleGetMany,
     saleGetOne,
     saleDelete,
+
+    insertMainSetting,
+    updateMainSetting,
+    getMainSetting,
+
+    insertDeviceSetting,
+    updateDeviceSetting,
+    getDeviceSetting,
+
+    GetPrinterList
 }
