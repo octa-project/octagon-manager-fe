@@ -7,6 +7,7 @@ import apiItemGroup from './apiItemGroup';
 import apiMeasure from "./apiMeasure";
 import apiSale from "./apiSale";
 import apiDashboard from "./apiDashboard";
+import apiBranch from "./apiBranch";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -64,6 +65,8 @@ const saleDelete = apiSale("delete")
 
 const get_dashboard = apiDashboard("get-dashboard-data")
 const get_dashboard_data_weekly = apiDashboard("get-dashboard-data-weekly")
+const getBranchAll = apiBranch("get-branch")
+const saveBranch = apiBranch("save-branch")
 
 export default {
 
@@ -119,4 +122,6 @@ export default {
     get_dashboard,
     get_dashboard_data_weekly,
 
+    getBranchAll,
+    saveBranch,
 }

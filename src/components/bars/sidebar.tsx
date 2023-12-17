@@ -177,6 +177,26 @@ const Sidebar = () => {
             Тохиргоо
           </Button>
         </div>
+        <div className={`flex flex-row justify-left pl-4 ${pathname === "/branch" ? selected : notselected}`}>
+          {pathname === "/branch" ? (
+            <Image
+            src="/settinggray.svg"
+            alt="settinggray"
+            width={24}
+            height={24}
+          />
+        ) : (
+          <Image
+            src="/settingwhite.svg"
+            alt="settingwhite"
+            width={24}
+            height={24}
+          />
+          )}
+          <Button href="/branch" className={`${pathname === "/branch" ? selectedText : nonselectedText}`}>
+            Салбар
+          </Button>
+        </div>
       </div>
     </div>
   );
