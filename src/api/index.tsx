@@ -8,6 +8,7 @@ import apiMeasure from "./apiMeasure";
 import apiSale from "./apiSale";
 import apiDashboard from "./apiDashboard";
 import apiBranch from "./apiBranch";
+import apiSettings from "@/src/api/apiSettings";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -68,6 +69,15 @@ const get_dashboard_data_weekly = apiDashboard("get-dashboard-data-weekly")
 const getBranchAll = apiBranch("get-branch")
 const saveBranch = apiBranch("save-branch")
 
+const insertMainSetting = apiSettings("save-setting")
+const updateMainSetting = apiSettings("save-setting")
+const getMainSetting = apiSettings("get-setting-by-id")
+
+const insertDeviceSetting = apiSettings("device-settings")
+const updateDeviceSetting = apiSettings("device-settings")
+const getDeviceSetting = apiSettings("device-settings")
+
+const GetPrinterList = apiSettings("get-printer-list")
 export default {
 
     transaction_save,
@@ -124,4 +134,13 @@ export default {
 
     getBranchAll,
     saveBranch,
+    insertMainSetting,
+    updateMainSetting,
+    getMainSetting,
+
+    insertDeviceSetting,
+    updateDeviceSetting,
+    getDeviceSetting,
+
+    GetPrinterList
 }
