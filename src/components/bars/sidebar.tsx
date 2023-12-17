@@ -1,29 +1,21 @@
 "use client";
 import { Dropdown } from "@mui/base/Dropdown";
 import { Menu } from "@mui/base/Menu";
-import { MenuButton } from "@mui/base/MenuButton";
-import Tooltip from "@mui/material/Tooltip";
 import { usePathname } from "next/navigation";
-import Link from "next/link";
 import {
   Button,
   MenuItem,
   Typography,
-  IconButton,
   Avatar,
 } from "@mui/material";
-import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import Image from "next/image";
-import { Dashboard } from "@mui/icons-material";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const selected =
-    "font-sans text-left rounded-xl w-4/5 h-10 capitalize text-[#6d758f] bg-[#f8f7f5] hover:bg-violet-200";
-  const notselected =
-    "font-sans text-left rounded-xl w-4/5 h-10 capitalize text-white bg-[#6d758f]  hover:text-white hover:bg-violet-200";
-  const selectedText =  "font-sans text-left pl-3 capitalize text-[#6d758f] hover:text-white";
-  const nonselectedText = "font-sans text-left pl-3 capitalize text-white hover:text-white";
+  const selected = "sideBarSelected";
+  const notselected = "sideBarNoSelected";
+  const selectedText =  "sideBarSelectedText";
+  const nonselectedText = "sideBarNoSelectedText";
 
 
   const createHandleMenuClick = (menuItem: string) => {

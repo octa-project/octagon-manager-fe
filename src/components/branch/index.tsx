@@ -1,11 +1,11 @@
 "use client"
-import React, { useState, useRef, useEffect, useMemo, useCallback} from 'react';
+import React, { useState, useEffect} from 'react';
 // import 'ag-grid-enterprise';
 import 'ag-grid-community/styles/ag-grid.css'; // Core grid CSS, always needed
 import 'ag-grid-community/styles/ag-theme-alpine.css'; // Optional theme CSS
 import styles from './branch.module.css';
 import api from "@/src/api";
-import { Drawer } from "@mui/material";
+import Drawer from '@mui/material/Drawer';
 
 const index = () => {
 
@@ -101,7 +101,7 @@ const index = () => {
                     <div className={styles.branchHeaderItemLast}><span style={{color: '#c9ccd1'}}>Цахим шуудан</span></div>
                 </div>
                 {
-                    branchList.map((item, index) => (
+                    branchList.map((item: any, index) => (
                         // <div key={index}>{item}</div>
                         <div key={index} className={styles.branchListItem} onClick={() => handleClickOnBranchItem(item)}>
                             <div className={styles.branchItem}><span>{item?.name}</span></div>
