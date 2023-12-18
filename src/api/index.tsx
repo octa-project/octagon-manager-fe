@@ -65,6 +65,8 @@ const saleDelete = apiSale("delete")
 const get_dashboard = apiDashboard("get-dashboard-data")
 const get_dashboard_data_weekly = apiDashboard("get-dashboard-data-weekly")
 
+const get_Top_Ten_Item = apiSale("get-top-ten-item")
+
 export default {
 
     transaction_save,
@@ -118,5 +120,7 @@ export default {
 
     get_dashboard,
     get_dashboard_data_weekly,
+
+    get_Top_Ten_Item,
 
 }
