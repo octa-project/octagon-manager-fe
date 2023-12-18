@@ -1,9 +1,9 @@
-import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
-import MovingIcon from "@mui/icons-material/Moving";
-import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
-import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import LocalShippingIcon from "@mui/icons-material/LocalShipping";
-import AutoGraphIcon from "@mui/icons-material/AutoGraph";
+import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
+import MovingIcon from '@mui/icons-material/Moving';
+import ArrowOutwardIcon from '@mui/icons-material/ArrowOutward';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph';
 import {
   AssuredWorkloadSharp,
   Logout,
@@ -22,43 +22,27 @@ import {
 } from "@mui/material";
 import { Component, ReactNode } from "react";
 import AddIcon from "@mui/icons-material/Add";
-import { green, orange, pink, red } from "@mui/material/colors";
-import api from "@/src/api";
+import { green, orange, pink, red } from '@mui/material/colors';
 
 interface CardControllerState {
-  anchorEl: HTMLElement | null;
-  topLeft: number; // Add this line to include the topLeft property
-}
+    anchorEl: HTMLElement | null;
+  }
 
-interface CardControllerProps {
-  topLeft: number;
-}
-
-interface ChooseCardProps {
-  onTopLeftChange: (value: number) => void;
-}
-
-class ChooseCard extends Component<ChooseCardProps, CardControllerState> {
-  constructor(props: ChooseCardProps) {
+class ChooseCard extends Component<{}, CardControllerState> {
+  constructor(props: any) {
     super(props);
 
     this.state = {
       anchorEl: null,
-      topLeft: 0 // Add this line to include the topLeft property
     };
   }
 
+  componentDidMount() {}
+
+  getdatas = () => {};
+
   handleClick = (event: React.MouseEvent<HTMLElement>) => {
     this.setState({ anchorEl: event.currentTarget });
-  };
-
-  handleTopLeftClick = (index: number) => {
-    this.setState({ topLeft: index }, () => {
-      // Notify the parent component about the change
-      this.props.onTopLeftChange(this.state.topLeft);
-    });
-
-    this.handleClose();
   };
 
   handleClose = () => {
@@ -68,6 +52,7 @@ class ChooseCard extends Component<ChooseCardProps, CardControllerState> {
   render() {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
+
     return (
       <div>
         <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
@@ -115,9 +100,11 @@ class ChooseCard extends Component<ChooseCardProps, CardControllerState> {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={() => this.handleTopLeftClick(1)}>
-              <LocalFireDepartmentIcon sx={{ color: orange[600] }} /> Өндөр
-              боруулалттай 10 Бараа
+            <MenuItem onClick={this.handleClose}>
+              <LocalFireDepartmentIcon sx={{ color: orange[600] }}/> Өндөр боруулалттай 10 Бараа
+            </MenuItem>
+            <MenuItem onClick={this.handleClose}>
+              <ArrowOutwardIcon sx={{ color: green[800] }} /> Сарын өндөр боруулалттай 10 Бараа
             </MenuItem>
             <Divider />
             <MenuItem onClick={this.handleClose}>

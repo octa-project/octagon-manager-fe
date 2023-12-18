@@ -19,7 +19,7 @@ class TopSales extends Component {
     return (
       <div>
         <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
-          нийт борлуулалт
+          pzidiz
         </Card>
       </div>
     );

@@ -1,87 +1,25 @@
-import api from "@/src/api";
 import { AssuredWorkloadSharp } from "@mui/icons-material";
-import {
-  Card,
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableRow,
-} from "@mui/material";
+import { Card } from "@mui/material";
 import { Component, ReactNode } from "react";
 
-interface TotalSaleControllerState {
-  anchorEl: HTMLElement | null;
-  rowData: getTopTenItem[];
-}
-
-interface getTopTenItem {
-  qty: number;
-  itemBarCode: number;
-  itemName: string;
-}
-
-class TotalSales extends Component<{}, TotalSaleControllerState> {
+class TotalSales extends Component {
   constructor(props: any) {
     super(props);
 
-    this.state = {
-      anchorEl: null,
-      rowData: [],
-    };
+    this.state = {};
   }
 
-  componentDidMount() {
-    this.getDatas();
-  }
+  componentDidMount() {}
 
-  getDatas = async () => {
-    try {
-      const result = await api.get_Top_Ten_Item.GetTopTenItem();
-      if (result.data.code === "200") {
-        this.setState({ rowData: this.state.rowData.concat(result.data.data) });
-      } else {
-        throw new Error("Failed to fetch data");
-      }
-    } catch (error) {
-    } finally {
-    }
-  };
-
-  renderTableRows() {
-    return this.state.rowData.map((item, index) => (
-      <TableRow key={index}>
-        <TableCell className="font-sans text-sm">{item.itemName}</TableCell>
-        <TableCell className="font-sans text-sm">{item.itemBarCode}</TableCell>
-        <TableCell className="font-sans text-sm">{item.qty}</TableCell>
-      </TableRow>
-    ));
+  getdatas = () => {
+    
   }
 
   render() {
     return (
-      <div style={{ overflowX: "auto" }}>
+      <div>
         <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
-          <div className="bg-white flex-initial w-full h-full shadow rounded-lg overflow-auto">
-            <div className="flex">
-              <Table style={{ maxHeight: "300px", overflowY: "auto" }}>
-                <TableHead>
-                  <TableRow>
-                    <TableCell className="bg-[#6d758fff] text-white font-sans">
-                      Нэр
-                    </TableCell>
-                    <TableCell className="bg-[#6d758fff] text-white font-sans">
-                      Код
-                    </TableCell>
-                    <TableCell className="bg-[#6d758fff] text-white font-sans">
-                      Тоо
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>{this.renderTableRows()}</TableBody>
-              </Table>
-            </div>
-          </div>
+          pzidiz
         </Card>
       </div>
     );

@@ -1,4 +1,3 @@
-import api from "@/src/api";
 import { AssuredWorkloadSharp } from "@mui/icons-material";
 import { Card } from "@mui/material";
 import { Component, ReactNode } from "react";
@@ -12,6 +11,9 @@ class TopdaysSales extends Component {
 
   componentDidMount() {}
 
+  getdatas = () => {
+    
+  }
 
   render() {
     return (
