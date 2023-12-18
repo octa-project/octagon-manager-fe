@@ -26,8 +26,6 @@ class DeviceSettings extends Component<{}, AgReportState> {
 
     constructor(props: any) {
         super(props);
-
-
     }
 
     componentDidMount() {
