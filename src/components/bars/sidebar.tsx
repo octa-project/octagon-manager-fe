@@ -12,11 +12,13 @@ import Image from "next/image";
 
 const Sidebar = () => {
   const pathname = usePathname();
-  const selected = "sideBarSelected";
-  const notselected = "sideBarNoSelected";
-  const selectedText =  "sideBarSelectedText";
-  const nonselectedText = "sideBarNoSelectedText";
 
+  const selected =
+    "font-sans text-left rounded-xl w-4/5 h-10 capitalize text-[#6d758f] bg-[#f8f7f5] hover:bg-violet-200";
+  const notselected =
+    "font-sans text-left rounded-xl w-4/5 h-10 capitalize text-white bg-[#6d758f]  hover:text-white hover:bg-violet-200";
+  const selectedText = "font-sans text-left pl-3 capitalize text-[#6d758f] hover:text-white";
+  const nonselectedText = "font-sans text-left pl-3 capitalize text-white hover:text-white";
 
   const createHandleMenuClick = (menuItem: string) => {
     return () => {
@@ -92,38 +94,38 @@ const Sidebar = () => {
         <div className={`flex flex-row justify-left pl-4 ${pathname === "/items" ? selected : notselected}`}>
           {pathname === "/items" ? (
             <Image
-            src="/itemgray.svg"
-            alt="itemgray"
-            width={24}
-            height={24}
-          />
-        ) : (
-          <Image
-            src="/itemwhite.svg"
-            alt="itemwhite"
-            width={24}
-            height={24}
-          />
-        )}
+              src="/itemgray.svg"
+              alt="itemgray"
+              width={24}
+              height={24}
+            />
+          ) : (
+            <Image
+              src="/itemwhite.svg"
+              alt="itemwhite"
+              width={24}
+              height={24}
+            />
+          )}
           <Button href="/items" className={`${pathname === "/items" ? selectedText : nonselectedText}`}>
-          Бараа бүртгэл
+            Бараа бүртгэл
           </Button>
         </div>
         <div className={`flex flex-row justify-left pl-4 ${pathname === "/reports" ? selected : notselected}`}>
           {pathname === "/reports" ? (
             <Image
-            src="/reportgray.svg"
-            alt="reportgray"
-            width={24}
-            height={24}
-          />
-        ) : (
-          <Image
-            src="/reportwhite.svg"
-            alt="reportwhite"
-            width={24}
-            height={24}
-          />
+              src="/reportgray.svg"
+              alt="reportgray"
+              width={24}
+              height={24}
+            />
+          ) : (
+            <Image
+              src="/reportwhite.svg"
+              alt="reportwhite"
+              width={24}
+              height={24}
+            />
           )}
           <Button href="/reports" className={`${pathname === "/reports" ? selectedText : nonselectedText}`}>
             Тайлан
@@ -132,18 +134,18 @@ const Sidebar = () => {
         <div className={`flex flex-row justify-left pl-4 ${pathname === "/history" ? selected : notselected}`}>
           {pathname === "/history" ? (
             <Image
-            src="/historygray.svg"
-            alt="historygray"
-            width={24}
-            height={24}
-          />
-        ) : (
-          <Image
-            src="/historywhite.svg"
-            alt="historywhite"
-            width={24}
-            height={24}
-          />
+              src="/historygray.svg"
+              alt="historygray"
+              width={24}
+              height={24}
+            />
+          ) : (
+            <Image
+              src="/historywhite.svg"
+              alt="historywhite"
+              width={24}
+              height={24}
+            />
           )}
           <Button href="/history" className={`${pathname === "/history" ? selectedText : nonselectedText}`}>
             Түүх
@@ -152,18 +154,18 @@ const Sidebar = () => {
         <div className={`flex flex-row justify-left pl-4 ${pathname === "/settings" ? selected : notselected}`}>
           {pathname === "/settings" ? (
             <Image
-            src="/settinggray.svg"
-            alt="settinggray"
-            width={24}
-            height={24}
-          />
-        ) : (
-          <Image
-            src="/settingwhite.svg"
-            alt="settingwhite"
-            width={24}
-            height={24}
-          />
+              src="/settinggray.svg"
+              alt="settinggray"
+              width={24}
+              height={24}
+            />
+          ) : (
+            <Image
+              src="/settingwhite.svg"
+              alt="settingwhite"
+              width={24}
+              height={24}
+            />
           )}
           <Button href="/settings" className={`${pathname === "/settings" ? selectedText : nonselectedText}`}>
             Тохиргоо
@@ -172,18 +174,18 @@ const Sidebar = () => {
         <div className={`flex flex-row justify-left pl-4 ${pathname === "/branch" ? selected : notselected}`}>
           {pathname === "/branch" ? (
             <Image
-            src="/settinggray.svg"
-            alt="settinggray"
-            width={24}
-            height={24}
-          />
-        ) : (
-          <Image
-            src="/settingwhite.svg"
-            alt="settingwhite"
-            width={24}
-            height={24}
-          />
+              src="/settinggray.svg"
+              alt="settinggray"
+              width={24}
+              height={24}
+            />
+          ) : (
+            <Image
+              src="/settingwhite.svg"
+              alt="settingwhite"
+              width={24}
+              height={24}
+            />
           )}
           <Button href="/branch" className={`${pathname === "/branch" ? selectedText : nonselectedText}`}>
             Салбар
