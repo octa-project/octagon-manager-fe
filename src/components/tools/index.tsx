@@ -1,6 +1,4 @@
 import React, { useState } from "react"
-import CustomButton from "./customButton"
-import CustomTextField from "./textField"
 const showConsole = () => {
     alert('Component buttoniig zovhon client compnent deer duudna')
  }
@@ -8,7 +6,7 @@ export default function Tools() {
     const [val, setVal] = useState('')
     return (
         <div className="space-y-5">
-            <div className="grid grid-cols-4 gap-3">
+            {/* <div className="grid grid-cols-4 gap-3">
                 <div>
                     <CustomButton type="success" label="fullWidth" fullWidth/>
                 </div>
@@ -28,7 +26,7 @@ export default function Tools() {
                 <div className="space-x-3 col-span-2">
                 <CustomTextField label="Бар кодоор хайх" value={val} onChange={(e: { target: { value: string } }) => {setVal(e.target.value)}}/>
                 </div>
-            </div>
+            </div> */}
         </div>
     )
 }
