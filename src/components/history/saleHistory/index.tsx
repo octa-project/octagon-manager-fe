@@ -124,7 +124,7 @@ class saleHistory extends Component<{}, AgReportState> {
         <div className="bg-white flex-initial w-full h-screen p-2">
           <div style={containerStyle}>
             <div className="ag-theme-alpine" style={gridStyle}>
-              <AgGridReact
+              <AgGridReact //@ts-ignore
                 rowData={this.state.rowData}
                 columnDefs={this.state.columnDefs}
                 animateRows={true}

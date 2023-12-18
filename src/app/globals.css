@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.sideBarSelected{
+    @apply font-sans text-left rounded-xl w-4/5 h-10 capitalize text-[#6d758f] bg-[#f8f7f5] hover:bg-violet-200;
+}
+.sideBarNoSelected{
+    @apply font-sans text-left rounded-xl w-4/5 h-10 capitalize text-white bg-[#6d758f]  hover:text-white hover:bg-violet-200;
+}
+.sideBarSelectedText{
+    @apply font-sans text-left pl-3 capitalize text-[#6d758f] hover:text-white;
+}
+.sideBarNoSelectedText{
+    @apply font-sans text-left pl-3 capitalize text-white hover:text-white;
+}
