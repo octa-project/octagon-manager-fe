@@ -6,5 +6,6 @@ const apiSale = (mainRouteName: string) => ({
     GetMany:(startDate:any,endDate:any) => axios.get(`${URL_PREFIX}/sale/${mainRouteName}?startDate=${startDate}&endDate=${endDate}`),
     GetOneSale:(id:any) => axios.get(`${URL_PREFIX}/sale/${mainRouteName}?id=${id}`),
     DeleteSale:(id:any) => axios.post(`${URL_PREFIX}/sale/${mainRouteName}?id=${id}`),
+    GetTopTenItem: () => axios.get(`${URL_PREFIX}/sale/items/${mainRouteName}`,),
 })
 export default apiSale

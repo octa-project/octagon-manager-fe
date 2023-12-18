@@ -78,6 +78,8 @@ const updateDeviceSetting = apiSettings("device-settings")
 const getDeviceSetting = apiSettings("device-settings")
 
 const GetPrinterList = apiSettings("get-printer-list")
+const get_Top_Ten_Item = apiSale("get-top-ten-item")
+
 export default {
 
     transaction_save,
@@ -143,4 +145,6 @@ export default {
     getDeviceSetting,
 
     GetPrinterList
+    get_Top_Ten_Item,
+
 }

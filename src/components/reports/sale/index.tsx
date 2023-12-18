@@ -84,7 +84,6 @@ class SaleReport extends Component<{}, AgReportState> {
 
   getSale = async () => {
     try {
-        debugger
       const result = await api.get_sale_report.getSaleReport();
       if (result.data.code === "200") {
         this.setState({ rowData: result.data.data });
