@@ -4,12 +4,12 @@ export const URL_PREFIX = process.env.REACT_APP_IS_PROD ? process.env.REACT_APP_
 
 const apiSettings = (mainRouteName: string) => ({
     InsertMainSettings:(data:any) => axios.post(`${URL_PREFIX}/setting/${mainRouteName}`, data),
-    GetMainSettings:(id:any ) => axios.post(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`),
+    GetMainSettings:(id:any ) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`),
     UpdateMainSettings:(data:any) => axios.put(`${URL_PREFIX}/setting/${mainRouteName}`, data),
 
     InsertDeviceSettings:(data:any) => axios.post(`${URL_PREFIX}/setting/${mainRouteName}`, data),
     UpdateDeviceSettings:(data:any) => axios.post(`${URL_PREFIX}/setting/${mainRouteName}`, data),
-    GetDeviceSettings:(id:any) => axios.post(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
+    GetDeviceSettings:(id:any) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
 
     GetPrinterList:() => axios.get(`${URL_PREFIX}/setting/${mainRouteName}`)
 })
