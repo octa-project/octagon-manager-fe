@@ -144,7 +144,6 @@ export default {
     updateDeviceSetting,
     getDeviceSetting,
 
-    GetPrinterList
-    get_Top_Ten_Item,
-
+    GetPrinterList,
+    get_Top_Ten_Item
 }

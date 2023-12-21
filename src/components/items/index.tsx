@@ -599,7 +599,7 @@ class ItemController extends Component<{}, ItemState> {
               {this.state.selectedItem.id === 0 ? "ШИНЭ БАРАА БҮРТГЭХ" : "БАРАА ЗАСАХ"}
             </Typography>
             <Divider className="bg-[#c5cee0] shadow"></Divider>
-            <div className="flex flex-col items-center justify-center h-52">
+            {/* <div className="flex flex-col items-center justify-center h-52">
               <Image
                 src="/itemstand.svg"
                 alt="octa logo"
@@ -613,7 +613,7 @@ class ItemController extends Component<{}, ItemState> {
               >
                 ЗУРАГ ОРУУЛАХ
               </Button>
-            </div>
+            </div> */}
 
             <div className="flex flex-col items-center gap-4 justify-center pt-5">
               {/* <div className="w-9/12">
@@ -729,7 +729,7 @@ class ItemController extends Component<{}, ItemState> {
                       />
                     </div>
                   </div>
-                  <div className="col-span-1">
+                  {/* <div className="col-span-1">
                     <div
                       className="flex flex-row bg-white h-14 w-full rounded-2xl shadow">
                       <Select
@@ -759,7 +759,7 @@ class ItemController extends Component<{}, ItemState> {
                       <MenuItem className="font-sans" value={20}>Twenty</MenuItem>
                       <MenuItem className="font-sans" value={30}>Thirty</MenuItem>
                     </Select>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
