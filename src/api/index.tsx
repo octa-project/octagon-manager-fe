@@ -6,6 +6,8 @@ import api from '@/src/api';
 import apiItemGroup from './apiItemGroup';
 import apiMeasure from "./apiMeasure";
 import apiSale from "./apiSale";
+import apiDashboard from "./apiDashboard";
+import apiBranch from "./apiBranch";
 import apiSettings from "@/src/api/apiSettings";
 
 
@@ -53,6 +55,7 @@ const report_get_outcome_report_between_date = apiReport("get-outcome-report-bet
 const report_get_price_report_between_date = apiReport("get-price-report-between-date")
 const report_get_sale_report_between_date = apiReport("get-sale-report-between-date")
 const report_get_transactions_report_between_date = apiReport("get-transacrions-report-between-date")
+const get_sale_report = apiReport("get-sale-report")
 
 const measure_get_all = apiMeasure("get-all-measures")
 const measure_get_by_id = apiMeasure("get-measure-by-id")
@@ -60,6 +63,11 @@ const measure_get_by_id = apiMeasure("get-measure-by-id")
 const saleGetMany = apiSale("get-many")
 const saleGetOne = apiSale("get-one")
 const saleDelete = apiSale("delete")
+
+const get_dashboard = apiDashboard("get-dashboard-data")
+const get_dashboard_data_weekly = apiDashboard("get-dashboard-data-weekly")
+const getBranchAll = apiBranch("get-branch")
+const saveBranch = apiBranch("save-branch")
 
 const insertMainSetting = apiSettings("save-setting")
 const updateMainSetting = apiSettings("save-setting")
@@ -70,6 +78,8 @@ const updateDeviceSetting = apiSettings("device-settings")
 const getDeviceSetting = apiSettings("device-settings")
 
 const GetPrinterList = apiSettings("get-printer-list")
+const get_Top_Ten_Item = apiSale("get-top-ten-item")
+
 export default {
 
     transaction_save,
@@ -106,6 +116,7 @@ export default {
     report_get_price_report_between_date,
     report_get_sale_report_between_date,
     report_get_transactions_report_between_date,
+    get_sale_report,
 
     itemGroup_save_itemGroup,
     itemGroup_update_itemGroup,
@@ -120,6 +131,11 @@ export default {
     saleGetOne,
     saleDelete,
 
+    get_dashboard,
+    get_dashboard_data_weekly,
+
+    getBranchAll,
+    saveBranch,
     insertMainSetting,
     updateMainSetting,
     getMainSetting,
@@ -129,4 +145,6 @@ export default {
     getDeviceSetting,
 
     GetPrinterList
+    get_Top_Ten_Item,
+
 }

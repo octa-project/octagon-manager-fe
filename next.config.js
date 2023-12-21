@@ -1,8 +1,10 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-    reactStrictMode: true,
+    // output: 'export',
+    // reactStrictMode: true,
     env: {
-        api_url: '43.231.113.215'
+        REACT_APP_IS_PROD: false,
+        REACT_APP_PROD_URL_PREFIX: 'https://manager-api.oktagon.mn'
     }
 }
 
