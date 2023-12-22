@@ -1,5 +1,3 @@
-// Sidebar.tsx
-import { useState } from 'react';
 import Image from 'next/image';
 import { Button, Tooltip } from '@mui/material';
 import { usePathname } from 'next/navigation';
@@ -35,18 +33,24 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
     <div>
       <aside className={`sidebar ${collapsed ? 'w-16' : 'w-76'}`}>
         <div className="pl-4 pb-4">
-          <Image src={collapsed ? "/sidebar/octaRound.svg" : "/octa.svg"} alt="octa" width={collapsed ? 40 : 150} height={collapsed ? 40 : 48} />
+          <Image src={collapsed ? "/sidebar/octaRound.svg" : "/octa.svg"} alt="octa"
+            width={collapsed ? 40 : 150} height={collapsed ? 40 : 40} />
         </div>
-        <ul>
+        <div className='flex flex-col justify-start items-center'>
           {sideBarItems.map((item, index) => (
-            <li key={index} className="p-3">
-              <Tooltip title={collapsed ? item.name : ''} arrow placement="right">
+            <div key={index} className="p-2 w-full">
+              <Tooltip title={collapsed ? item.name : ''} arrow placement={collapsed ? 'right' : 'right-end'}>
                 <Button
-                  className={`flex flex-row ${pathname === item.href ? 'sideBarSelected' : 'sideBarNoSelected'}`}
-                  href={item.href}>
+                  className={`flex flex-row ${pathname === item.href ? 'sideBarSelected' : 'sideBarNoSelected'} 
+                  ${collapsed ? '' : 'justify-start'}`}
+                  href={item.href}
+                >
                   <Image
                     src={pathname === item.href ? item.nIcon : item.icon}
-                    alt={item.id} width={24} height={24} />
+                    alt={item.id}
+                    width={24}
+                    height={24}
+                  />
                   {!collapsed && (
                     <div className={`${pathname === item.href ? 'sideBarSelectedText' : 'sideBarNoSelectedText'}`}>
                       {item.name}
@@ -54,16 +58,12 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
                   )}
                 </Button>
               </Tooltip>
-            </li>
+            </div>
           ))}
-        </ul>
-        <div className="p-4 w-full">
+        </div>
+        <div className="w-full p-2">
           <Button onClick={toggleSidebar} className='sideBarCollapsible'>
-            {collapsed ? (
-              <ArrowForwardIcon /> // Use ArrowForwardIcon for the collapsed state
-            ) : (
-              <ArrowBackIcon /> // Use ArrowBackIcon for the expanded state
-            )}
+            {collapsed ? (<ArrowForwardIcon />) : (<ArrowBackIcon />)}
           </Button>
         </div>
       </aside>

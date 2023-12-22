@@ -4,11 +4,11 @@
 @tailwind utilities;
 
 .sideBarSelected {
-    @apply justify-start shadow-lg rounded-md h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
+    @apply shadow-lg rounded-md w-full h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
 }
 
 .sideBarNoSelected {
-    @apply justify-start shadow-lg rounded-md h-10 text-white bg-[#6d758f] hover:text-white hover:bg-[#44423e];
+    @apply shadow-lg rounded-md w-full h-10 text-white bg-[#6d758f] hover:text-white hover:bg-[#44423e];
 }
 
 .sideBarSelectedText {
@@ -20,5 +20,5 @@
 }
 
 .sideBarCollapsible {
-    @apply justify-start shadow-lg rounded-md w-full h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
+    @apply shadow-lg rounded-md w-full h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
 }

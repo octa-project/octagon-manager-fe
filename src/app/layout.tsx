@@ -21,7 +21,7 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       <body>
         <main className="relative">
           <SidebarContent>
-            <div className={`bg-[#6d758f] ${collapsed ? 'w-16' : 'w-72'} pt-10`}>
+            <div className={`bg-[#6d758f] ${collapsed ? 'w-20' : 'w-72'} pt-10`}>
               <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
             </div>
             <div className="flex-auto min-h-screen overflow-auto bg-slate-100 relative">{children}</div>
