@@ -40,6 +40,8 @@ interface Measure {
   code: string;
 }
 interface ItemState {
+  tabValue: string;
+  first: boolean;
   loading: boolean;
   error: string;
   selectedItem: Item;
@@ -55,7 +57,9 @@ interface ItemState {
   defaultColDef: any;
   autoGroupColumnDef: any;
   rowData: Item[];
+  rowItemCodeData: ItemCode[],
   rowSearchData: Item[],
+  rowSearchItemCodeData: ItemCode[],
   measures: Measure[];
   itemGroups: ItemGroup[];
   selectedRowItemCodes: ItemCode[];

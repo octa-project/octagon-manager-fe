@@ -22,3 +22,4 @@
 .sideBarCollapsible {
     @apply shadow-lg rounded-md w-full h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
 }
+
