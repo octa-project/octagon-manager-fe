@@ -99,7 +99,7 @@ class DeviceSettings extends Component<{}, ItemState> {
                         <div className="w-full mt-2 flex flex-row">
                             <div className="capitalize text-[#6d758f] mt-2">ip address</div>
                             <Input
-                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-2 ml-2"
+                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-4"
                                 placeholder="ip address"
                                 value={this.state.deviceSettings.ipAddress}
                                 onChange={(e) => this.handleItemTextFieldChange("ipAddress", e.target.value)}
@@ -112,7 +112,7 @@ class DeviceSettings extends Component<{}, ItemState> {
                         <div className="w-full mt-2 flex flex-row">
                             <div className="capitalize text-[#6d758f] mt-2">name</div>
                             <Input
-                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-2"
+                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-12"
                                 placeholder="name"
                                 value={this.state.deviceSettings.name}
                                 onChange={(e) => this.handleItemTextFieldChange("name", e.target.value)}
@@ -125,7 +125,7 @@ class DeviceSettings extends Component<{}, ItemState> {
                         <div className="w-full mt-2 flex flex-row">
                             <div className="capitalize text-[#6d758f] mt-2">paper type</div>
                             <Input
-                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-2"
+                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-3"
                                 placeholder="paper type"
                                 value={this.state.deviceSettings.paperType}
                                 onChange={(e) => this.handleItemTextFieldChange("paperType", e.target.value)}
@@ -138,7 +138,7 @@ class DeviceSettings extends Component<{}, ItemState> {
                         <div className="w-full mt-2 flex flex-row">
                             <div className="capitalize text-[#6d758f] mt-2">port name</div>
                             <Input
-                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-2"
+                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-4"
                                 placeholder="portName"
                                 value={this.state.deviceSettings.portName}
                                 onChange={(e) => this.handleItemTextFieldChange("portName", e.target.value)}
@@ -151,7 +151,7 @@ class DeviceSettings extends Component<{}, ItemState> {
                         <div className="w-full mt-2 flex flex-row">
                             <div className="capitalize text-[#6d758f] mt-2">port type</div>
                             <Input
-                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-2"
+                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-6"
                                 placeholder="portType"
                                 value={this.state.deviceSettings.portType}
                                 onChange={(e) => this.handleItemTextFieldChange("portType", e.target.value)}
@@ -164,7 +164,7 @@ class DeviceSettings extends Component<{}, ItemState> {
                         <div className="w-full mt-2 flex flex-row">
                             <div className="capitalize text-[#6d758f] mt-2">branch id</div>
                             <Input
-                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-2"
+                                className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-6"
                                 placeholder="branchId"
                                 value={this.state.deviceSettings.branchId}
                                 onChange={(e) => this.handleItemTextFieldChange("branchId", e.target.value)}
