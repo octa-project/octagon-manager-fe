@@ -65,6 +65,7 @@ const saleGetOne = apiSale("get-one")
 const saleDelete = apiSale("delete")
 
 const get_dashboard = apiDashboard("get-dashboard-data")
+const get_daily_income = apiDashboard("get-daily-income")
 const get_dashboard_data_weekly = apiDashboard("get-dashboard-data-weekly")
 const getBranchAll = apiBranch("get-branch")
 const saveBranch = apiBranch("save-branch")
@@ -132,6 +133,7 @@ export default {
     saleDelete,
 
     get_dashboard,
+    get_daily_income,
     get_dashboard_data_weekly,
 
     getBranchAll,
