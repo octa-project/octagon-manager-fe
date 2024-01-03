@@ -71,6 +71,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
   componentDidMount() {
     this.handleCardStates(0, 0, 0, 0);
     this.getDashboard();
+    this.getDailyIncome();
     this.getDashboardDataWeekly();
   }
   formatDate = (date: {
@@ -97,9 +98,30 @@ class DashboardController extends Component<{}, DashboardControllerState> {
       const startDate = this.formatDate(today);
       const result = await api.get_dashboard.getDashboard(startDate);
       if (result.data.code === "200") {
-        const responseDashboard: Dashboard = result.data.data;
+        console.log(result);
+/*
+        this.setState((prevState) => ({
+          ...prevState,
+          dashboard: responseDashboard,
+        }));*/
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
 
-        console.log(responseDashboard);
+  getDailyIncome = async () => {
+    try {
+      this.setState({ loading: true, error: "" });
+      const today = new Date();
+      const startDate = this.formatDate(today);
+      const result = await api.get_daily_income.getDailyIncome(startDate);
+      if (result.data.code === "200") {
+        const responseDashboard: Dashboard = result.data.data;
 
         this.setState((prevState) => ({
           ...prevState,

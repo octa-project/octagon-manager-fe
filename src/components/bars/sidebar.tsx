@@ -1,198 +1,74 @@
-"use client";
-import { Dropdown } from "@mui/base/Dropdown";
-import { Menu } from "@mui/base/Menu";
-import { usePathname } from "next/navigation";
-import {
-  Button,
-  MenuItem,
-  Typography,
-  Avatar,
-} from "@mui/material";
-import Image from "next/image";
+import Image from 'next/image';
+import { Button, Tooltip } from '@mui/material';
+import { usePathname } from 'next/navigation';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
-const Sidebar = () => {
+interface SidebarProps {
+  collapsed: boolean;
+  toggleSidebar: () => void;
+}
+
+interface SidebarItem {
+  id: string;
+  name: string;
+  href: string;
+  icon: string;
+  nIcon: string;
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
   const pathname = usePathname();
-
-  const selected =
-    "font-sans text-left rounded-xl w-4/5 h-10 capitalize text-[#6d758f] bg-[#f8f7f5] hover:bg-violet-200";
-  const notselected =
-    "font-sans text-left rounded-xl w-4/5 h-10 capitalize text-white bg-[#6d758f]  hover:text-white hover:bg-violet-200";
-  const selectedText = "font-sans text-left pl-3 capitalize text-[#6d758f] hover:text-white";
-  const nonselectedText = "font-sans text-left pl-3 capitalize text-white hover:text-white";
-
-  const createHandleMenuClick = (menuItem: string) => {
-    return () => {
-      console.log(`Clicked on ${menuItem}`);
-    };
-  };
+  const sideBarItems: SidebarItem[] = [
+    { id: "Dashboard", name: "Дашборд", href: "/dashboard", icon: "/sidebar/dashboardWhite.svg", nIcon: "/sidebar/dashboardGray.svg" },
+    { id: "Item", name: "Бараа бүртгэл", href: "/items", icon: "/sidebar/itemWhite.svg", nIcon: "/sidebar/itemGray.svg" },
+    { id: "Purchase", name: "Татан авалт", href: "/purchase", icon: "/sidebar/purchaseWhite.svg", nIcon: "/sidebar/purchaseGray.svg" },
+    { id: "Report", name: "Тайлан", href: "/reports", icon: "/sidebar/reportWhite.svg", nIcon: "/sidebar/reportGray.svg" },
+    { id: "History", name: "Түүх", href: "/history", icon: "/sidebar/historyWhite.svg", nIcon: "/sidebar/historyGray.svg" },
+    { id: "Setting", name: "Тохиргоо", href: "/settings", icon: "/sidebar/settingWhite.svg", nIcon: "/sidebar/settingGray.svg" },
+    { id: "Branch", name: "Салбар", href: "/branch", icon: "/sidebar/dashboardWhite.svg", nIcon: "/sidebar/dashboardWhite.svg" },
+  ];
 
   return (
     <div>
-      <div>
-        <Image
-          src="/octa.svg"
-          alt="octa logo"
-          className="p-5"
-          width={150}
-          height={48}
-        />
-        <Dropdown>
-          <div className="px-4 pt-5">
-            <div className="font-sans rounded-md w-full h-16 py-4 px-4 bg-white text-white">
-              <div className="grid grid-cols-5 gap-8">
-                <div className="col-span-1">
-                  <Avatar alt="Remy Sharp" className="w-7 h-7" />
-                </div>
-                <div className="col-span-4">
-                  <Typography
-                    className="font-sans text-[#6d758f] text-xs text-left pt"
-                    gutterBottom
-                  >
-                    Б.Төгөлдөр
-                  </Typography>
-                  <Typography
-                    className="font-sans text-[#6d758f] text-xs text-left pt"
-                    gutterBottom
-                  >
-                    Менежер эрх
-                  </Typography>
-                </div>
-                {/* <div className="col-span-1">
-                  <IconButton className="">
-                    <KeyboardArrowDownIcon className="text-[#6d758f]" />
-                  </IconButton>
-                </div> */}
-              </div>
+      <aside className={`sidebar ${collapsed ? 'w-16' : 'w-76'}`}>
+        <div className="pl-4 pb-4">
+          <Image src={collapsed ? "/sidebar/octaRound.svg" : "/octa.svg"} alt="octa"
+            width={collapsed ? 40 : 150} height={collapsed ? 40 : 40} />
+        </div>
+        <div className='flex flex-col justify-start items-center'>
+          {sideBarItems.map((item, index) => (
+            <div key={index} className="p-2 w-full">
+              <Tooltip title={collapsed ? item.name : ''} arrow placement={collapsed ? 'right' : 'right-end'}>
+                <Button
+                  className={`flex flex-row ${pathname === item.href ? 'sideBarSelected' : 'sideBarNoSelected'} 
+                  ${collapsed ? '' : 'justify-start'}`}
+                  href={item.href}
+                >
+                  <Image
+                    src={pathname === item.href ? item.nIcon : item.icon}
+                    alt={item.id}
+                    width={24}
+                    height={24}
+                  />
+                  {!collapsed && (
+                    <div className={`${pathname === item.href ? 'sideBarSelectedText' : 'sideBarNoSelectedText'}`}>
+                      {item.name}
+                    </div>
+                  )}
+                </Button>
+              </Tooltip>
             </div>
-            <Menu slots={{}}>
-              <MenuItem>Test</MenuItem>
-            </Menu>
-          </div>
-        </Dropdown>
-      </div>
-      <div className="flex flex-col justify-center items-center pt-5 gap-5">
-        <div className={`flex flex-row justify-left pl-4 ${pathname === "/dashboard" ? selected : notselected}`}>
-          {pathname === "/dashboard" ? (
-            <Image
-              src="/dashboardgray.svg"
-              alt="dashboardgray"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <Image
-              src="/dashboardwhite.svg"
-              alt="dashboardwhite"
-              width={24}
-              height={24}
-            />
-          )}
-          <Button href="/dashboard" className={`${pathname === "/dashboard" ? selectedText : nonselectedText}`}>
-            Дашборд
+          ))}
+        </div>
+        <div className="w-full p-2">
+          <Button onClick={toggleSidebar} className='sideBarCollapsible'>
+            {collapsed ? (<ArrowForwardIcon />) : (<ArrowBackIcon />)}
           </Button>
         </div>
-        <div className={`flex flex-row justify-left pl-4 ${pathname === "/items" ? selected : notselected}`}>
-          {pathname === "/items" ? (
-            <Image
-              src="/itemgray.svg"
-              alt="itemgray"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <Image
-              src="/itemwhite.svg"
-              alt="itemwhite"
-              width={24}
-              height={24}
-            />
-          )}
-          <Button href="/items" className={`${pathname === "/items" ? selectedText : nonselectedText}`}>
-            Бараа бүртгэл
-          </Button>
-        </div>
-        <div className={`flex flex-row justify-left pl-4 ${pathname === "/reports" ? selected : notselected}`}>
-          {pathname === "/reports" ? (
-            <Image
-              src="/reportgray.svg"
-              alt="reportgray"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <Image
-              src="/reportwhite.svg"
-              alt="reportwhite"
-              width={24}
-              height={24}
-            />
-          )}
-          <Button href="/reports" className={`${pathname === "/reports" ? selectedText : nonselectedText}`}>
-            Тайлан
-          </Button>
-        </div>
-        <div className={`flex flex-row justify-left pl-4 ${pathname === "/history" ? selected : notselected}`}>
-          {pathname === "/history" ? (
-            <Image
-              src="/historygray.svg"
-              alt="historygray"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <Image
-              src="/historywhite.svg"
-              alt="historywhite"
-              width={24}
-              height={24}
-            />
-          )}
-          <Button href="/history" className={`${pathname === "/history" ? selectedText : nonselectedText}`}>
-            Түүх
-          </Button>
-        </div>
-        <div className={`flex flex-row justify-left pl-4 ${pathname === "/settings" ? selected : notselected}`}>
-          {pathname === "/settings" ? (
-            <Image
-              src="/settinggray.svg"
-              alt="settinggray"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <Image
-              src="/settingwhite.svg"
-              alt="settingwhite"
-              width={24}
-              height={24}
-            />
-          )}
-          <Button href="/settings" className={`${pathname === "/settings" ? selectedText : nonselectedText}`}>
-            Тохиргоо
-          </Button>
-        </div>
-        <div className={`flex flex-row justify-left pl-4 ${pathname === "/branch" ? selected : notselected}`}>
-          {pathname === "/branch" ? (
-            <Image
-              src="/settinggray.svg"
-              alt="settinggray"
-              width={24}
-              height={24}
-            />
-          ) : (
-            <Image
-              src="/settingwhite.svg"
-              alt="settingwhite"
-              width={24}
-              height={24}
-            />
-          )}
-          <Button href="/branch" className={`${pathname === "/branch" ? selectedText : nonselectedText}`}>
-            Салбар
-          </Button>
-        </div>
-      </div>
+      </aside>
     </div>
   );
 };
+
 export default Sidebar;

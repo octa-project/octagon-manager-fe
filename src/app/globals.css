@@ -1,16 +1,25 @@
+/* Global CSS */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-.sideBarSelected{
-    @apply font-sans text-left rounded-xl w-4/5 h-10 capitalize text-[#6d758f] bg-[#f8f7f5] hover:bg-violet-200;
+.sideBarSelected {
+    @apply shadow-lg rounded-md w-full h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
 }
-.sideBarNoSelected{
-    @apply font-sans text-left rounded-xl w-4/5 h-10 capitalize text-white bg-[#6d758f]  hover:text-white hover:bg-violet-200;
+
+.sideBarNoSelected {
+    @apply shadow-lg rounded-md w-full h-10 text-white bg-[#6d758f] hover:text-white hover:bg-[#44423e];
 }
-.sideBarSelectedText{
-    @apply font-sans text-left pl-3 capitalize text-[#6d758f] hover:text-white;
+
+.sideBarSelectedText {
+    @apply font-sans text-base pl-3 capitalize;
 }
-.sideBarNoSelectedText{
-    @apply font-sans text-left pl-3 capitalize text-white hover:text-white;
+
+.sideBarNoSelectedText {
+    @apply font-sans text-base pl-3 capitalize;
 }
+
+.sideBarCollapsible {
+    @apply shadow-lg rounded-md w-full h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
+}
+

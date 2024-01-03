@@ -5,34 +5,23 @@ import "ag-grid-enterprise";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import {
-  TextField,
-  Typography,
-  Divider,
-  MenuItem,
-  Select,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  IconButton,
-  Checkbox,
-  Box,
-  Collapse,
-  Drawer,
+  TextField, Typography, Divider, MenuItem, Select,
+  Table, TableHead, TableRow, TableCell, TableBody, IconButton,
+  Checkbox, Box, Collapse, Drawer, Tab
 } from "@mui/material";
 import {
-  ArrowRight as ArrowRightIcon,
-  ArrowDropDown as ArrowDropDownIcon,
-  Edit as EditIcon,
-  Checklist as ChecklistIcon,
-  Add as AddIcon,
+  ArrowRight as ArrowRightIcon, ArrowDropDown as ArrowDropDownIcon,
+  Edit as EditIcon, Checklist as ChecklistIcon, Add as AddIcon,
 } from '@mui/icons-material';
 import api from "@/src/api";
 import Image from "next/image";
-import { Input } from 'antd';
-import Item from "antd/es/list/Item";
+import { Input, Tabs } from 'antd';
 import SnackBar from "@/src/components/tools/snackAlert"
+import { formatMoney, formatQty } from "@/src/components/tools/utils"
+import { TabContext, TabPanel } from "@mui/lab";
+import MainSettings from "../settings/main";
+import PrinterSettings from "../settings/printer";
+import classNames from 'classnames';
 
 class ItemController extends Component<{}, ItemState> {
 
@@ -41,6 +30,8 @@ class ItemController extends Component<{}, ItemState> {
     super(props);
 
     this.state = {
+      first: false,
+      tabValue: "0",
       loading: false,
       error: '',
       selectedItem: {
@@ -154,24 +145,33 @@ class ItemController extends Component<{}, ItemState> {
         minWidth: 200,
       },
       rowData: [],
+      rowItemCodeData: [],
       rowSearchData: [],
+      rowSearchItemCodeData: [],
       measures: [],
       itemGroups: [],
       selectedRowItemCodes: [],
     };
   }
 
+  first: boolean = false;
   componentDidMount() {
-
-    this.getItems();
-    this.getMeasures();
-    this.getItemGroups();
-
+    if (this.first) return
+    this.first = true
+    this.getItems()
+    this.getItemCodes()
+    this.getMeasures()
+    this.getItemGroups()
   }
 
   //#endregion
 
   //#region Event
+
+
+  handleTabChange = (index: string) => {
+    this.setState({ tabValue: index });
+  };
 
   handleFilterClick = () => {
     this.setState({ isFilterOpen: true });
@@ -338,12 +338,15 @@ class ItemController extends Component<{}, ItemState> {
       const result = await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
 
       if (result.data.code === "200") {
-        const rowData: Item[] = result.data.data.map((item: {
+        const rowItemCodeData: ItemCode[] = result.data.data.map((item: {
           id: any;
+          itemId: any;
           barcode: any;
           name: any;
           sellPrice: any;
           purchasePrice: any;
+          measureId: any;
+          measureName: any;
           qty: any;
           createdDate: any;
           isDeleted: boolean;
@@ -358,7 +361,8 @@ class ItemController extends Component<{}, ItemState> {
           isDeleted: item.isDeleted,
         }));
 
-        this.setState({ rowData });
+        this.setState({ rowItemCodeData });
+        this.setState({ rowSearchItemCodeData: rowItemCodeData });
       } else {
         throw new Error("Failed to fetch data");
       }
@@ -543,50 +547,22 @@ class ItemController extends Component<{}, ItemState> {
 
   //#endregion
 
-  //#region UIFormat
-
-  formatMoney = (amount: number | bigint) => {
-    const formattedAmount = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-    }).format(amount);
-
-    return `${formattedAmount} ₮`;
-  };
-
-  formatQty = (amount: number | bigint) => {
-    const formattedAmount = new Intl.NumberFormat('en-US', {
-      minimumFractionDigits: 0,
-    }).format(amount);
-
-    return `${formattedAmount}`;
-  };
-
-  //#endregion
-
   render() {
 
     //#region styles
-    const containerStyle = { width: "100%", height: "100%" };
-    const gridStyle = { height: "100%", width: "100%" };
     //#endregion
 
     //#region state
     const {
-      rowData,
+      tabValue,
       rowSearchData,
-      columnDefs,
-      defaultColDef,
-      // gridRef,
-      autoGroupColumnDef,
+      rowSearchItemCodeData,
       selectedItem,
       nonSelectedItem,
       selectedItemCode,
       nonSelectedItemCode,
-      selectedItemGroup,
       selectedRowId,
       isDrawerOpen,
-      isFilterOpen,
-      open,
     } = this.state;
     //#endregion
 
@@ -599,7 +575,7 @@ class ItemController extends Component<{}, ItemState> {
               {this.state.selectedItem.id === 0 ? "ШИНЭ БАРАА БҮРТГЭХ" : "БАРАА ЗАСАХ"}
             </Typography>
             <Divider className="bg-[#c5cee0] shadow"></Divider>
-            <div className="flex flex-col items-center justify-center h-52">
+            {/* <div className="flex flex-col items-center justify-center h-52">
               <Image
                 src="/itemstand.svg"
                 alt="octa logo"
@@ -613,7 +589,7 @@ class ItemController extends Component<{}, ItemState> {
               >
                 ЗУРАГ ОРУУЛАХ
               </Button>
-            </div>
+            </div> */}
 
             <div className="flex flex-col items-center gap-4 justify-center pt-5">
               {/* <div className="w-9/12">
@@ -744,14 +720,15 @@ class ItemController extends Component<{}, ItemState> {
                             />
                           </div>
                         )}
+                        value={this.state.tabValue}  // Set the value prop to bind the value
+                        onChange={(event) => this.handleTabChange(event.target.value as string)}
                       >
-                        <MenuItem value={10}>Ten</MenuItem>
-                        <MenuItem value={20}>Twenty</MenuItem>
-                        <MenuItem value={30}>Thirty</MenuItem>
+                        <MenuItem value={"0"}>Барааны жагсаалт</MenuItem>
+                        <MenuItem value={"1"}>Нэгдсэн барааны жагсаалт</MenuItem>
                       </Select>
                     </div>
                   </div>
-                  <div
+                  {/* <div
                     className="flex flex-row bg-white h-14 w-full rounded-2xl shadow">
                     <Select
                       className="capitalize text-[#6d758f] w-full rounded-2xl">
@@ -759,117 +736,154 @@ class ItemController extends Component<{}, ItemState> {
                       <MenuItem className="font-sans" value={20}>Twenty</MenuItem>
                       <MenuItem className="font-sans" value={30}>Thirty</MenuItem>
                     </Select>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>
             <div className="h-full p-3">
               <div className="bg-white flex-initial w-full h-full shadow rounded-lg overflow-auto">
-                <div className="flex">
-                  <Table>
-                    <TableHead className="" >
-                      <TableRow className="bg-[#8a91a5]">
-                        <TableCell className="font-sans font-semibold text-white "><ChecklistIcon /></TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="center">ЗАСАХ</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="center">НЭМЭХ</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="left">№</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="left">КОД</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="left">НЭР</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="left">ХЭМЖИХ НЭГЖ</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="left">БҮЛЭГ</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="center">БАРААНЫ ТӨРЛҮҮД</TableCell>
-                        <TableCell className="font-sans font-semibold text-white " align="center">ТӨЛӨВ</TableCell>
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rowSearchData.map((row) => (
-                        <Fragment key={row.id}>
-                          <TableRow key={row.id} className="h-2">
-                            <TableCell className="w-4">
-                              <div>
-                                <IconButton
-                                  onClick={() => selectedRowId === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
-                                  className={selectedRowId === row.id ? "bg-[#8a91a5]" : "bg-white"}>
-                                  {selectedRowId === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
-                                </IconButton>
-                              </div>
-                            </TableCell>
-                            <TableCell className="w-4" align="center">
-                              <div>
-                                <IconButton onClick={() => this.handleItemRowDoubleClick(row)}>
+                <div className="flex-auto">
+                  <TabContext value={tabValue}>
+                    <TabPanel value={"0"} className="p-0 m-0 w-full">
+                      <Table>
+                        <TableHead className="bg-[#8a91a5]">
+                          <TableRow>
+                            <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                            <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                            <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                            <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {rowSearchItemCodeData.map((row) => (
+                            <TableRow key={row.id}>
+                              <TableCell align="center" >
+                                <IconButton className="w-8 h-8"
+                                  onClick={() => this.handleItemRowAddClick(row)}>
                                   <EditIcon />
                                 </IconButton>
-                              </div>
-                            </TableCell>
-                            <TableCell className="w-4" align="center">
-                              <div>
-                                <IconButton onClick={() => this.handleItemRowAddClick({
-                                  id: 0, itemId: row.id, barcode: '',
-                                  name: '', sellPrice: 0, purchasePrice: 0,
-                                  qty: 0, measureId: 1, measureName: "", createdDate: '', isDeleted: false,
-                                })}>
-                                  <AddIcon />
-                                </IconButton>
-                              </div>
-                            </TableCell>
-                            <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.id}</TableCell>
-                            <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.code}</TableCell>
-                            <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.name}</TableCell>
-                            <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.measureName}</TableCell>
-                            <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.itemgroupName}</TableCell>
-                            <TableCell className="font-sans text-[#8a91a5] font-semibold" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
-                            <TableCell className="font-sans w-6" align="center">
-                              <Checkbox defaultChecked={row.isActive} disabled />
-                            </TableCell>
+                              </TableCell>
+                              <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
+                              <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
+                              <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
+                              <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.sellPrice)}</TableCell>
+                              <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.purchasePrice)}</TableCell>
+                              <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(row.qty)}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                    <TabPanel value={"1"} className="p-0 m-0 w-full">
+                      <Table>
+                        <TableHead className="" >
+                          <TableRow className="bg-[#8a91a5]">
+                            <TableCell className="font-sans font-semibold text-white "><ChecklistIcon /></TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="center">ЗАСАХ</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="center">НЭМЭХ</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="left">№</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="left">КОД</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="left">НЭР</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="left">ХЭМЖИХ НЭГЖ</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="left">БҮЛЭГ</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="center">БАРААНЫ ТӨРЛҮҮД</TableCell>
+                            <TableCell className="font-sans font-semibold text-white " align="center">ТӨЛӨВ</TableCell>
                           </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={10} className="p-0 m-0 bg-[#f1f2f4]">
-                              <Collapse in={selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-3 w-full">
-                                <Typography className="font-sans font-semibold text-[#8a91a5] text-left text-base">
-                                  БАРААНЫ ТӨРЛҮҮД
-                                </Typography>
-                                <Box className="w-full bg-white">
-                                  <Table className="w-full">
-                                    <TableHead className="bg-[#8a91a5]">
-                                      <TableRow>
-                                        <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
-                                        <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                        <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                        <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                        <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                        <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                        <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
-                                      </TableRow>
-                                    </TableHead>
-                                    <TableBody>
-                                      {selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0 &&
-                                        (row.itemcodes.map((itemCode) => (
-                                          <TableRow key={itemCode.id}>
-                                            <TableCell align="center" >
-                                              <IconButton className="w-8 h-8"
-                                                onClick={() => this.handleItemRowAddClick(itemCode)}>
-                                                <EditIcon />
-                                              </IconButton>
-                                            </TableCell>
-                                            <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
-                                            <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
-                                            <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
-                                            <TableCell className="font-sans text-[#8a91a5] " align="right">{this.formatMoney(itemCode.sellPrice)}</TableCell>
-                                            <TableCell className="font-sans text-[#8a91a5] " align="right">{this.formatMoney(itemCode.purchasePrice)}</TableCell>
-                                            <TableCell className="font-sans text-[#8a91a5] " align="right">{this.formatQty(itemCode.qty)}</TableCell>
+                        </TableHead>
+                        <TableBody>
+                          {rowSearchData.map((row) => (
+                            <Fragment key={row.id}>
+                              <TableRow key={row.id} className="h-2">
+                                <TableCell className="w-4">
+                                  <div>
+                                    <IconButton
+                                      onClick={() => selectedRowId === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
+                                      className={selectedRowId === row.id ? "bg-[#8a91a5]" : "bg-white"}>
+                                      {selectedRowId === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
+                                    </IconButton>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="w-4" align="center">
+                                  <div>
+                                    <IconButton onClick={() => this.handleItemRowDoubleClick(row)}>
+                                      <EditIcon />
+                                    </IconButton>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="w-4" align="center">
+                                  <div>
+                                    <IconButton onClick={() => this.handleItemRowAddClick({
+                                      id: 0, itemId: row.id, barcode: '',
+                                      name: '', sellPrice: 0, purchasePrice: 0,
+                                      qty: 0, measureId: 1, measureName: "", createdDate: '', isDeleted: false,
+                                    })}>
+                                      <AddIcon />
+                                    </IconButton>
+                                  </div>
+                                </TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.id}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.code}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.name}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.measureName}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.itemgroupName}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] font-semibold" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
+                                <TableCell className="font-sans w-6" align="center">
+                                  <Checkbox defaultChecked={row.isActive} disabled />
+                                </TableCell>
+                              </TableRow>
+                              <TableRow>
+                                <TableCell colSpan={9} className="p-0 m-0 bg-[#f1f2f4]">
+                                  <Collapse in={selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-3 w-full">
+                                    <Typography className="font-sans font-semibold text-[#8a91a5] text-left text-base">
+                                      БАРААНЫ ТӨРЛҮҮД
+                                    </Typography>
+                                    <Box className="w-full bg-white">
+                                      <Table className="w-full">
+                                        <TableHead className="bg-[#8a91a5]">
+                                          <TableRow>
+                                            <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
                                           </TableRow>
-                                        ))
-                                        )}
-                                    </TableBody>
-                                  </Table>
-                                </Box>
-                              </Collapse>
-                            </TableCell>
-                          </TableRow>
-                        </Fragment>
-                      ))}
-                    </TableBody>
-                  </Table>
+                                        </TableHead>
+                                        <TableBody>
+                                          {selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0 &&
+                                            (row.itemcodes.map((itemCode) => (
+                                              <TableRow key={itemCode.id}>
+                                                <TableCell align="center" >
+                                                  <IconButton className="w-8 h-8"
+                                                    onClick={() => this.handleItemRowAddClick(itemCode)}>
+                                                    <EditIcon />
+                                                  </IconButton>
+                                                </TableCell>
+                                                <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
+                                                <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
+                                                <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
+                                                <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.sellPrice)}</TableCell>
+                                                <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.purchasePrice)}</TableCell>
+                                                <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(itemCode.qty)}</TableCell>
+                                              </TableRow>
+                                            ))
+                                            )}
+                                        </TableBody>
+                                      </Table>
+                                    </Box>
+                                  </Collapse>
+                                </TableCell>
+                              </TableRow>
+                            </Fragment>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                  </TabContext>
                 </div>
               </div>
             </div>
