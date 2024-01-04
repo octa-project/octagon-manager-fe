@@ -7,7 +7,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import {
   TextField, Typography, Divider, MenuItem, Select,
   Table, TableHead, TableRow, TableCell, TableBody, IconButton,
-  Checkbox, Box, Collapse, Drawer, Tab
+  Checkbox, Box, Collapse, Drawer, Tab, Skeleton
 } from "@mui/material";
 import {
   ArrowRight as ArrowRightIcon, ArrowDropDown as ArrowDropDownIcon,
@@ -17,8 +17,8 @@ import api from "@/src/api";
 import Image from "next/image";
 import { Input, Tabs } from 'antd';
 import SnackBar from "@/src/components/tools/snackAlert"
-import { formatMoney, formatQty } from "@/src/components/tools/utils"
 import { TabContext, TabPanel } from "@mui/lab";
+import { formatMoney, formatQty } from "@/src/components/tools/utils"
 import MainSettings from "../settings/main";
 import PrinterSettings from "../settings/printer";
 import classNames from 'classnames';
@@ -146,11 +146,14 @@ class ItemController extends Component<{}, ItemState> {
       },
       rowData: [],
       rowItemCodeData: [],
+      rowItemCodeSkuData: [],
       rowSearchData: [],
       rowSearchItemCodeData: [],
+      rowSearchItemCodeSkuData: [],
       measures: [],
       itemGroups: [],
       selectedRowItemCodes: [],
+      skeleten: [1, 2, 3, 4, 5, 6]
     };
   }
 
@@ -162,6 +165,7 @@ class ItemController extends Component<{}, ItemState> {
     this.getItemCodes()
     this.getMeasures()
     this.getItemGroups()
+    this.getSkuItems()
   }
 
   //#endregion
@@ -191,6 +195,12 @@ class ItemController extends Component<{}, ItemState> {
   };
 
   handleItemTextFieldChange = (field: keyof Item, value: string | number) => {
+
+    // if ([field] === "code" ) {
+      
+    // }
+    // rowItemCodeSkuData . 
+
     this.setState((prevState) => ({
       selectedItem: {
         ...prevState.selectedItem,
@@ -423,6 +433,55 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
+  getSkuItems = async () => {
+    try {
+      const result = await api.itemcode_getManyCustom.getManyCustom();
+      if (result.data.code === "200") {
+        const rowItemCodeSkuData: ItemCodeSku[] = result.data.data.map((item: {
+          id: any;
+          itemId: any;
+          barcode: any;
+          name: any;
+          expirationId: any;
+          sellPrice: any;
+          costPrice: any;
+          groupId: any;
+          groupName: any;
+          measureId: any;
+          measureName: any;
+          qty: any;
+          createdDate: any;
+          properQty: any;
+          packSize: any;
+        }) => ({
+          id: item.id,
+          itemId: item.itemId,
+          barcode: item.barcode,
+          name: item.name,
+          expirationId: item.expirationId,
+          sellPrice: item.sellPrice,
+          costPrice: item.costPrice,
+          groupId: item.groupId,
+          groupName: item.groupName,
+          measureId: item.measureId,
+          measureName: item.measureName,
+          qty: item.qty,
+          createdDate: item.createdDate,
+          properQty: item.properQty,
+          packSize: item.packSize,
+        }));
+
+        this.setState({ rowItemCodeSkuData });
+        this.setState({ rowSearchItemCodeSkuData: rowItemCodeSkuData });
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+    }
+  };
+
   deleteItem = async (id: number) => {
     try {
       const result = await api.itemCode_delete.itemCodeDeleteItemCodeById(id);
@@ -557,12 +616,14 @@ class ItemController extends Component<{}, ItemState> {
       tabValue,
       rowSearchData,
       rowSearchItemCodeData,
+      rowSearchItemCodeSkuData,
       selectedItem,
       nonSelectedItem,
       selectedItemCode,
       nonSelectedItemCode,
       selectedRowId,
       isDrawerOpen,
+      skeleten,
     } = this.state;
     //#endregion
 
@@ -725,6 +786,7 @@ class ItemController extends Component<{}, ItemState> {
                       >
                         <MenuItem value={"0"}>Барааны жагсаалт</MenuItem>
                         <MenuItem value={"1"}>Нэгдсэн барааны жагсаалт</MenuItem>
+                        <MenuItem value={"2"}>SKU</MenuItem>
                       </Select>
                     </div>
                   </div>
@@ -880,6 +942,62 @@ class ItemController extends Component<{}, ItemState> {
                               </TableRow>
                             </Fragment>
                           ))}
+                        </TableBody>
+                      </Table>
+                    </TabPanel>
+                    <TabPanel value={"2"} className="p-0 m-0 w-full">
+                      <Table>
+                        <TableHead className="bg-[#8a91a5]">
+                          <TableRow>
+                            {/* <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell> */}
+                            <TableCell className="font-sans text-white font-semibold">№</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">ЗАРАХ ҮНЭ</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">АВАХ ҮНЭ</TableCell>
+                            <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                            {/* <TableCell className="font-sans text-white font-semibold">ТОО</TableCell> */}
+                            <TableCell className="font-sans text-white font-semibold" align="right">ҮҮСГЭСЭН ӨДӨР</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {rowSearchItemCodeSkuData.length > 0 ? (
+                            rowSearchItemCodeSkuData.map((row) => (
+                              <TableRow key={row.id}>
+                                {/* <TableCell align="center">
+                                  <IconButton className="w-8 h-8"
+                                  // onClick={() => this.handleEditClick(row)}
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                </TableCell> */}
+                                <TableCell className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] ">{row.sellPrice}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] ">{row.costPrice}</TableCell>
+                                <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
+                                {/* <TableCell className="font-sans text-[#8a91a5] ">{row.qty}</TableCell> */}
+                                <TableCell className="font-sans text-[#8a91a5] " align="right">{row.createdDate}</TableCell>
+                              </TableRow>
+                            ))
+                          ) : (
+                            <>
+                              {skeleten.map((row) =>
+                                <TableRow key={row}>
+                                  {/* <TableCell><Skeleton variant="rounded" height={20} /></TableCell> */}
+                                  <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                  <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                  <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                  <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                  <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                  <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                  {/* <TableCell><Skeleton variant="rounded" height={20} /></TableCell> */}
+                                  <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                </TableRow>
+                              )}
+                            </>
+                          )}
                         </TableBody>
                       </Table>
                     </TabPanel>

@@ -9,6 +9,7 @@ import apiSale from "./apiSale";
 import apiDashboard from "./apiDashboard";
 import apiBranch from "./apiBranch";
 import apiSettings from "@/src/api/apiSettings";
+import apiSku from "./apiSku";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -80,6 +81,8 @@ const getDeviceSetting = apiSettings("device-settings")
 const GetPrinterList = apiSettings("get-printer-list")
 const get_Top_Ten_Item = apiSale("get-top-ten-item")
 
+const itemcode_getManyCustom = apiSku("custom-all")
+
 export default {
 
     transaction_save,
@@ -145,5 +148,7 @@ export default {
     getDeviceSetting,
 
     GetPrinterList,
-    get_Top_Ten_Item
+    get_Top_Ten_Item,
+
+    itemcode_getManyCustom
 }
