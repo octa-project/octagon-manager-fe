@@ -4,6 +4,7 @@ import './globals.css';
 import Sidebar from '@/src/components/bars/sidebar';
 import SidebarContent from '@/src/components/bars/sidebarContext';
 import { metadata } from './metadata';
+import Topbar from "@/src/components/bars/topbar";
 
 interface RootLayoutProps {
   children: ReactNode;
@@ -21,11 +22,16 @@ const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
       <body>
         <main className="relative">
           <SidebarContent>
+
             <div className={`bg-[#6d758f] ${collapsed ? 'w-20' : 'w-72'} pt-10`}>
               <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
             </div>
-            <div className="flex-auto min-h-screen overflow-auto bg-slate-100 relative">{children}</div>
+
+            <div className="flex-auto min-h-screen overflow-auto bg-slate-100 relative">
+              <Topbar></Topbar>
+              {children}</div>
           </SidebarContent>
+
         </main>
       </body>
     </html>
