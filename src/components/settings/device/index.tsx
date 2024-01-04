@@ -1,5 +1,5 @@
 import {Component} from "react";
-import {Button} from "@mui/material";
+import {Button, Link} from "@mui/material";
 import * as React from "react";
 import {Input} from "antd";
 import api from "@/src/api";
@@ -97,7 +97,7 @@ class DeviceSettings extends Component<{}, ItemState> {
                 <div style={containerStyle}>
                     <div>
                         <div className="w-full mt-2 flex flex-row">
-                            <div className="capitalize text-[#6d758f] mt-2">ip address</div>
+                            <div className="capitalize text-[#6d758f] mt-2">IP address</div>
                             <Input
                                 className="capitalize text-[#6d758f] w-1/4 h-full rounded-2xl border-2 pl-3 pr-8 mt-2 ml-4"
                                 placeholder="ip address"
@@ -188,7 +188,7 @@ class DeviceSettings extends Component<{}, ItemState> {
 
                     </div>
                     <div className="w-full mt-2 flex flex-row">
-                        <Button className="bg-white border-2">Delete</Button>
+                        <Button className="bg-gray-200 border-2">Delete</Button>
                         <Button className="bg-[#6d758f] text-white ml-2" onClick={() => this.saveItems(deviceSettings)}>Save</Button>
                     </div>
                 </div>

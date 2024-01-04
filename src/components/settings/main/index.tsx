@@ -160,8 +160,8 @@ class MainSettings extends Component<{}, ItemState> {
                         <div className="ml-2"><ToggleButton value={this.state.mainSettings.isActive}></ToggleButton>
                         </div>
                     </div>
-                    <div className="w-full mt-2 flex flex-row">
-                        <Button className="bg-white border-2">Delete</Button>
+                    <div className="w-full mt-2 flex flex-row mr-2">
+                        <Button className="bg-gray-200 border-2">Delete</Button>
                         <Button className="bg-[#6d758f] text-white ml-2"
                                 onClick={() => this.saveItems(mainSettings)}>Save</Button>
                     </div>
