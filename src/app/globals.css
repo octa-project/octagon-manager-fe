@@ -23,3 +23,19 @@
     @apply shadow-lg rounded-md w-full h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
 }
 
+.topBarSelected {
+    @apply font-sans font-semibold shadow-lg text-center pt-1 rounded-md w-full h-8 text-white bg-[#6d758f] hover:text-white hover:bg-[#44423e];
+}
+
+.topBarNoSelected {
+    @apply font-sans font-semibold shadow-lg text-center pt-1 rounded-md w-full h-8 text-[#6d758f] bg-[#f8f7f5] hover:text-white hover:bg-[#44423e];
+}
+
+
+.button {
+
+}
+
+.select {
+
+}
