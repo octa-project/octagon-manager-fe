@@ -37,22 +37,23 @@ interface SaleHistroyModel {
   createdUserId: number;
 }
 
-class saleHistory extends Component<{}, AgReportState> {
+class SaleHistoryController extends Component<{}, AgReportState> {
   constructor(props: any) {
     super(props);
 
     this.state = {
       columnDefs: [
         { field: "id", headerName: "№" },
-        { field: "date", headerName: "Төлсөн цаг" },
+        { field: "createdDate", headerName: "Огноо" },
+        { field: "itemName", headerName: "Барааны нэр" },
         { field: "totalQty", headerName: "Нийт тоо" },
         { field: "totalAmount", headerName: "Нийт дүн" },
         { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
-        { field: "isPaid", headerName: "Төлсөн эсэх" },
-        { field: "createdDate", headerName: "Огноо" },
-        { field: "isDeleted", headerName: "Устгасан" },
+        //{ field: "isPaid", headerName: "Төлсөн эсэх" },
+        //{ field: "date", headerName: "Төлсөн цаг" },
+        //{ field: "isDeleted", headerName: "Устгасан" },
         // { field: 'branchId', headerName: 'Нийт дүн' },
-        { field: "createdUserId", headerName: "Ажилтан" },
+        //{ field: "createdUserId", headerName: "Ажилтан" },
       ],
       defaultColDef: {
         flex: 1,
@@ -144,4 +145,4 @@ class saleHistory extends Component<{}, AgReportState> {
     );
   }
 }
-export default saleHistory;
+export default SaleHistoryController;

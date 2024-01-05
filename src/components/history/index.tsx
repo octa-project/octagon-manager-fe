@@ -1,99 +1,81 @@
-"use client"
-import { Button, Divider, Input, TextField, Tooltip } from "@mui/material";
-import { Component } from "react";
-import SaleHistory from "./saleHistory";
-import SaleReport from "../reports/sale";
+import {Button, Card} from "@mui/material";
+import React, {useState} from "react";
+import classNames from 'classnames';
+import Tab from '@mui/material/Tab';
+import TabContext from '@mui/lab/TabContext';
+import TabList from '@mui/lab/TabList';
+import TabPanel from '@mui/lab/TabPanel';
+import MainSettings from "@/src/components/settings/main";
+import DeviceSettings from "@/src/components/settings/device";
+import BranchSettings from "@/src/components/settings/branch";
+import PrinterSettings from "@/src/components/settings/printer";
+import AccessSettings from "@/src/components/settings/access";
+import saleHistory from './saleHistory/index';
+import SaleHistoryController from "./saleHistory/index";
 
-class HistoryController extends Component {
-    state = {
-        historyIndex: 0,
-    }
-    changeReport = (index: number) => {
-        this.setState({ reportIndex: index });
+const HistoryController = () => {
+
+    const [tabValue, setTabValue] = useState("0");
+
+    const tabChange = (tabIndex: string) => {
+        setTabValue(tabIndex);
     };
 
-  render() {
-    const normal = 'font-sans text-sm rounded-2xl shadow w-full h-12 text-white bg-slate-400 hover:bg-slate-200 text-black';
-    const hovered = 'font-sans text-sm rounded-2xl shadow w-full h-12 text-black bg-slate-50 hover:bg-slate-200';
+    const tabClass = (index: string) =>
+        classNames(
+            'font-sans capitalize font-semibold text-base rounded-lg',
+            {
+                'bg-[#e2e3e9] text-[#6d758f] hover:bg-[#6d758f] hover:text-white opacity-100':
+                    tabValue === index,
+                'bg-white text-[#6d758f] hover:bg-[#6d758f] hover:text-white opacity-70':
+                    tabValue !== index,
+            }
+        );
 
     return (
-        <div className="grid grid-cols-5 gap-3">
-        <div className='col-span-1 bg-white shadow-md h-screen'>
-            <div className="flex-initial">
-                <ul className='py-2'>
-                    <li className='py-2 px-4 pt-10'>
-                        <Button
-                            onClick={() => this.changeReport(0)}
-                            className={`${this.state.historyIndex === 0
-                                ? normal
-                                : hovered}`}>
-                            Борлуулалтын түүх</Button>
-                    </li>
-                    {/* <li className='py-2 px-4 pb-10'>
-                        <Button
-                            onClick={() => this.changeReport(1)}
-                            className={`${this.state.historyIndex === 1
-                                ? normal
-                                : hovered}`}>
-                            Зарлага</Button>
-                    </li>
-                    <Divider variant="middle" />
-                    <li className='py-2 px-4 pt-10'>
-
-                        <Button
-                            onClick={() => this.changeReport(2)}
-                            className={`${this.state.historyIndex === 2
-                                ? normal
-                                : hovered}`}>
-                            Үнийн түүх</Button>
-                    </li>
-                    <li className='py-2 px-4 pb-10'>
-                        <Button
-                            onClick={() => this.changeReport(3)}
-                            className={`${this.state.historyIndex === 3
-                                ? normal
-                                : hovered}`}>
-                            Борлуулалт</Button>
-                    </li>
-                    <Divider variant="middle" />
-                    <li className='py-2 px-4 pt-10'>
-                        <Button
-                            onClick={() => this.changeReport(4)}
-                            className={`${this.state.historyIndex === 4
-                                ? normal
-                                : hovered}`}>
-                            Касс</Button>
-                    </li> */}
-                </ul>
-            </div>
-        </div>
-        <div className="flex flex-col col-span-4">
-            <div className="flex h-24 p-3">
-                <div className="flex items-center bg-white h-14 w-full rounded-2xl shadow border border-[#cbcbcb]">
-                    <Input
-                        className="capitalize text-[#6d758f] w-full h-full rounded-2xl border-none pl-3 pr-8"
-                        placeholder="Хайх..."
-                    />
-                    {/* <Image
-                        src="/items/search.svg"
-                        alt="icon"
-                        width={24}
-                        height={24}
-                        className="mr-5 cursor-pointer"
-                    /> */}
+        <div className="flex flex-col p-5 gap-5 h-full">
+            <div className="bg-white h-12 shadow-md rounded-lg">
+                <div className="w-full h-full grid grid-cols-5 justify-items items-center gap-5 pl-2 pr-2">
+                    <Button onClick={() => tabChange("0")} className={tabClass("0")}>
+                        Үндсэн
+                    </Button>
+                    <Button onClick={() => tabChange("3")} className={tabClass("3")}>
+                        Төхөөрөмж
+                    </Button>
+                    <Button onClick={() => tabChange("2")} className={tabClass("2")}>
+                        Эрх
+                    </Button>
+                    <Button onClick={() => tabChange("4")} className={tabClass("4")}>
+                        Салбар
+                    </Button>
+                    <Button onClick={() => tabChange("1")} className={tabClass("1")}>
+                        Принтер
+                    </Button>
                 </div>
             </div>
-            <div className="h-full p-3">
-                {this.state.historyIndex === 0 ? <SaleReport /> : null}
-                {/* {this.state.historyIndex === 1 ? <OutComeReport /> : null}
-                {this.state.historyIndex === 2 ? <ItemPriceReport /> : null}
-                {this.state.historyIndex === 3 ? <SaleReport /> : null}
-                {this.state.historyIndex === 4 ? <CashierReport /> : null} */}
+            <div className="bg-white h-full shadow-md rounded-lg overflow-y-auto">
+                <TabContext value={tabValue}>
+                    <TabPanel value={"0"} className="p-4">
+                        <SaleHistoryController/>
+                    </TabPanel>
+                    <TabPanel value={"1"} className="p-4">
+                        {/* <PrinterSettings/> */}
+                    </TabPanel>
+                    <TabPanel value={"2"} className="p-4">
+                        {/* <AccessSettings/> */}
+                    </TabPanel>
+                    <TabPanel value={"3"} className="p-4">
+                        {/* <DeviceSettings/> */}
+                    </TabPanel>
+                    <TabPanel value={"4"} className="p-4">
+                        {/* <BranchSettings/> */}
+                    </TabPanel>
+                </TabContext>
             </div>
         </div>
-    </div>
-)
-}
-}
-export default HistoryController;
+    );
 
+
+}
+
+export default HistoryController;

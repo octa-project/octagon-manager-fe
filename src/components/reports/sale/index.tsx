@@ -3,6 +3,7 @@ import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import api from "@/src/api";
+import apiSale from "@/src/api/apiSale";
 
 interface OutcomeReportModel {
   startDate: Date;
@@ -48,15 +49,16 @@ class SaleReport extends Component<{}, AgReportState> {
     this.state = {
       columnDefs: [
         { field: "id", headerName: "№" },
-        { field: "date", headerName: "Борлуулсан цаг" },
+        { field: "createdDate", headerName: "Огноо" },
+        { field: "item", headerName: "Барааны нэр" },
         { field: "totalQty", headerName: "Нийт тоо" },
         { field: "totalAmount", headerName: "Нийт дүн" },
-        { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
-        { field: "isPaid", headerName: "Төлсөн эсэх" },
-        { field: "createdDate", headerName: "Огноо" },
-        { field: "isDeleted", headerName: "Устгасан" },
-        // { field: 'branchId', headerName: 'Нийт дүн' },
-        { field: "createdUserId", headerName: "Ажилтан" },
+        // { field: "date", headerName: "Борлуулсан цаг" },
+        // { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
+        // { field: "isPaid", headerName: "Төлсөн эсэх" },
+        // { field: "isDeleted", headerName: "Устгасан" },
+        // // { field: 'branchId', headerName: 'Нийт дүн' },
+        // { field: "createdUserId", headerName: "Ажилтан" },
       ],
       defaultColDef: {
         flex: 1,
@@ -77,21 +79,28 @@ class SaleReport extends Component<{}, AgReportState> {
   }
 
   componentDidMount() {
-    this.getSale();
+    this.getSales();
  
   }
 
 
-  getSale = async () => {
+  getSales = async () => {
     try {
-      const result = await api.get_sale_report.getSaleReport();
+        const today = new Date();
+        const startDate = this.formatDate(today);
+        
+        const endDate = new Date();
+        endDate.setMonth(endDate.getMonth() + 1);
+        const newEndDate = this.formatDate(endDate);
+        
+      const result = await api.saleGetMany.GetMany(startDate, newEndDate);
       if (result.data.code === "200") {
         this.setState({ rowData: result.data.data });
       } else {
         throw new Error("Failed to fetch data");
       }
     } catch (error) {
-      // Handle error
+      
     } finally {
     }
   };
