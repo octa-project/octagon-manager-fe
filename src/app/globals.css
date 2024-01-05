@@ -44,8 +44,20 @@
     @apply font-sans font-semibold text-[#6d758f];
 }
 
+.headerText {
+    @apply font-sans font-semibold text-white;
+}
+
 .button {
     @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+}
+
+.headerButton {
+    @apply font-sans font-semibold shadow-lg rounded-lg h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+}
+
+.headerButton:hover img {
+    filter: invert(100%);
 }
 
 .secondaryButton {
