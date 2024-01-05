@@ -4,6 +4,7 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
 import api from "@/src/api";
 import apiSale from "@/src/api/apiSale";
+import { DatePicker } from "antd";
 
 interface OutcomeReportModel {
   startDate: Date;
@@ -40,6 +41,14 @@ interface getSale {
   branchId: number;
   createdUserId: number;
 }
+interface AgReportState {
+  mounted: boolean;
+  startDate: string;
+  endDate: string;
+  columnDefs: any[];
+  defaultColDef: any;
+  rowData: any[];
+}
 
 class SaleReport extends Component<{}, AgReportState> {
   [x: string]: any;
@@ -47,6 +56,7 @@ class SaleReport extends Component<{}, AgReportState> {
     super(props);
 
     this.state = {
+      mounted: true,
       columnDefs: [
         { field: "id", headerName: "№" },
         { field: "createdDate", headerName: "Огноо" },
@@ -79,35 +89,37 @@ class SaleReport extends Component<{}, AgReportState> {
   }
 
   componentDidMount() {
-    this.getSales();
- 
+    if (this.state.mounted) {
+      this.getSale();
+    }
   }
 
+  handleSearchDate = (dates: any, dateStrings: any[]) => {
+    console.log("Selected Range:", dates, dateStrings);
+    this.setState({
+      startDate: dateStrings[0]+' 00:00:00',
+      endDate: dateStrings[1]+' 23:59:59'
+    });
+  };
 
-  getSales = async () => {
+  getSale = async () => {
     try {
-        const today = new Date();
-        const startDate = this.formatDate(today);
-        
-        const endDate = new Date();
-        endDate.setMonth(endDate.getMonth() + 1);
-        const newEndDate = this.formatDate(endDate);
-        
-      const result = await api.saleGetMany.GetMany(startDate, newEndDate);
-      if (result.data.code === "200") {
+      const result = await api.saleGetMany.GetMany(
+        this.state.startDate,
+        this.state.endDate
+      );
+      if (result.data.isSuccess) {
         this.setState({ rowData: result.data.data });
-      } else {
-        throw new Error("Failed to fetch data");
+        this.setState({ mounted: false });
       }
-    } catch (error) {
-      
-    } finally {
-    }
+    } catch (error) {}
   };
 
   render() {
     const containerStyle = { width: "100%", height: "100%" };
     const gridStyle = { height: "100%", width: "100%" };
+    const { RangePicker } = DatePicker
+    const dateFormat = "YYYY-MM-DD"
 
     return (
       <div className="h-full">
