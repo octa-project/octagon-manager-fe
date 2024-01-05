@@ -9,6 +9,7 @@ import apiSale from "./apiSale";
 import apiDashboard from "./apiDashboard";
 import apiBranch from "./apiBranch";
 import apiSettings from "@/src/api/apiSettings";
+import apiSku from "./apiSku";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -65,6 +66,7 @@ const saleGetOne = apiSale("get-one")
 const saleDelete = apiSale("delete")
 
 const get_dashboard = apiDashboard("get-dashboard-data")
+const get_daily_income = apiDashboard("get-daily-income")
 const get_dashboard_data_weekly = apiDashboard("get-dashboard-data-weekly")
 const getBranchAll = apiBranch("get-branch")
 const saveBranch = apiBranch("save-branch")
@@ -79,6 +81,8 @@ const getDeviceSetting = apiSettings("device-settings")
 
 const GetPrinterList = apiSettings("get-printer-list")
 const get_Top_Ten_Item = apiSale("get-top-ten-item")
+
+const itemcode_getManyCustom = apiSku("custom-all")
 
 export default {
 
@@ -132,6 +136,7 @@ export default {
     saleDelete,
 
     get_dashboard,
+    get_daily_income,
     get_dashboard_data_weekly,
 
     getBranchAll,
@@ -147,4 +152,5 @@ export default {
     GetPrinterList,
     get_Top_Ten_Item,
 
+    itemcode_getManyCustom
 }

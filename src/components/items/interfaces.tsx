@@ -25,6 +25,25 @@ interface ItemCode {
   createdDate: string;
   isDeleted: boolean;
 }
+
+interface ItemCodeSku {
+  id: number;
+  itemId: number;
+  barcode: string;
+  name: string;
+  expirationId: number;
+  sellPrice: number;
+  costPrice: number;
+  measureId: number;
+  measureName: string;
+  groupId: number;
+  groupName: string;
+  qty: number;
+  createdDate: string;
+  properQty: number;
+  packSize: number;
+}
+
 interface ItemGroup {
   id: number;
   name: string;
@@ -40,6 +59,8 @@ interface Measure {
   code: string;
 }
 interface ItemState {
+  tabValue: string;
+  first: boolean;
   loading: boolean;
   error: string;
   selectedItem: Item;
@@ -55,8 +76,13 @@ interface ItemState {
   defaultColDef: any;
   autoGroupColumnDef: any;
   rowData: Item[];
+  rowItemCodeData: ItemCode[],
+  rowItemCodeSkuData: ItemCodeSku[],
   rowSearchData: Item[],
+  rowSearchItemCodeData: ItemCode[],
+  rowSearchItemCodeSkuData: ItemCodeSku[],
   measures: Measure[];
   itemGroups: ItemGroup[];
   selectedRowItemCodes: ItemCode[];
+  skeleten: number[];
 }
