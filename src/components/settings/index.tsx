@@ -13,7 +13,7 @@ import AccessSettings from "@/src/components/settings/access";
 
 const SettingsController = () => {
 
-    const [tabValue, setTabValue] = useState("0");
+    const [tabValue, setTabValue] = useState("4");
 
     const tabChange = (tabIndex: string) => {
         setTabValue(tabIndex);

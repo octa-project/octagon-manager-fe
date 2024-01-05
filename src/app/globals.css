@@ -31,11 +31,23 @@
     @apply font-sans font-semibold shadow-lg text-center pt-1 rounded-md w-full h-8 text-[#6d758f] bg-[#f8f7f5] hover:text-white hover:bg-[#44423e];
 }
 
-
-.button {
+.select {
+    @apply shadow-lg rounded-md h-10 text-[#6d758f] bg-[#f8f7f5] hover:bg-[#44423e] hover:text-white;
 
 }
 
-.select {
+.SelectedSwitch{
+    @apply text-[#6d758f];
+}
 
+.NormalText {
+    @apply font-sans font-semibold text-[#6d758f];
+}
+
+.button {
+    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+}
+
+.secondaryButton {
+    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
