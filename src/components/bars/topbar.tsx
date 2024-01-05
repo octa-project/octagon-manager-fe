@@ -5,7 +5,7 @@ import moment from "moment"
 
 const Topbar = () => {
   return (
-    <div className='fixed top-0 right-0 grid grid-cols-3 z-10 bg-white text-indigo-800 p-3'>
+    <div className='flex flex-row bg-white text-indigo-800 p-3'>
       <div className='flex gap-3'>
 
         <strong className='leading-none'>Болорчимэг</strong>
