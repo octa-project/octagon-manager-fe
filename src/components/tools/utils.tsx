@@ -13,4 +13,3 @@ export const formatQty = (amount: number | bigint) => {
 
     return `${formattedAmount}`;
 };
-

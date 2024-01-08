@@ -7,7 +7,7 @@ import "ag-grid-community/styles/ag-theme-alpine.css";
 import {
   TextField, Typography, Divider, MenuItem, Select,
   Table, TableHead, TableRow, TableCell, TableBody, IconButton,
-  Checkbox, Box, Collapse, Drawer, Tab, Skeleton
+  Checkbox, Box, Collapse, Drawer, Skeleton
 } from "@mui/material";
 import {
   ArrowRight as ArrowRightIcon, ArrowDropDown as ArrowDropDownIcon,
@@ -15,13 +15,10 @@ import {
 } from '@mui/icons-material';
 import api from "@/src/api";
 import Image from "next/image";
-import { Input, Tabs } from 'antd';
+import { Input } from 'antd';
 import SnackBar from "@/src/components/tools/snackAlert"
 import { TabContext, TabPanel } from "@mui/lab";
 import { formatMoney, formatQty } from "@/src/components/tools/utils"
-import MainSettings from "../settings/main";
-import PrinterSettings from "../settings/printer";
-import classNames from 'classnames';
 
 class ItemController extends Component<{}, ItemState> {
 
@@ -195,11 +192,6 @@ class ItemController extends Component<{}, ItemState> {
   };
 
   handleItemTextFieldChange = (field: keyof Item, value: string | number) => {
-
-    // if ([field] === "code" ) {
-      
-    // }
-    // rowItemCodeSkuData . 
 
     this.setState((prevState) => ({
       selectedItem: {
@@ -745,32 +737,14 @@ class ItemController extends Component<{}, ItemState> {
             </div>
           </div>
           <div className="flex flex-col col-span-4">
-            <div className="flex h-24 p-3">
+            <div className="flex h-12 p-1">
               <div className="flex-initial w-full h-full">
-                <div className="grid grid-cols-4 gap-4 pt-5">
-                  <div className="col-span-2">
-                    <div className="flex items-center bg-white h-14 w-full rounded-2xl shadow border border-[#cbcbcb]">
-                      <Input
-                        className="capitalize text-[#6d758f] w-full h-full rounded-2xl border-none pl-3 pr-8"
-                        placeholder="Хайх..."
-                        onChange={(e) =>
-                          this.handleTextSearch(e.target.value)
-                        }
-                      />
-                      <Image
-                        src="/items/search.svg"
-                        alt="icon"
-                        width={24}
-                        height={24}
-                        className="mr-5 cursor-pointer"
-                      />
-                    </div>
-                  </div>
+                <div className="grid grid-cols-4 gap-4">
                   <div className="col-span-1">
                     <div
-                      className="flex flex-row bg-white h-14 w-full rounded-2xl shadow">
+                      className="flex flex-row bg-white h-10 w-full rounded shadow">
                       <Select
-                        className="capitalize text-[#6d758f] w-full rounded-2xl"
+                        className="capitalize text-[#6d758f] w-full rounded"
                         IconComponent={() => (
                           <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                             <Image
@@ -790,6 +764,25 @@ class ItemController extends Component<{}, ItemState> {
                       </Select>
                     </div>
                   </div>
+                  <div className="col-span-2">
+                    <div className="flex items-center bg-white h-10 w-full rounded shadow border border-[#cbcbcb]">
+                      <Input
+                        className="text-[#6d758f] w-full h-full rounded border-none"
+                        placeholder="Хайх..."
+                        onChange={(e) =>
+                          this.handleTextSearch(e.target.value)
+                        }
+                      />
+                      <Image
+                        src="/items/search.svg"
+                        alt="icon"
+                        width={24}
+                        height={24}
+                        className="mr-5 cursor-pointer"
+                      />
+                    </div>
+                  </div>
+
                   {/* <div
                     className="flex flex-row bg-white h-14 w-full rounded-2xl shadow">
                     <Select
@@ -802,7 +795,7 @@ class ItemController extends Component<{}, ItemState> {
                 </div>
               </div>
             </div>
-            <div className="h-full p-3">
+            <div className="h-full p-1">
               <div className="bg-white flex-initial w-full h-full shadow rounded-lg overflow-auto">
                 <div className="flex-auto">
                   <TabContext value={tabValue}>
