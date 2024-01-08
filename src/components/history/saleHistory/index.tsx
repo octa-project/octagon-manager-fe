@@ -33,7 +33,7 @@ class SaleHistoryController extends Component<{}, AgReportState> {
         { field: "itemName", headerName: "Барааны нэр" },
         { field: "totalQty", headerName: "Нийт тоо" },
         { field: "totalAmount", headerName: "Нийт дүн" },
-        { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
+        // { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
         //{ field: "isPaid", headerName: "Төлсөн эсэх" },
         //{ field: "date", headerName: "Төлсөн цаг" },
         //{ field: "isDeleted", headerName: "Устгасан" },
@@ -42,7 +42,7 @@ class SaleHistoryController extends Component<{}, AgReportState> {
       ],
       defaultColDef: {
         flex: 1,
-        minWidth: 100,
+        minWidth: 200,
         cellDataType: false,
         resizable: true,
         sortable: true,
@@ -114,6 +114,8 @@ class SaleHistoryController extends Component<{}, AgReportState> {
     const { RangePicker } = DatePicker;
     const dateFormat = "YYYY-MM-DD";
     const { rowData } = this.state;
+    const containerStyle = { width: "100%", height: "100%" }
+    const gridStyle = { height: "100%", width: "100%" }
     return (
       <div className="flex flex-col">
         <div className="flex-row">
@@ -154,21 +156,12 @@ class SaleHistoryController extends Component<{}, AgReportState> {
           </div>
         </div>
         <div className="bg-white flex-initial w-full h-full pt-2">
-            <div
-              className="ag-theme-alpine"
-              style={{ height: "100%", width: "100%" }}
-            >
+        <div className="ag-theme-alpine" style={gridStyle}>
               <AgGridReact
+                domLayout="autoHeight"
                 rowData={rowData}
                 columnDefs={this.state.columnDefs}
-                animateRows={true}
-                rowSelection="single"
                 defaultColDef={this.state.defaultColDef}
-                enableRangeSelection={true}
-                enableFillHandle={true}
-                autoGroupColumnDef={this.state.autoGroupColumnDef}
-                ensureDomOrder={true}
-                sideBar={true}
               />
             </div>
         </div>
