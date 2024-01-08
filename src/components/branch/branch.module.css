@@ -1,0 +1,65 @@
+.mainBody {
+  /* display: ; */
+}
+
+.branchHeader {
+    margin-top: 1rem;
+    background-color: #3c4b64;
+    border-radius: .5rem;
+    padding: 1rem;
+    /*box-shadow: 0 7px 25px rgba(0,0,0,0.05);*/
+    width: 100%;
+    display: flex;
+    gap: 2rem;
+  }
+
+.branchListItem {
+    margin-top: 1rem;
+    background-color: white;
+    border-radius: .5rem;
+    padding: 1rem;
+    box-shadow: 0 7px 25px rgba(0,0,0,0.05);
+    width: 100%;
+    display: flex;
+    gap: 2rem;
+}
+
+.branchHeaderItem {
+    width: 12.5%;
+    border-right-width: thin;
+}
+
+.branchHeaderItem:hover {
+  opacity: 50%;
+  cursor: pointer;
+}
+
+.branchHeaderItemLast {
+    width: 12.5%;
+}
+
+.branchHeaderItemLast:hover {
+  opacity: 50%;
+  cursor: pointer;
+}
+
+.branchItem {
+  width: 12.5%;
+  border-right-width: thin;
+}
+
+.branchListItem:hover {
+  cursor: pointer;
+  box-shadow: 0 7px 25px rgba(0,0,0,0.15);
+}
+
+.customerDrawer {
+  width: 35rem;
+  padding: 1rem;
+}
+
+.spanHeader {
+  font-weight: bold;
+  font-size: large;
+  align-self: center;
+}

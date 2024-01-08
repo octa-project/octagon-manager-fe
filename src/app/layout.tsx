@@ -1,30 +1,41 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import Sidebar from "@/src/components/bars/sidebar"
-import { ReactNode } from 'react'
+"use client"
+import React, { ReactNode, useState } from 'react';
+import './globals.css';
+import Sidebar from '@/src/components/bars/sidebar';
+import SidebarContent from '@/src/components/bars/sidebarContext';
+import { metadata } from './metadata';
+import Topbar from "@/src/components/bars/topbar";
 
-
-export const metadata: Metadata = {
-  title: 'Manager',
-  description: 'Manager'
+interface RootLayoutProps {
+  children: ReactNode;
 }
 
+const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
+  const [collapsed, setCollapsed] = useState(false);
 
-export default function RootLayout({ children, }: { children: ReactNode }) {
+  const toggleSidebar = () => {
+    setCollapsed(!collapsed);
+  };
+  
   return (
     <html lang="en">
       <body>
-        <main className='relative'>
-          <div className='flex'>
-            <div className='bg-[#6d758f] flex-initial w-72 pt-10'>
-              <Sidebar />
+        <main className="relative">
+          <SidebarContent>
+
+            <div className={`bg-[#6d758f] ${collapsed ? 'w-20' : 'w-72'} pt-10`}>
+              <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
             </div>
-            <div className='flex-auto min-h-screen overflow-auto bg-slate-100 relative'>
-              {children}
-            </div>
-          </div>
+
+            <div className="flex-auto min-h-screen overflow-auto bg-slate-100 relative">
+              <Topbar></Topbar>
+              {children}</div>
+          </SidebarContent>
+
         </main>
       </body>
     </html>
-  )
-}
+  );
+};
+
+export default RootLayout;

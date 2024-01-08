@@ -28,7 +28,7 @@ class ReportController extends Component {
                 <div className='col-span-1 bg-white shadow-md h-screen'>
                     <div className="flex-initial">
                         <ul className='py-2'>
-                            <li className='py-2 px-4 pt-10'>
+                            {/* <li className='py-2 px-4 pt-10'>
                                 <Button
                                     onClick={() => this.changeReport(0)}
                                     className={`${this.state.reportIndex === 0
@@ -43,8 +43,8 @@ class ReportController extends Component {
                                         ? normal
                                         : hovered}`}>
                                     Зарлага</Button>
-                            </li>
-                            <Divider variant="middle" />
+                            </li> */}
+                            {/* <Divider variant="middle" />
                             <li className='py-2 px-4 pt-10'>
 
                                 <Button
@@ -53,7 +53,7 @@ class ReportController extends Component {
                                         ? normal
                                         : hovered}`}>
                                     Үнийн түүх</Button>
-                            </li>
+                            </li> */}
                             <li className='py-2 px-4 pb-10'>
                                 <Button
                                     onClick={() => this.changeReport(3)}
@@ -62,15 +62,15 @@ class ReportController extends Component {
                                         : hovered}`}>
                                     Борлуулалт</Button>
                             </li>
-                            <Divider variant="middle" />
-                            <li className='py-2 px-4 pt-10'>
+                            {/* <Divider variant="middle" /> */}
+                            {/* <li className='py-2 px-4 pt-10'>
                                 <Button
                                     onClick={() => this.changeReport(4)}
                                     className={`${this.state.reportIndex === 4
                                         ? normal
                                         : hovered}`}>
                                     Касс</Button>
-                            </li>
+                            </li> */}
                         </ul>
                     </div>
                 </div>

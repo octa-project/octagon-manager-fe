@@ -2,19 +2,10 @@
 const nextConfig = {
     // output: 'export',
     // reactStrictMode: true,
-    // Optional: Change links `/me` -> `/me/` and emit `/me.html` -> `/me/index.html`
-    // trailingSlash: true,
-    
-    // Optional: Prevent automatic `/me` -> `/me/`, instead preserve `href`
-    // skipTrailingSlashRedirect: true,
-    
-    // Optional: Change the output directory `out` -> `dist`
-    // distDir: 'dist',
-    eslint: { 
-        ignoreDuringBuilds: true
-    },
     env: {
-        api_url: '43.231.113.215'
+        REACT_APP_IS_PROD: false,
+        REACT_APP_PROD_URL_PREFIX: 'https://manager-api.oktagon.mn'
     }
 }
+
 module.exports = nextConfig
