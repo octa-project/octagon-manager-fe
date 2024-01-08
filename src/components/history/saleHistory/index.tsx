@@ -8,6 +8,7 @@ import Image from "next/image";
 import dayjs from "dayjs";
 import moment from "moment";
 import { Button } from "@mui/material";
+import api from "@/src/api";
 
 interface AgReportState {
   startDate: string;
@@ -27,20 +28,17 @@ class SaleHistoryController extends Component<{}, AgReportState> {
       startDate: moment().format("YYYY-MM-DD 00:00:00"),
       endDate: moment().format("YYYY-MM-DD 23:59:59"),
       columnDefs: [
-        {
-          field: "athlete",
-          headerName: "aaaaaa",
-          filter: "agTextColumnFilter",
-        },
-        { field: "age", pivot: true },
-        { field: "country" },
-        { field: "year" },
-        { field: "date" },
-        { field: "sport" },
-        { field: "gold" },
-        { field: "silver" },
-        { field: "bronze", aggFunc: "sum" },
-        { field: "total", aggFunc: "sum" },
+        { field: "id", headerName: "№" },
+        { field: "createdDate", headerName: "Огноо" },
+        { field: "itemName", headerName: "Барааны нэр" },
+        { field: "totalQty", headerName: "Нийт тоо" },
+        { field: "totalAmount", headerName: "Нийт дүн" },
+        { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
+        //{ field: "isPaid", headerName: "Төлсөн эсэх" },
+        //{ field: "date", headerName: "Төлсөн цаг" },
+        //{ field: "isDeleted", headerName: "Устгасан" },
+        // { field: 'branchId', headerName: 'Нийт дүн' },
+        //{ field: "createdUserId", headerName: "Ажилтан" },
       ],
       defaultColDef: {
         flex: 1,
@@ -63,38 +61,22 @@ class SaleHistoryController extends Component<{}, AgReportState> {
 
   first: boolean = false;
   componentDidMount() {
-    if (this.first) return
-    this.first = true
-    this.getSale()
+    if (this.first) return;
+    this.first = true;
+    this.getSale();
   }
-
-  formatDate = (date: {
-    getFullYear: () => any;
-    getMonth: () => number;
-    getDate: () => any;
-    getHours: () => any;
-    getMinutes: () => any;
-    getSeconds: () => any;
-  }) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, "0");
-    const day = String(date.getDate()).padStart(2, "0");
-    const hours = String(date.getHours()).padStart(2, "0");
-    const minutes = String(date.getMinutes()).padStart(2, "0");
-    const seconds = String(date.getSeconds()).padStart(2, "0");
-
-    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-  };
 
   getSale = async () => {
     try {
-      const result = await apiSale("saleHistory").GetMany(
-        this.state.startDate,
-        this.state.endDate
+      const startDate = moment(this.state.startDate).format("YYYY-MM-DD HH:mm:ss");
+      const endDate = moment(this.state.endDate).format("YYYY-MM-DD HH:mm:ss");  
+
+      const result = await api.saleGetMany.GetMany(
+        startDate,
+        endDate
       );
       if (result.data.code === "200") {
         this.setState({ rowData: result.data.data });
-        this.setState({ mounted: false });
       }
     } catch (error) {
       // Handle error
@@ -131,7 +113,7 @@ class SaleHistoryController extends Component<{}, AgReportState> {
   render() {
     const { RangePicker } = DatePicker;
     const dateFormat = "YYYY-MM-DD";
-
+    const { rowData } = this.state;
     return (
       <div className="flex flex-col">
         <div className="flex-row">
@@ -148,8 +130,11 @@ class SaleHistoryController extends Component<{}, AgReportState> {
               />
             </div>
             <div className="col-span-1 pl-5">
-              <Button className="button">ШҮҮХ</Button>
+              <Button className="button" onClick={this.getSale}>
+                ШҮҮХ
+              </Button>
             </div>
+
             <div className="col-span-2">
               <div className="flex items-center bg-white h-8 w-full rounded-md shadow border border-[#cbcbcb]">
                 <Input
@@ -169,13 +154,12 @@ class SaleHistoryController extends Component<{}, AgReportState> {
           </div>
         </div>
         <div className="bg-white flex-initial w-full h-full pt-2">
-          <div style={{ width: "100%", height: "100%" }}>
             <div
               className="ag-theme-alpine"
               style={{ height: "100%", width: "100%" }}
             >
               <AgGridReact
-                rowData={this.state.rowData}
+                rowData={rowData}
                 columnDefs={this.state.columnDefs}
                 animateRows={true}
                 rowSelection="single"
@@ -187,7 +171,6 @@ class SaleHistoryController extends Component<{}, AgReportState> {
                 sideBar={true}
               />
             </div>
-          </div>
         </div>
       </div>
     );
