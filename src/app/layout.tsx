@@ -1,30 +1,58 @@
-import type { Metadata } from 'next'
-import './globals.css'
-import Sidebar from "@/src/components/bars/sidebar"
-import { ReactNode } from 'react'
+"use client";
+import "./globals.css";
+import React, {useState, useEffect, Suspense} from "react";
+import Loader from "@/src/components/common/Loader";
+import Sidebar from "@/src/components/Bars/sidebar";
+import Header from "@/src/components/Header";
 
+export default function RootLayout({children,}: { children: React.ReactNode; }) {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
 
-export const metadata: Metadata = {
-  title: 'Manager',
-  description: 'Manager'
-}
+    const [loading, setLoading] = useState<boolean>(true);
 
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 1000); // just for fancy
+    }, []);
 
-export default function RootLayout({ children, }: { children: ReactNode }) {
-  return (
-    <html lang="en">
-      <body>
-        <main className='relative'>
-          <div className='flex'>
-            <div className='bg-[#6d758f] flex-initial w-72 pt-10'>
-              <Sidebar />
-            </div>
-            <div className='flex-auto min-h-screen overflow-auto bg-slate-100 relative'>
-              {children}
-            </div>
-          </div>
-        </main>
-      </body>
-    </html>
-  )
+    return (
+        <html lang="en">
+        <body suppressHydrationWarning={true}>
+        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+            {loading ? (
+                <Loader/>
+            ) : (
+                <div className="flex h-screen overflow-hidden">
+                    {/* <!-- ===== Sidebar Start ===== --> */}
+                    <Sidebar
+                        sidebarOpen={sidebarOpen}
+                        setSidebarOpen={setSidebarOpen}
+                    />
+                    {/* <!-- ===== Sidebar End ===== --> */}
+
+                    {/* <!-- ===== Content Area Start ===== --> */}
+                    <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                        {/* <!-- ===== Header Start ===== --> */}
+                        <Header
+                            sidebarOpen={sidebarOpen}
+                            setSidebarOpen={setSidebarOpen}
+                        />
+                        {/* <!-- ===== Header End ===== --> */}
+
+                        {/* <!-- ===== Main Content Start ===== --> */}
+                        <main>
+                            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                                <Suspense fallback={Loader()}>
+                                    {children}
+                                </Suspense>
+                            </div>
+                        </main>
+                        {/* <!-- ===== Main Content End ===== --> */}
+                    </div>
+                    {/* <!-- ===== Content Area End ===== --> */}
+                </div>
+            )}
+        </div>
+        </body>
+        </html>
+    );
 }

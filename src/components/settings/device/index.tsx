@@ -26,14 +26,9 @@ class DeviceSettings extends Component<{}, AgReportState> {
 
     constructor(props: any) {
         super(props);
-
-
     }
-
     componentDidMount() {
-
         this.getItems();
-
     }
 
     getItems = async () => {
@@ -77,15 +72,10 @@ class DeviceSettings extends Component<{}, AgReportState> {
             console.error(error);
         }
     }
-    async render() {
-
+    render() {
         const containerStyle = {width: '100%', height: '100%'};
-
-
         return (
-
             <div className="h-full">
-
                 <div style={containerStyle}>
                     <div>
                         <div className="w-full mt-2 flex flex-row">

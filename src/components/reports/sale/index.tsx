@@ -2,6 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
+import axios from "axios";
 
 interface OutcomeReportModel {
 
@@ -67,9 +68,8 @@ class SaleReport extends Component<{}, AgReportState> {
     }
 
     getGridItems = async () => {
-        const response = await fetch('https://www.ag-grid.com/example-assets/olympic-winners.json');
-        const result = await response.json();
-        this.setState({ rowData: result });
+        const response = await axios.get('https://www.ag-grid.com/example-assets/olympic-winners.json');
+        this.setState({ rowData: response.data });
     }
 
     doubleClick = (rowData: any) => {

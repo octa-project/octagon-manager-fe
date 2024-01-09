@@ -1,4 +1,4 @@
-import Topbar from '../components/bars/topbar'
+import Topbar from '@/src/components/Bars/topbar'
 import DashboardController from '../components/dashboard'
 
 const Home = () => {
