@@ -52,6 +52,10 @@
     @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
 
+.thirdButton {
+    @apply font-sans font-semibold shadow-lg rounded-lg h-10 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+}
+
 .headerButton {
     @apply font-sans font-semibold shadow-lg rounded-lg h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
