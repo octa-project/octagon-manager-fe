@@ -1,11 +1,14 @@
 "use client"
-import ItemController from "@/src/components/items";
+import PurchaseController from "@/src/components/purchase";
+import { SnackbarProvider } from "notistack";
 
 const Purchase = () => {
     return (
-        <div className='p-5'>
-            Татан авалт
-      </div>
+        <SnackbarProvider>
+            <div>
+                <PurchaseController />
+            </div>
+        </SnackbarProvider>
     )
 }
 
