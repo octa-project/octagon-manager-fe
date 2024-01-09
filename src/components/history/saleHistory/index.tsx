@@ -1,62 +1,48 @@
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import { AgGridReact } from "ag-grid-react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import { Result } from "postcss";
 import apiSale from "@/src/api/apiSale";
+import { DatePicker, Input } from "antd";
+import Image from "next/image";
+import dayjs from "dayjs";
+import moment from "moment";
+import { Button } from "@mui/material";
 import api from "@/src/api";
 
-interface OutcomeReportModel {
-  startDate: Date;
-  endDate: Date;
-  totalSalesAmount: number;
-  totalSalesQty: number;
-
-  sales: SaleHistroyModel[];
-}
-interface ItemSale {
-  id: number;
-  date: Date;
-  totalQty: number;
-  totalAmount: number;
-  paidTotalAmount: number;
-  isPaid: boolean;
-  isDeleted: boolean;
-  branchId: number;
-  createdUserId: number;
+interface AgReportState {
+  startDate: string;
+  endDate: string;
+  columnDefs: any[];
+  defaultColDef: any;
+  autoGroupColumnDef: any;
+  rowData: any[];
+  rowSearchData: any[]; // Added rowSearchData to the state
 }
 
-interface SaleHistroyModel {
-  id: number;
-  date: Date;
-  totalQty: number;
-  totalAmount: number;
-  isPaid: boolean;
-  isDeleted: boolean;
-  branchId: number;
-  createdUserId: number;
-}
-
-class saleHistory extends Component<{}, AgReportState> {
+class SaleHistoryController extends Component<{}, AgReportState> {
   constructor(props: any) {
     super(props);
 
     this.state = {
+      startDate: moment().format("YYYY-MM-DD 00:00:00"),
+      endDate: moment().format("YYYY-MM-DD 23:59:59"),
       columnDefs: [
         { field: "id", headerName: "№" },
-        { field: "date", headerName: "Төлсөн цаг" },
+        { field: "createdDate", headerName: "Огноо" },
+        { field: "itemName", headerName: "Барааны нэр" },
         { field: "totalQty", headerName: "Нийт тоо" },
         { field: "totalAmount", headerName: "Нийт дүн" },
-        { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
-        { field: "isPaid", headerName: "Төлсөн эсэх" },
-        { field: "createdDate", headerName: "Огноо" },
-        { field: "isDeleted", headerName: "Устгасан" },
+        // { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
+        //{ field: "isPaid", headerName: "Төлсөн эсэх" },
+        //{ field: "date", headerName: "Төлсөн цаг" },
+        //{ field: "isDeleted", headerName: "Устгасан" },
         // { field: 'branchId', headerName: 'Нийт дүн' },
-        { field: "createdUserId", headerName: "Ажилтан" },
+        //{ field: "createdUserId", headerName: "Ажилтан" },
       ],
       defaultColDef: {
         flex: 1,
-        minWidth: 100,
+        minWidth: 200,
         cellDataType: false,
         resizable: true,
         sortable: true,
@@ -69,79 +55,119 @@ class saleHistory extends Component<{}, AgReportState> {
         minWidth: 200,
       },
       rowData: [],
+      rowSearchData: [], // Initialize rowSearchData
     };
   }
 
+  first: boolean = false;
   componentDidMount() {
-    this.getSales();
+    if (this.first) return;
+    this.first = true;
+    this.getSale();
   }
 
-   formatDate = (date: { getFullYear: () => any; getMonth: () => number; getDate: () => any; getHours: () => any; getMinutes: () => any; getSeconds: () => any; }) => {
-    const year = date.getFullYear();
-    const month = String(date.getMonth() + 1).padStart(2, '0');
-    const day = String(date.getDate()).padStart(2, '0');
-    const hours = String(date.getHours()).padStart(2, '0');
-    const minutes = String(date.getMinutes()).padStart(2, '0');
-    const seconds = String(date.getSeconds()).padStart(2, '0');
-  
-    return `${year}-${month}-${day} 00:00:00`;
-  };
-
-  getSales = async () => {
+  getSale = async () => {
     try {
-        const today = new Date();
-        const startDate = this.formatDate(today);
-        
-        // Set endDate and add 1 month in the specified format
-        const endDate = new Date();
-        endDate.setMonth(endDate.getMonth() + 1);
-        const newEndDate = this.formatDate(endDate);
-        
+      const startDate = moment(this.state.startDate).format("YYYY-MM-DD HH:mm:ss");
+      const endDate = moment(this.state.endDate).format("YYYY-MM-DD HH:mm:ss");  
 
-      const result = await api.saleGetMany.GetMany(startDate, newEndDate);
-
+      const result = await api.saleGetMany.GetMany(
+        startDate,
+        endDate
+      );
       if (result.data.code === "200") {
         this.setState({ rowData: result.data.data });
-      } else {
-        throw new Error("Failed to fetch data");
       }
     } catch (error) {
       // Handle error
-    } finally {
     }
   };
 
-  // doubleClick = (rowData: any) => {
-  //     console.log(rowData);
-  // }
+  handleSearchDate = (dates: any, dateStrings: any[]) => {
+    this.setState({
+      startDate: dateStrings[0] + " 00:00:00",
+      endDate: dateStrings[1] + " 23:59:59",
+    });
+  };
+
+  handleTextSearch = (text: string) => {
+    const lowercaseText = text.toLowerCase();
+
+    if (text === "") {
+      this.setState({ rowSearchData: this.state.rowData });
+    } else {
+      const filteredRowData = this.state.rowData.filter((item) => {
+        return Object.values(item).some((value) => {
+          if (typeof value === "string") {
+            const lowercaseValue = value.toLowerCase();
+            return lowercaseValue.includes(lowercaseText);
+          }
+          return false;
+        });
+      });
+
+      this.setState({ rowSearchData: filteredRowData });
+    }
+  };
 
   render() {
-    const containerStyle = { width: "100%", height: "100%" };
-    const gridStyle = { height: "100%", width: "100%" };
-
+    const { RangePicker } = DatePicker;
+    const dateFormat = "YYYY-MM-DD";
+    const { rowData } = this.state;
+    const containerStyle = { width: "100%", height: "100%" }
+    const gridStyle = { height: "100%", width: "100%" }
     return (
-      <div className="flex">
-        <div className="bg-white flex-initial w-full h-screen p-2">
-          <div style={containerStyle}>
-            <div className="ag-theme-alpine" style={gridStyle}>
-              <AgGridReact
-                rowData={this.state.rowData}
-                columnDefs={this.state.columnDefs}
-                animateRows={true}
-                rowSelection="multiple"
-                defaultColDef={this.state.defaultColDef}
-                enableRangeSelection={true}
-                enableFillHandle={true}
-                autoGroupColumnDef={this.state.autoGroupColumnDef}
-                ensureDomOrder={true}
-                sideBar={true}
-                //onRowDoubleClicked={(e) => this.doubleClick(e.data)}
+      <div className="flex flex-col">
+        <div className="flex-row">
+          <div className="grid grid-cols-4">
+            <div className="col-span-1">
+              <RangePicker
+                className="text-xl h-8 shadow w-full"
+                defaultValue={[
+                  dayjs(this.state.startDate, dateFormat),
+                  dayjs(this.state.endDate, dateFormat),
+                ]}
+                format={dateFormat}
+                onChange={this.handleSearchDate}
               />
             </div>
+            <div className="col-span-1 pl-5">
+              <Button className="button" onClick={this.getSale}>
+                ШҮҮХ
+              </Button>
+            </div>
+
+            <div className="col-span-2">
+              <div className="flex items-center bg-white h-8 w-full rounded-md shadow border border-[#cbcbcb]">
+                <Input
+                  className="capitalize text-[#6d758f] w-full h-full rounded-2xl border-none pl-3 pr-8"
+                  placeholder="Хайх..."
+                  onChange={(e) => this.handleTextSearch(e.target.value)}
+                />
+                <Image
+                  src="/items/search.svg"
+                  alt="icon"
+                  width={24}
+                  height={24}
+                  className="mr-5 cursor-pointer"
+                />
+              </div>
+            </div>
           </div>
+        </div>
+        <div className="bg-white flex-initial w-full h-full pt-2">
+        <div className="ag-theme-alpine" style={gridStyle}>
+              <AgGridReact
+                domLayout="autoHeight"
+                rowData={rowData}
+                columnDefs={this.state.columnDefs}
+                defaultColDef={this.state.defaultColDef}
+              />
+            </div>
         </div>
       </div>
     );
   }
 }
-export default saleHistory;
+
+export default SaleHistoryController;

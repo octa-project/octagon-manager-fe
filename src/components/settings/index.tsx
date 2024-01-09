@@ -1,5 +1,5 @@
-import {Button, Card} from "@mui/material";
-import React, {useState} from "react";
+import { Button, Card } from "@mui/material";
+import React, { useState } from "react";
 import classNames from 'classnames';
 import Tab from '@mui/material/Tab';
 import TabContext from '@mui/lab/TabContext';
@@ -13,60 +13,48 @@ import AccessSettings from "@/src/components/settings/access";
 
 const SettingsController = () => {
 
-    const [tabValue, setTabValue] = useState("0");
+    const [tabValue, setTabValue] = useState("4");
 
     const tabChange = (tabIndex: string) => {
         setTabValue(tabIndex);
     };
 
-    const tabClass = (index: string) =>
-        classNames(
-            'font-sans capitalize font-semibold text-base rounded-lg',
-            {
-                'bg-[#e2e3e9] text-[#6d758f] hover:bg-[#6d758f] hover:text-white opacity-100':
-                    tabValue === index,
-                'bg-white text-[#6d758f] hover:bg-[#6d758f] hover:text-white opacity-70':
-                    tabValue !== index,
-            }
-        );
+    const tabs: TabHeaders[] = [
+        { id: "main", name: "ҮНДСЭН", index: "0" },
+        { id: "device", name: "ТӨХӨӨРӨМЖ", index: "1" },
+        { id: "access", name: "ЭРХ", index: "2" },
+        { id: "branch", name: "САЛБАР", index: "3" },
+        { id: "printer", name: "ПРИНТЕР", index: "4" },
+    ];
 
     return (
         <div className="flex flex-col p-5 gap-5 h-full">
-            <div className="bg-white h-12 shadow-md rounded-lg">
-                <div className="w-full h-full grid grid-cols-5 justify-items items-center gap-5 pl-2 pr-2">
-                    <Button onClick={() => tabChange("0")} className={tabClass("0")}>
-                        Үндсэн
-                    </Button>
-                    <Button onClick={() => tabChange("3")} className={tabClass("3")}>
-                        Төхөөрөмж
-                    </Button>
-                    <Button onClick={() => tabChange("2")} className={tabClass("2")}>
-                        Эрх
-                    </Button>
-                    <Button onClick={() => tabChange("4")} className={tabClass("4")}>
-                        Салбар
-                    </Button>
-                    <Button onClick={() => tabChange("1")} className={tabClass("1")}>
-                        Принтер
-                    </Button>
+            <div className="bg-white h-14 shadow-lg rounded-lg">
+                <div className="w-full h-14 grid grid-cols-5 justify-items items-center gap-5 px-2">
+                    {tabs.map((item, index) => (
+                        <div key={item.index} onClick={() => tabChange(item.index)}
+                            className={tabValue === item.index ? "topBarSelected" : "topBarNoSelected"}>
+                            {item.name}
+                        </div>
+                    ))}
                 </div>
             </div>
             <div className="bg-white h-full shadow-md rounded-lg overflow-y-auto">
                 <TabContext value={tabValue}>
                     <TabPanel value={"0"} className="p-4">
-                        <MainSettings/>
+                        <MainSettings />
                     </TabPanel>
                     <TabPanel value={"1"} className="p-4">
-                        <PrinterSettings/>
+                        <DeviceSettings />
                     </TabPanel>
                     <TabPanel value={"2"} className="p-4">
-                        <AccessSettings/>
+                        <AccessSettings />
                     </TabPanel>
                     <TabPanel value={"3"} className="p-4">
-                        <DeviceSettings/>
+                        <BranchSettings />
                     </TabPanel>
                     <TabPanel value={"4"} className="p-4">
-                        <BranchSettings/>
+                        <PrinterSettings />
                     </TabPanel>
                 </TabContext>
             </div>

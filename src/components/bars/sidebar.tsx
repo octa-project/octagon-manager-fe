@@ -140,6 +140,3 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </div>
         </aside>
     );
-};
-
-export default Sidebar;

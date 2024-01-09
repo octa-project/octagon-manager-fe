@@ -1,16 +1,5 @@
 "use client";
-import {
-  Avatar,
-  Card,
-  Divider,
-  Fab,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem,
-  TextField,
-  Typography,
-} from "@mui/material";
+import { Card, TextField, Typography } from "@mui/material";
 import { Component } from "react";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";
 import ArrowDownwardIcon from "@mui/icons-material/ArrowDownward";
@@ -22,23 +11,57 @@ import TopSales from "./topSales";
 import TopdaysSales from "./todaysSales";
 import TotalProfit from "./totalProfit";
 import TotalSales from "./totalSales";
+import api from "@/src/api";
+import { Dashboard } from "@mui/icons-material";
 
 interface DashboardControllerState {
   topLeft: number;
   topRight: number;
   bottomLeft: number;
   bottomRight: number;
+  loading: boolean;
+  error: string;
+  dashboard: Dashboard;
+  dashboardDataWeekly: DashboardDataWeekly;
+  days: number[];
 }
+
+interface Dashboard {
+  total_income: number;
+  month_profit: number;
+  day_income: number;
+}
+
+interface DashboardDataWeekly {
+  totalIncome: number;
+  qty: number;
+  weekDay: number;
+}
+
+
 
 class DashboardController extends Component<{}, DashboardControllerState> {
   constructor(props: any) {
     super(props);
 
     this.state = {
-      topLeft: 1,
+      topLeft: 0,
       topRight: 0,
       bottomLeft: 0,
       bottomRight: 0,
+      loading: false,
+      error: "",
+      dashboard: {
+        total_income: 0,
+        month_profit: 0,
+        day_income: 0,
+      },
+      dashboardDataWeekly: {
+        totalIncome: 0,
+        qty: 0,
+        weekDay: 0,
+      },
+      days: [],
     };
   }
   chartsParams = {
@@ -47,7 +70,97 @@ class DashboardController extends Component<{}, DashboardControllerState> {
   };
   componentDidMount() {
     this.handleCardStates(0, 0, 0, 0);
+    this.getDashboard();
+    this.getDailyIncome();
+    this.getDashboardDataWeekly();
   }
+  formatDate = (date: {
+    getFullYear: () => any;
+    getMonth: () => number;
+    getDate: () => any;
+    getHours: () => any;
+    getMinutes: () => any;
+    getSeconds: () => any;
+  }) => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+  };
+  getDashboard = async () => {
+    try {
+      this.setState({ loading: true, error: "" });
+      const today = new Date();
+      const startDate = this.formatDate(today);
+      const result = await api.get_dashboard.getDashboard(startDate);
+      if (result.data.code === "200") {
+        console.log(result);
+/*
+        this.setState((prevState) => ({
+          ...prevState,
+          dashboard: responseDashboard,
+        }));*/
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  getDailyIncome = async () => {
+    try {
+      this.setState({ loading: true, error: "" });
+      const today = new Date();
+      const startDate = this.formatDate(today);
+      const result = await api.get_daily_income.getDailyIncome(startDate);
+      if (result.data.code === "200") {
+        const responseDashboard: Dashboard = result.data.data;
+
+        this.setState((prevState) => ({
+          ...prevState,
+          dashboard: responseDashboard,
+        }));
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+  getDashboardDataWeekly = async () => {
+    try {
+      this.setState({ loading: true, error: "" });
+
+      const result =
+        await api.get_dashboard_data_weekly.getDashboardDataWeekly();
+
+      if (result.data.code === "200") {
+        const totalIncomeArray = result.data.data.map(
+          (item: { totalIncome: any }) => item.totalIncome
+        );
+        this.setState({ loading: false, days: totalIncomeArray });
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      this.setState({ loading: false, error: "Failed to fetch data" });
+    }
+  };
+
+  handleTopLeftChange = (value:number) => {
+    this.setState({ topLeft: value });
+    // Add any additional logic based on the changed value if needed
+  };
 
   handleCardStates = (tl: number, tr: number, bl: number, br: number) => {
     this.setState({
@@ -57,6 +170,23 @@ class DashboardController extends Component<{}, DashboardControllerState> {
       bottomRight: br,
     });
   };
+
+  formatMoney = (amount: number | bigint) => {
+    const formattedAmount = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+    }).format(amount);
+
+    return `${formattedAmount} ₮`;
+  };
+
+  formatQty = (amount: number | bigint) => {
+    const formattedAmount = new Intl.NumberFormat('en-US', {
+      minimumFractionDigits: 0,
+    }).format(amount);
+
+    return `${formattedAmount}`;
+  };
+
   render() {
     return (
       <div className="grid grid-cols-5">
@@ -72,7 +202,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                         Нийт орлого
                       </Typography>
                       <Typography className="font-sans font-bold text-[#6d758fff] text-xl text-center pt-2 align-center">
-                        2’350’800₮
+                        {this.formatMoney(this.state.dashboard.total_income)}
                       </Typography>
                       <ArrowUpwardIcon color="success" />
                     </Card>
@@ -81,7 +211,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                         Өнөөдрийн орлого
                       </Typography>
                       <Typography className="font-sans font-bold text-[#6d758fff] text-xl text-center pt-2 align-center">
-                        2’350’800₮
+                        {this.formatMoney(this.state.dashboard.day_income)}
                       </Typography>
                     </Card>
                     <Card className="w-full h-32 shadow-md rounded-lg font-sans text-[#6d758f] text-md items-center justify-center flex flex-col">
@@ -92,7 +222,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                         className="ffont-sans font-bold text-[#6d758fff] text-xl text-center pt-2 align-center"
                         gutterBottom
                       >
-                        750’800₮
+                        {this.formatMoney (this.state.dashboard.month_profit)}
                       </Typography>
                       <ArrowDownwardIcon sx={{ color: pink[500] }} />
                     </Card>
@@ -103,15 +233,16 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                         className="font-bold text-[#6d758fff] text-xl text-center pt-5 align-center"
                         gutterBottom
                       >
-                        112
+                        12
+                        {/* {this.state.dashboard.month_profit} */}
                       </Typography>
                     </Card>
                   </div>
-                  {this.state.topLeft === 0 ? <ChooseCard /> : null}
-                  {this.state.topLeft === 1 ? <TopSales /> : null}
+                  {this.state.topLeft === 0 ? <ChooseCard onTopLeftChange={this.handleTopLeftChange} /> : null}
+                  {this.state.topLeft === 4 ? <TopSales /> : null}
                   {this.state.topLeft === 2 ? <TopdaysSales /> : null}
                   {this.state.topLeft === 3 ? <TotalProfit /> : null}
-                  {this.state.topLeft === 4 ? <TotalSales /> : null}
+                  {this.state.topLeft === 1 ? <TotalSales /> : null}
                 </div>
                 <div className="col-span-2 flex flex-col gap-5">
                   <Card className="w-full shadow-md h-72 rounded-lg items-center justify-center flex flex-col">
@@ -122,7 +253,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                       {...this.chartsParams}
                       xAxis={[
                         {
-                          id: "barCategories",
+                          id: "Days",
                           data: [
                             "Даваа",
                             "Мягмар",
@@ -137,7 +268,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                       ]}
                       series={[
                         {
-                          data: [150, 130, 297, 98, 423, 80, 176],
+                          data: this.state.days,
                           color: "#6d758f",
                         },
                       ]}
@@ -145,11 +276,11 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                       height={250}
                     />
                   </Card>
-                  {this.state.topLeft === 0 ? <ChooseCard /> : null}
-                  {this.state.topLeft === 1 ? <TopSales /> : null}
-                  {this.state.topLeft === 2 ? <TopdaysSales /> : null}
-                  {this.state.topLeft === 3 ? <TotalProfit /> : null}
-                  {this.state.topLeft === 4 ? <TotalSales /> : null}
+                  {this.state.topRight === 0 ? <ChooseCard onTopLeftChange={this.handleTopLeftChange} /> : null}
+                  {this.state.topRight === 4 ? <TopSales /> : null}
+                  {this.state.topRight === 2 ? <TopdaysSales /> : null}
+                  {this.state.topRight === 3 ? <TotalProfit /> : null}
+                  {this.state.topRight === 1 ? <TotalSales /> : null}
                 </div>
               </div>
             </div>

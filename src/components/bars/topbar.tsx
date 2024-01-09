@@ -1,27 +1,43 @@
 import Avatar from "@mui/material/Avatar"
 import { LogoutOutlined, PersonOutlineOutlined } from '@mui/icons-material'
-import { IconButton, Link } from "@mui/material"
+import { Button, IconButton, Link } from "@mui/material"
 import moment from "moment"
+import { Component, useEffect, useState } from "react";
+import Image from "next/image";
 
 const Topbar = () => {
-  return (
-    <div className='fixed top-0 right-0 grid grid-cols-3 z-10 bg-white text-indigo-800 p-3'>
-      <div className='flex gap-3'>
+    const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
-        <strong className='leading-none'>Болорчимэг</strong>
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setCurrentDateTime(new Date());
+        }, 1000);
+        return () => clearInterval(intervalId);
+    }, []);
 
-      </div>
-      <div className='text-center py-[5px]'>
-        <span className='text-gray-500'>Manager:</span> <strong>Салбар 1</strong>
-      </div>
-      <div className='flex justify-end items-center gap-3'>
-        <div>{moment().format("YYYY/MM/DD H:m")}</div>
-        <Link href="http://localhost:3001" >
-          <IconButton className="rounded-lg bg-gray-100 text-gray-500 hover:bg-indigo-500 hover:text-white"><PersonOutlineOutlined sx={{ fontSize: 18 }} /></IconButton>
-        </Link>
-        <IconButton className="rounded-lg bg-gray-100 text-gray-500 hover:bg-rose-500 hover:text-white"><LogoutOutlined sx={{ fontSize: 18 }} /></IconButton>
-      </div>
-    </div>
-  )
+    const formattedDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+    return (
+        <div className='flex-row w-full bg-[#6d758f] p-3 opacity-80'>
+            <div className="grid grid-cols-5">
+                <div className="headerText col-span-2">Demo manager</div>
+                <div className="headerText col-span-2">{formattedDateTime}</div>
+
+                <div className="col-span-1">
+                    <div className="flex flex-row justify-end gap-6">
+                        <Button className="headerButton flex items-center">
+                            <span className="mr-2">Борлуулалт</span>
+                            <Image src="/header/sale.svg" alt="SVG Image" width={20} height={20} />
+                        </Button>
+                        <Button className="headerButton">
+                            <Image src="/header/bell.svg" alt="SVG Image" width={20} height={20} />
+                        </Button>
+                        <Button className="headerButton ml-auto"> {/* Set margin-left to auto */}
+                            <Image src="/header/signOut.svg" alt="SVG Image" width={20} height={20} />
+                        </Button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
 }
 export default Topbar

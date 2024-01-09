@@ -1,3 +1,9 @@
+import LocalFireDepartmentIcon from "@mui/icons-material/LocalFireDepartment";
+import MovingIcon from "@mui/icons-material/Moving";
+import ArrowOutwardIcon from "@mui/icons-material/ArrowOutward";
+import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
+import LocalShippingIcon from "@mui/icons-material/LocalShipping";
+import AutoGraphIcon from "@mui/icons-material/AutoGraph";
 import {
   AssuredWorkloadSharp,
   Logout,
@@ -16,26 +22,43 @@ import {
 } from "@mui/material";
 import { Component, ReactNode } from "react";
 import AddIcon from "@mui/icons-material/Add";
+import { green, orange, pink, red } from "@mui/material/colors";
+import api from "@/src/api";
 
 interface CardControllerState {
-    anchorEl: HTMLElement | null;
-  }
+  anchorEl: HTMLElement | null;
+  topLeft: number; // Add this line to include the topLeft property
+}
 
-class ChooseCard extends Component<{}, CardControllerState> {
-  constructor(props: any) {
+interface CardControllerProps {
+  topLeft: number;
+}
+
+interface ChooseCardProps {
+  onTopLeftChange: (value: number) => void;
+}
+
+class ChooseCard extends Component<ChooseCardProps, CardControllerState> {
+  constructor(props: ChooseCardProps) {
     super(props);
 
     this.state = {
       anchorEl: null,
+      topLeft: 0 // Add this line to include the topLeft property
     };
   }
 
-  componentDidMount() {}
-
-  getdatas = () => {};
-
   handleClick = (event: React.MouseEvent<HTMLElement>) => {
     this.setState({ anchorEl: event.currentTarget });
+  };
+
+  handleTopLeftClick = (index: number) => {
+    this.setState({ topLeft: index }, () => {
+      // Notify the parent component about the change
+      this.props.onTopLeftChange(this.state.topLeft);
+    });
+
+    this.handleClose();
   };
 
   handleClose = () => {
@@ -45,7 +68,6 @@ class ChooseCard extends Component<{}, CardControllerState> {
   render() {
     const { anchorEl } = this.state;
     const open = Boolean(anchorEl);
-
     return (
       <div>
         <Card className="w-full h-52 shadow-md rounded-lg items-center justify-center flex flex-col">
@@ -93,28 +115,26 @@ class ChooseCard extends Component<{}, CardControllerState> {
             transformOrigin={{ horizontal: "right", vertical: "top" }}
             anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
           >
-            <MenuItem onClick={this.handleClose}>
-              <Avatar /> Өндөр боруулалттай 10 Бараа
-            </MenuItem>
-            <MenuItem onClick={this.handleClose}>
-              <Avatar /> Сарын өндөр боруулалттай 10 Бараа
+            <MenuItem onClick={() => this.handleTopLeftClick(1)}>
+              <LocalFireDepartmentIcon sx={{ color: orange[600] }} /> Өндөр
+              боруулалттай 10 Бараа
             </MenuItem>
             <Divider />
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
-                <PersonAdd fontSize="small" />
+                <AttachMoneyIcon sx={{ color: green[800] }} fontSize="small" />
               </ListItemIcon>
               Өдрийн орлого
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
-                <Settings fontSize="small" />
+                <AutoGraphIcon sx={{ color: green[800] }} fontSize="small" />
               </ListItemIcon>
               Сарын нийт ашиг
             </MenuItem>
             <MenuItem onClick={this.handleClose}>
               <ListItemIcon>
-                <Logout fontSize="small" />
+                <LocalShippingIcon sx={{ color: red[800] }} fontSize="small" />
               </ListItemIcon>
               Дуусаж буй барааны жагсаалт
             </MenuItem>
