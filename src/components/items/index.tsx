@@ -11,7 +11,7 @@ import {
 } from "@mui/material";
 import {
   ArrowRight as ArrowRightIcon, ArrowDropDown as ArrowDropDownIcon,
-  Edit as EditIcon, Checklist as ChecklistIcon, Add as AddIcon,
+  Edit as EditIcon, Checklist as ChecklistIcon, Add as AddIcon, Autorenew as AutorenewIcon
 } from '@mui/icons-material';
 import api from "@/src/api";
 import Image from "next/image";
@@ -28,6 +28,7 @@ class ItemController extends Component<{}, ItemState> {
 
     this.state = {
       first: false,
+      downloadAll: false,
       tabValue: "0",
       loading: false,
       error: '',
@@ -150,6 +151,8 @@ class ItemController extends Component<{}, ItemState> {
       measures: [],
       itemGroups: [],
       selectedRowItemCodes: [],
+      selectedSkuGroupId: 0,
+      skuItemGroups: [],
       skeleten: [1, 2, 3, 4, 5, 6]
     };
   }
@@ -162,6 +165,7 @@ class ItemController extends Component<{}, ItemState> {
     this.getItemCodes()
     this.getMeasures()
     this.getItemGroups()
+    this.getSkuItemGroups()
     this.getSkuItems()
   }
 
@@ -172,6 +176,56 @@ class ItemController extends Component<{}, ItemState> {
 
   handleTabChange = (index: string) => {
     this.setState({ tabValue: index });
+  };
+
+  handleSkuDownload = () => {
+    this.downloadSkuItems();
+  };
+
+
+  handleSkuClear = () => {
+    this.setState({ rowSearchItemCodeSkuData: this.state.rowItemCodeSkuData, selectedSkuGroupId: 0 });
+    SnackBar.success("Хайлтыг цэвэрлэлээ");
+
+  };
+
+  handleSkuGroupChange = (value: string | number) => {
+
+    debugger
+    const numericValue = Number(value);
+
+    if (!isNaN(numericValue)) {
+      this.setState({ selectedSkuGroupId: numericValue });
+
+      if (numericValue === 0) {
+        this.setState({ rowSearchItemCodeSkuData: this.state.rowItemCodeSkuData });
+      } else {
+        const filteredRowData = this.state.rowItemCodeSkuData.filter((t) => t.groupId === numericValue)
+        this.setState({ rowSearchItemCodeSkuData: filteredRowData });
+      }
+    } else {
+      console.error('Invalid numeric value:', value);
+    }
+  };
+
+  handleTextSearch = (text: string) => {
+    const lowercaseText = text.toLowerCase();
+
+    if (text === '') {
+      this.setState({ rowSearchData: this.state.rowData });
+    } else {
+      const filteredRowData = this.state.rowData.filter((item) => {
+        return Object.values(item).some((value) => {
+          if (typeof value === 'string') {
+            const lowercaseValue = value.toLowerCase();
+            return lowercaseValue.includes(lowercaseText);
+          }
+          return false;
+        });
+      });
+
+      this.setState({ rowSearchData: filteredRowData });
+    }
   };
 
   handleFilterClick = () => {
@@ -198,10 +252,15 @@ class ItemController extends Component<{}, ItemState> {
         [field]: value,
       },
     }));
+  
+    if (field === "barcode") {
+      // if (value.toString().length === 13) {
+        this.getItemCodeByBarcode(value.toString());
+      // }
+    }
   };
 
   handleItemTextFieldChange = (field: keyof Item, value: string | number) => {
-
     this.setState((prevState) => ({
       selectedItem: {
         ...prevState.selectedItem,
@@ -237,23 +296,12 @@ class ItemController extends Component<{}, ItemState> {
     this.setItemCodeState(true, itemCodeData);
   };
 
-  handleTextSearch = (text: string) => {
-    const lowercaseText = text.toLowerCase();
-
-    if (text === '') {
-      this.setState({ rowSearchData: this.state.rowData });
-    } else {
-      const filteredRowData = this.state.rowData.filter((item) => {
-        return Object.values(item).some((value) => {
-          if (typeof value === 'string') {
-            const lowercaseValue = value.toLowerCase();
-            return lowercaseValue.includes(lowercaseText);
-          }
-          return false;
-        });
-      });
-
-      this.setState({ rowSearchData: filteredRowData });
+  handleRefreshClick = (isFromButton: boolean) => {
+    this.setState({ rowItemCodeData: [] });
+    this.setState({ rowSearchItemCodeData: [] });
+    this.getItemCodes();
+    if (isFromButton) {
+      SnackBar.success("Бараа дахин дуудлаа");
     }
   };
 
@@ -319,6 +367,69 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
+  getSkuItemGroups = async () => {
+    try {
+      this.setState({ loading: true, error: '' });
+
+      const result = await api.groups_getManyGroups.getManyGroups();
+
+      if (result.data.code === "200") {
+        const skuItemGroups: ItemGroup[] = result.data.data.map((itemGroup: {
+          id: any;
+          code: any;
+          name: any;
+          parentId: any;
+          color: any;
+          createdDate: any;
+        }) => ({
+          id: itemGroup.id,
+          code: itemGroup.code,
+          name: itemGroup.name,
+          parentId: itemGroup.parentId,
+          color: itemGroup.color,
+          createdDate: itemGroup.createdDate,
+        }));
+
+        console.log(result.data.data)
+
+        this.setState({ skuItemGroups });
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      this.setState({ loading: false });
+    }
+  };
+
+  downloadSkuItems = () => {
+    debugger
+    const { rowItemCodeSkuData, selectedSkuGroupId } = this.state;
+
+    const items = this.state.downloadAll ? rowItemCodeSkuData : rowItemCodeSkuData.filter((t) => t.groupId === selectedSkuGroupId);
+
+
+    items.forEach(element => {
+
+      const convertedItem: ItemCode = {
+        id: 0,
+        itemId: element.itemId,
+        barcode: element.barcode,
+        name: element.name,
+        sellPrice: element.sellPrice,
+        purchasePrice: element.costPrice,
+        measureId: element.measureId,
+        measureName: "",
+        qty: 1,
+        createdDate: element.createdDate,
+        isDeleted: false,
+      };
+      this.saveUpdateItemCode(convertedItem);
+    });
+
+  };
+
   getMeasures = async () => {
     try {
       this.setState({ loading: true, error: '' });
@@ -326,8 +437,7 @@ class ItemController extends Component<{}, ItemState> {
       const result = await api.measure_get_all.getMeasures();
       if (result.data.code === "200") {
         const measures: Measure[] = result.data.data.map((measure: { id: any; name: any; code: any; }) => ({
-          id: measure.id,
-          code: measure.code,
+          id: measure.id, code: measure.code,
           name: measure.name,
         }));
 
@@ -440,37 +550,18 @@ class ItemController extends Component<{}, ItemState> {
       const result = await api.itemcode_getManyCustom.getManyCustom();
       if (result.data.code === "200") {
         const rowItemCodeSkuData: ItemCodeSku[] = result.data.data.map((item: {
-          id: any;
-          itemId: any;
-          barcode: any;
-          name: any;
-          expirationId: any;
-          sellPrice: any;
-          costPrice: any;
-          groupId: any;
-          groupName: any;
-          measureId: any;
-          measureName: any;
-          qty: any;
-          createdDate: any;
-          properQty: any;
-          packSize: any;
+          id: any; itemId: any; barcode: any; name: any; expirationId: any;
+          sellPrice: any; costPrice: any; groupId: any; groupName: any;
+          measureId: any; measureName: any; qty: any; createdDate: any;
+          properQty: any; packSize: any;
         }) => ({
-          id: item.id,
-          itemId: item.itemId,
-          barcode: item.barcode,
-          name: item.name,
-          expirationId: item.expirationId,
-          sellPrice: item.sellPrice,
-          costPrice: item.costPrice,
-          groupId: item.groupId,
-          groupName: item.groupName,
-          measureId: item.measureId,
-          measureName: item.measureName,
-          qty: item.qty,
-          createdDate: item.createdDate,
-          properQty: item.properQty,
-          packSize: item.packSize,
+          id: item.id, itemId: item.itemId, barcode: item.barcode,
+          name: item.name, expirationId: item.expirationId,
+          sellPrice: Math.round(item.costPrice + (item.costPrice / 10)), costPrice: item.costPrice,
+          groupId: item.groupId, groupName: item.groupName,
+          measureId: item.measureId, measureName: item.measureName,
+          qty: item.qty, createdDate: item.createdDate,
+          properQty: item.properQty, packSize: item.packSize,
         }));
 
         this.setState({ rowItemCodeSkuData });
@@ -499,6 +590,7 @@ class ItemController extends Component<{}, ItemState> {
 
   saveUpdateItemCode = async (itemCode: ItemCode) => {
     try {
+      debugger
       this.setState({ loading: true, error: '' });
       const body = {
         ...(itemCode?.id !== 0 && { id: itemCode?.id }),
@@ -516,7 +608,7 @@ class ItemController extends Component<{}, ItemState> {
       if (itemCode?.id === 0) {
         const result = await api.itemCode_save_itemCode.itemCodeSaveItemCode(body);
         if (result.data.code === "200") {
-          SnackBar.success("Амжилттай хадгаллаа");
+          SnackBar.success(`Амжилттай хадгаллаа: ${body.name} ${body.barcode}`);
           this.setItemCodeState(false, this.state.nonSelectedItemCode);
           this.getItems();
         } else {
@@ -525,16 +617,15 @@ class ItemController extends Component<{}, ItemState> {
       } else {
         const result = await api.itemCode_update_itemCode.itemCodeUpdateItemCodes(body);
         if (result.data.code === "200") {
-          SnackBar.success("Амжилттай засагдлаа");
+          SnackBar.success(`Амжилттай заслаа : ${body.name} ${body.barcode}`);
           this.setItemCodeState(false, this.state.nonSelectedItemCode);
           this.getItems();
         } else {
-          SnackBar.error("Алдаа гарлаа");
-
+          SnackBar.warning(`Алдаа гарлаа : ${result.data.message}`);
         }
       }
     } catch (error) {
-      SnackBar.error("Алдаа гарлаа :" + error);
+      SnackBar.warning("Алдаа гарлаа :" + error);
     } finally {
       this.setState({ loading: false });
     }
@@ -606,6 +697,52 @@ class ItemController extends Component<{}, ItemState> {
     }
   };
 
+  getItemCodeByBarcode = async (barcode: string) => {
+    try {
+      const result = await api.itemcode_getOneBarcode.getOneBarcode(barcode);
+      if (result.data.code === "200") {
+        const item = result.data.data;
+        const resultItemCode: ItemCodeSku = {
+          id: item.id,
+          itemId: item.itemId,
+          barcode: item.barcode,
+          name: item.name,
+          expirationId: item.expirationId,
+          sellPrice: Math.round(item.costPrice + (item.costPrice / 10)),
+          costPrice: item.costPrice,
+          groupId: item.groupId,
+          groupName: item.groupName,
+          measureId: item.measureId,
+          measureName: item.measureName,
+          qty: item.qty,
+          createdDate: item.createdDate,
+          properQty: item.properQty,
+          packSize: item.packSize,
+        };
+
+        const selectedItemCode: ItemCode = {
+          id: 0,
+          itemId: resultItemCode.itemId,
+          barcode: resultItemCode.barcode,
+          name: resultItemCode.name,
+          sellPrice: resultItemCode.sellPrice,
+          purchasePrice: resultItemCode.costPrice,
+          measureId: resultItemCode.measureId,
+          measureName: resultItemCode.measureName,
+          qty: 1,
+          createdDate: resultItemCode.createdDate,
+          isDeleted: false,
+        };
+
+        this.setState({ selectedItemCode });
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   //#endregion
 
   render() {
@@ -615,18 +752,10 @@ class ItemController extends Component<{}, ItemState> {
 
     //#region state
     const {
-      tabValue,
-      rowSearchData,
-      rowSearchItemCodeData,
-      rowSearchItemCodeSkuData,
-      selectedItem,
-      nonSelectedItem,
-      selectedItemCode,
-      nonSelectedItemCode,
-      selectedRowId,
-      isDrawerOpen,
-      skeleten,
-      open,
+      tabValue, rowSearchData, rowSearchItemCodeData,
+      rowSearchItemCodeSkuData, selectedItem, nonSelectedItem,
+      selectedItemCode, nonSelectedItemCode, selectedRowId,
+      isDrawerOpen, skeleten, open, selectedSkuGroupId,
     } = this.state;
     //#endregion
 
@@ -675,7 +804,7 @@ class ItemController extends Component<{}, ItemState> {
                         alt="icon"
                         width={24}
                         height={24}
-                        className="mr-5 cursor-pointer"
+                        className="mr-3 cursor-pointer"
                       />
                     </div>
                   </div>
@@ -807,37 +936,63 @@ class ItemController extends Component<{}, ItemState> {
                       <div className="flex-auto h-full">
                         <TabContext value={tabValue}>
                           <TabPanel value={"0"} className="p-0 m-0 w-full">
-                            <Table size="small">
-                              <TableHead className="bg-[#8a91a5] h-14">
-                                <TableRow>
-                                  <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                {rowSearchItemCodeData.map((row) => (
-                                  <TableRow key={row.id}>
-                                    <TableCell align="center" >
-                                      <IconButton className="w-8 h-8"
-                                        onClick={() => this.handleItemRowAddClick(row)}>
-                                        <EditIcon />
-                                      </IconButton>
-                                    </TableCell>
-                                    <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
-                                    <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
-                                    <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
-                                    <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.sellPrice)}</TableCell>
-                                    <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.purchasePrice)}</TableCell>
-                                    <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(row.qty)}</TableCell>
+                            <div>
+                              <div className="flex flex-rows p-3 gap-3">
+                                <Button className="thirdButton w-32" onClick={() =>
+                                  this.handleItemRowAddClick(nonSelectedItemCode)}>ШИНЭ БАРАА</Button>
+                                <IconButton className="thirdButton w-32"
+                                  onClick={() => this.handleRefreshClick(true)}>
+                                  <AutorenewIcon />
+                                </IconButton>
+                              </div>
+                              <Table size="small">
+                                <TableHead className="bg-[#8a91a5] h-14">
+                                  <TableRow>
+                                    <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
                                   </TableRow>
-                                ))}
-                              </TableBody>
-                            </Table>
+                                </TableHead>
+                                <TableBody>
+                                  {rowSearchItemCodeData.length > 0 ? (
+                                    rowSearchItemCodeData.map((row) => (
+                                      <TableRow key={row.id}>
+                                        <TableCell align="center" >
+                                          <IconButton className="w-8 h-8"
+                                            onClick={() => this.handleItemRowAddClick(row)}>
+                                            <EditIcon />
+                                          </IconButton>
+                                        </TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.sellPrice)}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.purchasePrice)}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(row.qty)}</TableCell>
+                                      </TableRow>
+                                    ))
+                                  ) : (
+                                    <>
+                                      {skeleten.map((row) =>
+                                        <TableRow key={row}>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        </TableRow>
+                                      )}
+                                    </>
+                                  )}
+                                </TableBody>
+                              </Table>
+                            </div>
                           </TabPanel>
                           <TabPanel value={"1"} className="p-0 m-0 w-full">
                             <Table size="small">
@@ -856,150 +1011,183 @@ class ItemController extends Component<{}, ItemState> {
                                 </TableRow>
                               </TableHead>
                               <TableBody>
-                                {rowSearchData.map((row) => (
-                                  <Fragment key={row.id}>
-                                    <TableRow key={row.id} className="h-2">
-                                      <TableCell className="w-4">
-                                        <div>
-                                          <IconButton
-                                            onClick={() => selectedRowId === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
-                                            className={selectedRowId === row.id ? "bg-[#8a91a5]" : "bg-white"}>
-                                            {selectedRowId === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
-                                          </IconButton>
-                                        </div>
-                                      </TableCell>
-                                      <TableCell className="w-4" align="center">
-                                        <div>
-                                          <IconButton onClick={() => this.handleItemRowDoubleClick(row)}>
-                                            <EditIcon />
-                                          </IconButton>
-                                        </div>
-                                      </TableCell>
-                                      <TableCell className="w-4" align="center">
-                                        <div>
-                                          <IconButton onClick={() => this.handleItemRowAddClick({
-                                            id: 0, itemId: row.id, barcode: '',
-                                            name: '', sellPrice: 0, purchasePrice: 0,
-                                            qty: 0, measureId: 1, measureName: "", createdDate: '', isDeleted: false,
-                                          })}>
-                                            <AddIcon />
-                                          </IconButton>
-                                        </div>
-                                      </TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.id}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.code}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.name}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.measureName}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] font-semibold" align="left">{row.itemgroupName}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] font-semibold" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
-                                      <TableCell className="font-sans w-6" align="center">
-                                        <Checkbox defaultChecked={row.isActive} disabled />
-                                      </TableCell>
-                                    </TableRow>
-                                    <TableRow>
-                                      <TableCell colSpan={9} className="p-0 m-0 bg-[#f1f2f4]">
-                                        <Collapse in={selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-3 w-full">
-                                          <Typography className="font-sans font-semibold text-[#8a91a5] text-left text-base">
-                                            БАРААНЫ ТӨРЛҮҮД
-                                          </Typography>
-                                          <Box className="w-full bg-white">
-                                            <Table className="w-full" size="small">
-                                              <TableHead className="bg-[#8a91a5] h-10">
-                                                <TableRow>
-                                                  <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
-                                                  <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                                  <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                                  <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                                  <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                                  <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                                  <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
-                                                </TableRow>
-                                              </TableHead>
-                                              <TableBody>
-                                                {selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0 &&
-                                                  (row.itemcodes.map((itemCode) => (
-                                                    <TableRow key={itemCode.id}>
-                                                      <TableCell align="center" >
-                                                        <IconButton className="w-8 h-8"
-                                                          onClick={() => this.handleItemRowAddClick(itemCode)}>
-                                                          <EditIcon />
-                                                        </IconButton>
-                                                      </TableCell>
-                                                      <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
-                                                      <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
-                                                      <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
-                                                      <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.sellPrice)}</TableCell>
-                                                      <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.purchasePrice)}</TableCell>
-                                                      <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(itemCode.qty)}</TableCell>
-                                                    </TableRow>
-                                                  ))
-                                                  )}
-                                              </TableBody>
-                                            </Table>
-                                          </Box>
-                                        </Collapse>
-                                      </TableCell>
-                                    </TableRow>
-                                  </Fragment>
-                                ))}
+                                {rowSearchData.length > 0 ? (
+                                  rowSearchData.map((row) => (
+                                    <Fragment key={row.id}>
+                                      <TableRow key={row.id} className="h-2">
+                                        <TableCell className="w-4">
+                                          <div>
+                                            <IconButton
+                                              onClick={() => selectedRowId === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
+                                              className={selectedRowId === row.id ? "bg-[#8a91a5]" : "bg-white"}>
+                                              {selectedRowId === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
+                                            </IconButton>
+                                          </div>
+                                        </TableCell>
+                                        <TableCell className="w-4" align="center">
+                                          <div>
+                                            <IconButton onClick={() => this.handleItemRowDoubleClick(row)}>
+                                              <EditIcon />
+                                            </IconButton>
+                                          </div>
+                                        </TableCell>
+                                        <TableCell className="w-4" align="center">
+                                          <div>
+                                            <IconButton onClick={() => this.handleItemRowAddClick({
+                                              id: 0, itemId: row.id, barcode: '',
+                                              name: '', sellPrice: 0, purchasePrice: 0,
+                                              qty: 0, measureId: 1, measureName: "", createdDate: '', isDeleted: false,
+                                            })}>
+                                              <AddIcon />
+                                            </IconButton>
+                                          </div>
+                                        </TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.id}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.code}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.name}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.measureName}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.itemgroupName}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5]" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
+                                        <TableCell className="font-sans w-6" align="center">
+                                          <Checkbox defaultChecked={row.isActive} disabled />
+                                        </TableCell>
+                                      </TableRow>
+                                      <TableRow>
+                                        <TableCell colSpan={9} className="p-0 m-0 bg-[#f1f2f4]">
+                                          <Collapse in={selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-3 w-full">
+                                            <Typography className="font-sans font-semibold text-[#8a91a5] text-left text-base">
+                                              БАРААНЫ ТӨРЛҮҮД
+                                            </Typography>
+                                            <Box className="w-full bg-white">
+                                              <Table className="w-full" size="small">
+                                                <TableHead className="bg-[#8a91a5] h-10">
+                                                  <TableRow>
+                                                    <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
+                                                    <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
+                                                    <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                                                    <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                                    <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                                    <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                                    <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
+                                                  </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                  {selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0 &&
+                                                    (row.itemcodes.map((itemCode) => (
+                                                      <TableRow key={itemCode.id}>
+                                                        <TableCell align="center" >
+                                                          <IconButton className="w-8 h-8"
+                                                            onClick={() => this.handleItemRowAddClick(itemCode)}>
+                                                            <EditIcon />
+                                                          </IconButton>
+                                                        </TableCell>
+                                                        <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
+                                                        <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
+                                                        <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
+                                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.sellPrice)}</TableCell>
+                                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.purchasePrice)}</TableCell>
+                                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(itemCode.qty)}</TableCell>
+                                                      </TableRow>
+                                                    ))
+                                                    )}
+                                                </TableBody>
+                                              </Table>
+                                            </Box>
+                                          </Collapse>
+                                        </TableCell>
+                                      </TableRow>
+                                    </Fragment>
+                                  ))
+                                ) : (
+                                  <>
+                                    {skeleten.map((row) =>
+                                      <TableRow key={row}>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                      </TableRow>
+                                    )}
+                                  </>
+                                )}
+
+
                               </TableBody>
                             </Table>
                           </TabPanel>
                           <TabPanel value={"2"} className="p-0 m-0 w-full">
-                            <Table>
-                              <TableHead className="bg-[#8a91a5]">
-                                <TableRow>
-                                  {/* <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell> */}
-                                  <TableCell className="font-sans text-white font-semibold">№</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">ЗАРАХ ҮНЭ</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">АВАХ ҮНЭ</TableCell>
-                                  <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                  {/* <TableCell className="font-sans text-white font-semibold">ТОО</TableCell> */}
-                                  <TableCell className="font-sans text-white font-semibold" align="right">ҮҮСГЭСЭН ӨДӨР</TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                {rowSearchItemCodeSkuData.length > 0 ? (
-                                  rowSearchItemCodeSkuData.map((row) => (
-                                    <TableRow key={row.id}>
-                                      {/* <TableCell align="center">
+                            <div>
+                              <div className="flex flex-rows p-3 gap-3">
+                                <Select
+                                  className="shadow-lg rounded-md h-10 text-[#6d758f] w-3/6" value={selectedSkuGroupId}
+                                  onChange={(e) => this.handleSkuGroupChange(e.target.value)}>
+                                  {this.state.skuItemGroups.map((itemgroup) => (
+                                    <MenuItem key={itemgroup.id} value={itemgroup.id}>
+                                      {itemgroup.name}
+                                    </MenuItem>
+                                  ))}
+                                </Select>
+                                <Button className="thirdButton w-32" onClick={() => this.handleSkuClear()}>ЦЭВЭРЛЭХ</Button>
+                                <Button className="thirdButton w-32" onClick={() => this.handleSkuDownload()}>ТАТАХ</Button>
+                              </div>
+                              <Table size="small">
+                                <TableHead className="bg-[#8a91a5] h-14">
+                                  <TableRow>
+                                    <TableCell className="font-sans text-white font-semibold">№</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold">БҮЛЭГ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                    <TableCell className="font-sans text-white font-semibold" align="right">ҮҮСГЭСЭН ӨДӨР</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {rowSearchItemCodeSkuData.length > 0 ? (
+                                    rowSearchItemCodeSkuData.map((row) => (
+                                      <TableRow key={row.id}>
+                                        {/* <TableCell align="center">
                                   <IconButton className="w-8 h-8"
                                   // onClick={() => this.handleEditClick(row)}
                                   >
                                     <EditIcon />
                                   </IconButton>
                                 </TableCell> */}
-                                      <TableCell className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] ">{row.sellPrice}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] ">{row.costPrice}</TableCell>
-                                      <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
-                                      {/* <TableCell className="font-sans text-[#8a91a5] ">{row.qty}</TableCell> */}
-                                      <TableCell className="font-sans text-[#8a91a5] " align="right">{row.createdDate}</TableCell>
-                                    </TableRow>
-                                  ))
-                                ) : (
-                                  <>
-                                    {skeleten.map((row) =>
-                                      <TableRow key={row}>
-                                        {/* <TableCell><Skeleton variant="rounded" height={20} /></TableCell> */}
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        {/* <TableCell><Skeleton variant="rounded" height={20} /></TableCell> */}
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] ">{row.groupName}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] " align="right" >{formatMoney(row.sellPrice)}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] " align="right" >{formatMoney(row.costPrice)}</TableCell>
+                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{row.createdDate}</TableCell>
                                       </TableRow>
-                                    )}
-                                  </>
-                                )}
-                              </TableBody>
-                            </Table>
+                                    ))
+                                  ) : (
+                                    <>
+                                      {skeleten.map((row) =>
+                                        <TableRow key={row}>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        </TableRow>
+                                      )}
+                                    </>
+                                  )}
+                                </TableBody>
+                              </Table>
+                            </div>
                           </TabPanel>
                         </TabContext>
                       </div>
@@ -1135,10 +1323,7 @@ class ItemController extends Component<{}, ItemState> {
                   }}
                   variant="outlined"
                   value={selectedItemCode?.qty}
-                  onChange={(e) =>
-                    this.handleItemCodeTextFieldChange("qty", e.target.value)
-                  }
-                />
+                  onChange={(e) => this.handleItemCodeTextFieldChange("qty", e.target.value)} />
               </div>
               <div className="w-9/12">
                 <Button
@@ -1156,7 +1341,6 @@ class ItemController extends Component<{}, ItemState> {
                 </Button>
               </div>
             </div>
-
           </Box>
         </Drawer >
       </>

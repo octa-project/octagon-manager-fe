@@ -61,6 +61,7 @@ interface Measure {
 interface ItemState {
   tabValue: string;
   first: boolean;
+  downloadAll: boolean;
   loading: boolean;
   error: string;
   selectedItem: Item;
@@ -83,6 +84,8 @@ interface ItemState {
   rowSearchItemCodeSkuData: ItemCodeSku[],
   measures: Measure[];
   itemGroups: ItemGroup[];
+  skuItemGroups: ItemGroup[];
   selectedRowItemCodes: ItemCode[];
+  selectedSkuGroupId: number;
   skeleten: number[];
 }

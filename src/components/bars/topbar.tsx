@@ -15,7 +15,7 @@ const Topbar = () => {
         return () => clearInterval(intervalId);
     }, []);
 
-    const formattedDateTime = moment(currentDateTime).format("YYYY-MM-DD HH:mm:ss");
+    const formattedDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
     return (
         <div className='flex-row w-full bg-[#6d758f] p-3 opacity-80'>
             <div className="grid grid-cols-5">

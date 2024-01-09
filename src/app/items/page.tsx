@@ -5,7 +5,7 @@ import { SnackbarProvider } from "notistack";
 const items = () => {
   return (
     <SnackbarProvider>
-      <div className='bg-[#f8f7f5]'>
+      <div>
         <ItemController />
       </div>
     </SnackbarProvider>

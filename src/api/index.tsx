@@ -83,6 +83,8 @@ const GetPrinterList = apiSettings("get-printer-list")
 const get_Top_Ten_Item = apiSale("get-top-ten-item")
 
 const itemcode_getManyCustom = apiSku("custom-all")
+const itemcode_getOneBarcode = apiSku("by-barcode")
+const groups_getManyGroups = apiSku("all")
 
 export default {
 
@@ -130,7 +132,7 @@ export default {
 
     measure_get_all,
     measure_get_by_id,
-    
+
     saleGetMany,
     saleGetOne,
     saleDelete,
@@ -152,5 +154,8 @@ export default {
     GetPrinterList,
     get_Top_Ten_Item,
 
-    itemcode_getManyCustom
+    itemcode_getManyCustom,
+    groups_getManyGroups,
+    itemcode_getOneBarcode
+
 }
