@@ -210,21 +210,31 @@ class ItemController extends Component<{}, ItemState> {
 
   handleTextSearch = (text: string) => {
     const lowercaseText = text.toLowerCase();
-
-    if (text === '') {
-      this.setState({ rowSearchData: this.state.rowData });
-    } else {
-      const filteredRowData = this.state.rowData.filter((item) => {
-        return Object.values(item).some((value) => {
-          if (typeof value === 'string') {
-            const lowercaseValue = value.toLowerCase();
-            return lowercaseValue.includes(lowercaseText);
-          }
-          return false;
-        });
-      });
-
-      this.setState({ rowSearchData: filteredRowData });
+  
+    const filterData = (data: any[]) => {
+      if (text === '') {
+        return data;
+      } else {
+        return data.filter((item) =>
+          Object.values(item).some((value) =>
+            typeof value === 'string' && value.toLowerCase().includes(lowercaseText)
+          )
+        );
+      }
+    };
+  
+    switch (this.state.tabValue) {
+      case '0':
+        this.setState({ rowSearchItemCodeData: filterData(this.state.rowItemCodeData) });
+        break;
+      case '1':
+        this.setState({ rowSearchData: filterData(this.state.rowData) });
+        break;
+      case '2':
+        this.setState({ rowSearchItemCodeSkuData: filterData(this.state.rowItemCodeSkuData) });
+        break;
+      default:
+        break;
     }
   };
 
@@ -252,10 +262,10 @@ class ItemController extends Component<{}, ItemState> {
         [field]: value,
       },
     }));
-  
+
     if (field === "barcode") {
       // if (value.toString().length === 13) {
-        this.getItemCodeByBarcode(value.toString());
+      this.getItemCodeByBarcode(value.toString());
       // }
     }
   };
@@ -474,10 +484,13 @@ class ItemController extends Component<{}, ItemState> {
           isDeleted: boolean;
         }) => ({
           id: item.id,
+          itemId: item.id,
           barcode: item.barcode,
           name: item.name,
           sellPrice: item.sellPrice,
           purchasePrice: item.purchasePrice,
+          measureId: item.measureId,
+          measureName: item.measureName,
           qty: item.qty,
           createdDate: item.createdDate,
           isDeleted: item.isDeleted,
