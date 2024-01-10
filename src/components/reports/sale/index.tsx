@@ -1,7 +1,7 @@
 import React, { Component, useEffect, useState } from "react";
 import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
+import 'ag-grid-community/styles/ag-grid.css';
+import 'ag-grid-community/styles/ag-theme-alpine.css';
 import api from "@/src/api";
 import apiSale from "@/src/api/apiSale";
 import { DatePicker } from "antd";

@@ -1,41 +1,58 @@
-"use client"
-import React, { ReactNode, useState } from 'react';
-import './globals.css';
-import Sidebar from '@/src/components/bars/sidebar';
-import SidebarContent from '@/src/components/bars/sidebarContext';
-import { metadata } from './metadata';
-import Topbar from "@/src/components/bars/topbar";
+"use client";
+import "./globals.css";
+import React, {useState, useEffect, Suspense} from "react";
+import Loader from "@/src/components/common/Loader";
+import Sidebar from "@/src/components/Bars/sidebar";
+import Header from "@/src/components/Header";
 
-interface RootLayoutProps {
-  children: ReactNode;
+export default function RootLayout({children,}: { children: React.ReactNode; }) {
+    const [sidebarOpen, setSidebarOpen] = useState(false);
+
+    const [loading, setLoading] = useState<boolean>(true);
+
+    useEffect(() => {
+        setTimeout(() => setLoading(false), 1000); // just for fancy
+    }, []);
+
+    return (
+        <html lang="en">
+        <body suppressHydrationWarning={true}>
+        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+            {loading ? (
+                <Loader/>
+            ) : (
+                <div className="flex h-screen overflow-hidden">
+                    {/* <!-- ===== Sidebar Start ===== --> */}
+                    <Sidebar
+                        sidebarOpen={sidebarOpen}
+                        setSidebarOpen={setSidebarOpen}
+                    />
+                    {/* <!-- ===== Sidebar End ===== --> */}
+
+                    {/* <!-- ===== Content Area Start ===== --> */}
+                    <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                        {/* <!-- ===== Header Start ===== --> */}
+                        <Header
+                            sidebarOpen={sidebarOpen}
+                            setSidebarOpen={setSidebarOpen}
+                        />
+                        {/* <!-- ===== Header End ===== --> */}
+
+                        {/* <!-- ===== Main Content Start ===== --> */}
+                        <main>
+                            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                                <Suspense fallback={Loader()}>
+                                    {children}
+                                </Suspense>
+                            </div>
+                        </main>
+                        {/* <!-- ===== Main Content End ===== --> */}
+                    </div>
+                    {/* <!-- ===== Content Area End ===== --> */}
+                </div>
+            )}
+        </div>
+        </body>
+        </html>
+    );
 }
-
-const RootLayout: React.FC<RootLayoutProps> = ({ children }) => {
-  const [collapsed, setCollapsed] = useState(false);
-
-  const toggleSidebar = () => {
-    setCollapsed(!collapsed);
-  };
-  
-  return (
-    <html lang="en">
-      <body>
-        <main className="relative">
-          <SidebarContent>
-
-            <div className={`bg-[#6d758f] ${collapsed ? 'w-20' : 'w-72'} pt-10`}>
-              <Sidebar collapsed={collapsed} toggleSidebar={toggleSidebar} />
-            </div>
-
-            <div className="flex-auto min-h-screen overflow-auto bg-slate-100 relative">
-              <Topbar></Topbar>
-              {children}</div>
-          </SidebarContent>
-
-        </main>
-      </body>
-    </html>
-  );
-};
-
-export default RootLayout;

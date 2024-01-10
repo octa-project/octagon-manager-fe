@@ -1,12 +1,9 @@
+import * as React from "react";
 import {Component} from "react";
 import {Input} from "antd";
-import * as React from "react";
 import {ToggleButton} from "@mui/lab";
-import {Button, MenuItem} from "@mui/material";
+import {Button} from "@mui/material";
 import api from "@/src/api";
-import settings from "@/src/components/settings";
-import {any} from "prop-types";
-import Item from "antd/es/list/Item";
 import SnackBar from "@/src/components/tools/snackAlert";
 
 interface mainSettings {
