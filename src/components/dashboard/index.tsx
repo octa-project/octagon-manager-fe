@@ -290,7 +290,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
         <div className="col-span-1 bg-white">
           <Card className="flex flex-col gap-5 p-5 h-full w-full shadow-2xl ">
             <Image
-              src="/cards.svg"
+              src="/assets/images/cards.svg"
               alt="card logo"
               className="p-5"
               width={300}

@@ -69,7 +69,6 @@ class DeviceSettings extends Component<{}, ItemState> {
             console.error(error);
         }
     }
-<
 
     handleItemTextFieldChange = (field: keyof deviceSettings, value: string | number) => {
         this.setState((prevState) => ({
