@@ -120,13 +120,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     {/* <!-- Menu Group --> */}
                     <div>
                         <ul className="mb-6 flex flex-col gap-1.5">
-                            {menuItems.map(({id,icon,link,label}) => {
+                            {menuItems.map(({id, icon, link, label}) => {
                                 let isHighlight = pathname.includes(link);
                                 return <li key={id}>
                                     <Link
                                         href={link}
                                         className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-normal duration-300 ease-in-out dark:hover:bg-meta-4 hover:bg-white hover:text-graydark hover:fill-graydark ${
-                                            isHighlight ? " bg-white text-graydark dark:bg-meta-4 fill-graydark" : "text-white fill-white" 
+                                            isHighlight ? " bg-white text-graydark dark:bg-meta-4 fill-graydark" : "text-white fill-white"
                                         }`}
                                     >
                                         {icon}
@@ -140,3 +140,5 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </div>
         </aside>
     );
+};
+export default Sidebar;
