@@ -1,4 +1,5 @@
-/* Global CSS */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;700&family=Roboto&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -67,3 +68,25 @@
 .secondaryButton {
     @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
+
+
+.card {
+    @apply font-sans shadow-lg rounded p-3 text-[#6d758f] bg-white;
+}
+
+.cardHeader {
+    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+}
+
+.cardTable {
+    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+}
+
+.cardSecondaryButton {
+    @apply font-sans font-semibold shadow-lg rounded-lg h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+}
+
+.cardButton{
+    @apply font-sans font-semibold shadow-lg rounded-lg h-8 text-white bg-[#6d758f] hover:bg-[#44423e] hover:text-white;
+}
+

@@ -29,7 +29,6 @@ class DeviceSettings extends Component<{}, ItemState> {
 
     constructor(props: any) {
         super(props);
-
         this.state = {
             deviceSettings: {
                 id: 1,
@@ -46,11 +45,8 @@ class DeviceSettings extends Component<{}, ItemState> {
             }
         }
     }
-
     componentDidMount() {
-
         this.getItems();
-
     }
 
     saveItems = async (deviceSettings: deviceSettings) => {
@@ -74,6 +70,7 @@ class DeviceSettings extends Component<{}, ItemState> {
         }
     }
 
+
     handleItemTextFieldChange = (field: keyof deviceSettings, value: string | number) => {
         this.setState((prevState) => ({
             deviceSettings: {
@@ -89,11 +86,7 @@ class DeviceSettings extends Component<{}, ItemState> {
         const {
             deviceSettings
         } = this.state;
-        return (
-
-
-            <div className="h-full">
-
+        return (<div className="h-full">
                 <div style={containerStyle}>
                     <div>
                         <div className="w-full mt-2 flex flex-row">
