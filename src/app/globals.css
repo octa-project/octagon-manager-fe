@@ -79,7 +79,7 @@
 }
 
 .cardTable {
-    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+    @apply border-none p-1 font-sans text-[#6d758f] font-semibold;
 }
 
 .cardSecondaryButton {

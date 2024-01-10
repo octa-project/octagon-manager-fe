@@ -29,7 +29,7 @@ class ItemController extends Component<{}, ItemState> {
     this.state = {
       first: false,
       downloadAll: false,
-      tabValue: "0",
+      tabValue: "1",
       loading: false,
       error: '',
       selectedItem: {
@@ -210,7 +210,7 @@ class ItemController extends Component<{}, ItemState> {
 
   handleTextSearch = (text: string) => {
     const lowercaseText = text.toLowerCase();
-  
+
     const filterData = (data: any[]) => {
       if (text === '') {
         return data;
@@ -222,7 +222,7 @@ class ItemController extends Component<{}, ItemState> {
         );
       }
     };
-  
+
     switch (this.state.tabValue) {
       case '0':
         this.setState({ rowSearchItemCodeData: filterData(this.state.rowItemCodeData) });
@@ -312,6 +312,16 @@ class ItemController extends Component<{}, ItemState> {
     this.getItemCodes();
     if (isFromButton) {
       SnackBar.success("Бараа дахин дуудлаа");
+    }
+  };
+
+  
+  handleItemRefreshClick = (isFromButton: boolean) => {
+    this.setState({ rowData: [] });
+    this.setState({ rowSearchData: [] });
+    this.getItems();
+    if (isFromButton) {
+      SnackBar.success("Нэгдсэн бараа дахин дуудлаа");
     }
   };
 
@@ -775,7 +785,7 @@ class ItemController extends Component<{}, ItemState> {
     return (
       <>
         <div className="h-screen">
-          <div className="flex flex-col p-3 col-span-5">
+          <div className="flex flex-col col-span-5">
             <div className="flex h-12">
               <div className="flex-initial w-full h-full">
                 <div className="grid grid-cols-4 gap-4">
@@ -1008,131 +1018,139 @@ class ItemController extends Component<{}, ItemState> {
                             </div>
                           </TabPanel>
                           <TabPanel value={"1"} className="p-0 m-0 w-full">
-                            <Table size="small">
-                              <TableHead className="bg-[#8a91a5] h-14">
-                                <TableRow className="bg-[#8a91a5]">
-                                  <TableCell className="font-sans font-semibold text-white "><ChecklistIcon /></TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="center">ЗАСАХ</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="center">НЭМЭХ</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="left">№</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="left">КОД</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="left">НЭР</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="left">ХЭМЖИХ НЭГЖ</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="left">БҮЛЭГ</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="center">БАРААНЫ ТӨРЛҮҮД</TableCell>
-                                  <TableCell className="font-sans font-semibold text-white " align="center">ТӨЛӨВ</TableCell>
-                                </TableRow>
-                              </TableHead>
-                              <TableBody>
-                                {rowSearchData.length > 0 ? (
-                                  rowSearchData.map((row) => (
-                                    <Fragment key={row.id}>
-                                      <TableRow key={row.id} className="h-2">
-                                        <TableCell className="w-4">
-                                          <div>
-                                            <IconButton
-                                              onClick={() => selectedRowId === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
-                                              className={selectedRowId === row.id ? "bg-[#8a91a5]" : "bg-white"}>
-                                              {selectedRowId === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
-                                            </IconButton>
-                                          </div>
-                                        </TableCell>
-                                        <TableCell className="w-4" align="center">
-                                          <div>
-                                            <IconButton onClick={() => this.handleItemRowDoubleClick(row)}>
-                                              <EditIcon />
-                                            </IconButton>
-                                          </div>
-                                        </TableCell>
-                                        <TableCell className="w-4" align="center">
-                                          <div>
-                                            <IconButton onClick={() => this.handleItemRowAddClick({
-                                              id: 0, itemId: row.id, barcode: '',
-                                              name: '', sellPrice: 0, purchasePrice: 0,
-                                              qty: 0, measureId: 1, measureName: "", createdDate: '', isDeleted: false,
-                                            })}>
-                                              <AddIcon />
-                                            </IconButton>
-                                          </div>
-                                        </TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.id}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.code}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.name}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.measureName}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5]" align="left">{row.itemgroupName}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5]" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
-                                        <TableCell className="font-sans w-6" align="center">
-                                          <Checkbox defaultChecked={row.isActive} disabled />
-                                        </TableCell>
-                                      </TableRow>
-                                      <TableRow>
-                                        <TableCell colSpan={9} className="p-0 m-0 bg-[#f1f2f4]">
-                                          <Collapse in={selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-3 w-full">
-                                            <Typography className="font-sans font-semibold text-[#8a91a5] text-left text-base">
-                                              БАРААНЫ ТӨРЛҮҮД
-                                            </Typography>
-                                            <Box className="w-full bg-white">
-                                              <Table className="w-full" size="small">
-                                                <TableHead className="bg-[#8a91a5] h-10">
-                                                  <TableRow>
-                                                    <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
-                                                    <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                                    <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                                    <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                                    <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                                    <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                                    <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
-                                                  </TableRow>
-                                                </TableHead>
-                                                <TableBody>
-                                                  {selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0 &&
-                                                    (row.itemcodes.map((itemCode) => (
-                                                      <TableRow key={itemCode.id}>
-                                                        <TableCell align="center" >
-                                                          <IconButton className="w-8 h-8"
-                                                            onClick={() => this.handleItemRowAddClick(itemCode)}>
-                                                            <EditIcon />
-                                                          </IconButton>
-                                                        </TableCell>
-                                                        <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
-                                                        <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
-                                                        <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
-                                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.sellPrice)}</TableCell>
-                                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.purchasePrice)}</TableCell>
-                                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(itemCode.qty)}</TableCell>
-                                                      </TableRow>
-                                                    ))
-                                                    )}
-                                                </TableBody>
-                                              </Table>
-                                            </Box>
-                                          </Collapse>
-                                        </TableCell>
-                                      </TableRow>
-                                    </Fragment>
-                                  ))
-                                ) : (
-                                  <>
-                                    {skeleten.map((row) =>
-                                      <TableRow key={row}>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                        <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
-                                      </TableRow>
-                                    )}
-                                  </>
-                                )}
-
-
-                              </TableBody>
-                            </Table>
+                            <div>
+                              <div className="flex flex-rows p-3 gap-3">
+                                <Button className="thirdButton w-44" onClick={() =>
+                                  this.handleItemRowDoubleClick(nonSelectedItem)}>ШИНЭ НЭГДСЭН БАРАА</Button>
+                                <IconButton className="thirdButton w-32"
+                                  onClick={() => this.handleItemRefreshClick(true)}>
+                                  <AutorenewIcon />
+                                </IconButton>
+                              </div>
+                              <Table size="small">
+                                <TableHead className="bg-[#8a91a5] h-14">
+                                  <TableRow className="bg-[#8a91a5]">
+                                    <TableCell className="font-sans font-semibold text-white "><ChecklistIcon /></TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="center">ЗАСАХ</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="center">НЭМЭХ</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="left">№</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="left">КОД</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="left">НЭР</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="left">ХЭМЖИХ НЭГЖ</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="left">БҮЛЭГ</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="center">БАРААНЫ ТӨРЛҮҮД</TableCell>
+                                    <TableCell className="font-sans font-semibold text-white " align="center">ТӨЛӨВ</TableCell>
+                                  </TableRow>
+                                </TableHead>
+                                <TableBody>
+                                  {rowSearchData.length > 0 ? (
+                                    rowSearchData.map((row) => (
+                                      <Fragment key={row.id}>
+                                        <TableRow key={row.id} className="h-2">
+                                          <TableCell className="w-4">
+                                            <div>
+                                              <IconButton
+                                                onClick={() => selectedRowId === row.id ? this.handleUndoRowClick() : this.handleRowClick(row)}
+                                                className={selectedRowId === row.id ? "bg-[#8a91a5]" : "bg-white"}>
+                                                {selectedRowId === row.id ? <ArrowDropDownIcon className="text-white" /> : <ArrowRightIcon />}
+                                              </IconButton>
+                                            </div>
+                                          </TableCell>
+                                          <TableCell className="w-4" align="center">
+                                            <div>
+                                              <IconButton onClick={() => this.handleItemRowDoubleClick(row)}>
+                                                <EditIcon />
+                                              </IconButton>
+                                            </div>
+                                          </TableCell>
+                                          <TableCell className="w-4" align="center">
+                                            <div>
+                                              <IconButton onClick={() => this.handleItemRowAddClick({
+                                                id: 0, itemId: row.id, barcode: '',
+                                                name: '', sellPrice: 0, purchasePrice: 0,
+                                                qty: 0, measureId: 1, measureName: "", createdDate: '', isDeleted: false,
+                                              })}>
+                                                <AddIcon />
+                                              </IconButton>
+                                            </div>
+                                          </TableCell>
+                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.id}</TableCell>
+                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.code}</TableCell>
+                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.name}</TableCell>
+                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.measureName}</TableCell>
+                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.itemgroupName}</TableCell>
+                                          <TableCell className="font-sans text-[#8a91a5]" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
+                                          <TableCell className="font-sans w-6" align="center">
+                                            <Checkbox defaultChecked={row.isActive} disabled />
+                                          </TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                          <TableCell colSpan={9} className="p-0 m-0 bg-[#f1f2f4]">
+                                            <Collapse in={selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-3 w-full">
+                                              <Typography className="font-sans font-semibold text-[#8a91a5] text-left text-base">
+                                                БАРААНЫ ТӨРЛҮҮД
+                                              </Typography>
+                                              <Box className="w-full bg-white">
+                                                <Table className="w-full" size="small">
+                                                  <TableHead className="bg-[#8a91a5] h-10">
+                                                    <TableRow>
+                                                      <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
+                                                      <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
+                                                      <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
+                                                      <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                                      <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                                      <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                                      <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
+                                                    </TableRow>
+                                                  </TableHead>
+                                                  <TableBody>
+                                                    {selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0 &&
+                                                      (row.itemcodes.map((itemCode) => (
+                                                        <TableRow key={itemCode.id}>
+                                                          <TableCell align="center" >
+                                                            <IconButton className="w-8 h-8"
+                                                              onClick={() => this.handleItemRowAddClick(itemCode)}>
+                                                              <EditIcon />
+                                                            </IconButton>
+                                                          </TableCell>
+                                                          <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
+                                                          <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
+                                                          <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
+                                                          <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.sellPrice)}</TableCell>
+                                                          <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.purchasePrice)}</TableCell>
+                                                          <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(itemCode.qty)}</TableCell>
+                                                        </TableRow>
+                                                      ))
+                                                      )}
+                                                  </TableBody>
+                                                </Table>
+                                              </Box>
+                                            </Collapse>
+                                          </TableCell>
+                                        </TableRow>
+                                      </Fragment>
+                                    ))
+                                  ) : (
+                                    <>
+                                      {skeleten.map((row) =>
+                                        <TableRow key={row}>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                          <TableCell><Skeleton variant="rounded" height={20} /></TableCell>
+                                        </TableRow>
+                                      )}
+                                    </>
+                                  )}
+                                </TableBody>
+                              </Table>
+                            </div>
                           </TabPanel>
                           <TabPanel value={"2"} className="p-0 m-0 w-full">
                             <div>
@@ -1238,7 +1256,7 @@ class ItemController extends Component<{}, ItemState> {
                 </div> */}
 
         < Drawer
-          anchor="left"
+          anchor="right"
           open={isDrawerOpen}
           onClose={() => this.setItemCodeState(false, nonSelectedItemCode)
           }>

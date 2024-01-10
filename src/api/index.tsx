@@ -10,6 +10,7 @@ import apiDashboard from "./apiDashboard";
 import apiBranch from "./apiBranch";
 import apiSettings from "@/src/api/apiSettings";
 import apiSku from "./apiSku";
+import apiPurchase from "./apiPurchase";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -86,6 +87,10 @@ const itemcode_getManyCustom = apiSku("custom-all")
 const itemcode_getOneBarcode = apiSku("by-barcode")
 const groups_getManyGroups = apiSku("all")
 
+const purchase_getMany = apiPurchase("get-all")
+const purchase_saveOne = apiPurchase("save")
+
+
 export default {
 
     transaction_save,
@@ -156,6 +161,8 @@ export default {
 
     itemcode_getManyCustom,
     groups_getManyGroups,
-    itemcode_getOneBarcode
+    itemcode_getOneBarcode,
 
+    purchase_getMany,
+    purchase_saveOne
 }
