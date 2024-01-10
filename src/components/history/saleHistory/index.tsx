@@ -30,7 +30,7 @@ class SaleHistoryController extends Component<{}, AgReportState> {
       columnDefs: [
         { field: "id", headerName: "№" },
         { field: "createdDate", headerName: "Огноо" },
-        { field: "itemName", headerName: "Барааны нэр" },
+        //{ field: "itemName", headerName: "Барааны нэр" },
         { field: "totalQty", headerName: "Нийт тоо" },
         { field: "totalAmount", headerName: "Нийт дүн" },
         // { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
