@@ -185,7 +185,7 @@ const PurchaseController = () => {
                             <Button className="thirdButton w-4/12" >ШИНЭЭР ОРЛОГО БҮРТГЭХ</Button>
                         </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-3">
+                    <div className="grid grid-cols-3 gap-3 overflow-auto">
                         {purchases.map((purchase) => (
                             <PurchaseCard key={purchase.id} purchase={purchase} />
                         ))}
