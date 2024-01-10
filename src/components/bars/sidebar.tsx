@@ -1,9 +1,9 @@
-import React, {Component, useEffect, useRef, useState} from "react";
+import React, { Component, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import DropdownUser from "@/src/components/Header/DropdownUser";
-import {DashboardIcon,HistoryIcon,ItemIcon,ReportIcon,SettingIcon} from "@/src/components/Icons/MenuIcons";
+import { DashboardIcon, HistoryIcon, ItemIcon, ReportIcon, SettingIcon } from "@/src/components/Icons/MenuIcons";
 
 interface SidebarProps {
     sidebarOpen: boolean;
@@ -11,7 +11,7 @@ interface SidebarProps {
 }
 
 interface IMenuItem {
-    id:number,
+    id: number,
     label: string
     link: string
     icon: any,
@@ -22,12 +22,12 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
 
     const trigger = useRef<any>(null);
     const sidebar = useRef<any>(null);
-    const menuItems: IMenuItem[] =  [
-        {id:1, label: "Дашборд", link: "/dashboard", icon: <DashboardIcon fill={"inherit"}/>,},
-        {id:2, label: "Бараа бүртгэл", link: "/items", icon: <ItemIcon fill={"inherit"}/>,},
-        {id:3, label: "Тайлан", link: "/reports", icon: <ReportIcon fill={"inherit"}/>,},
-        {id:4, label: "Түүх", link: "/history", icon: <HistoryIcon fill={"inherit"}/>,},
-        {id:5, label: "Тохиргоо", link: "/settings", icon: <SettingIcon fill={"inherit"}/>,}
+    const menuItems: IMenuItem[] = [
+        { id: 1, label: "Дашборд", link: "/dashboard", icon: <DashboardIcon fill={"inherit"} />, },
+        { id: 2, label: "Бараа бүртгэл", link: "/items", icon: <ItemIcon fill={"inherit"} />, },
+        { id: 3, label: "Тайлан", link: "/reports", icon: <ReportIcon fill={"inherit"} />, },
+        { id: 4, label: "Түүх", link: "/history", icon: <HistoryIcon fill={"inherit"} />, },
+        { id: 5, label: "Тохиргоо", link: "/settings", icon: <SettingIcon fill={"inherit"} />, }
     ];
     let storedSidebarExpanded = "true";
     const [sidebarExpanded, setSidebarExpanded] = useState(
@@ -72,9 +72,8 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     return (
         <aside
             ref={sidebar}
-            className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden duration-300 ease-linear bg-boxdark lg:static lg:translate-x-0 ${
-                sidebarOpen ? "translate-x-0" : "-translate-x-full"
-            }`}
+            className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden duration-300 ease-linear bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+                }`}
         >
             <div className="flex items-center justify-between gap-2 px-6 my-2 h-8">
                 <Link href="/" className={"h-full w-full relative"}>
@@ -83,7 +82,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                         width={0}
                         height={0}
                         alt={"logo"}
-                        style={{ height: '100%', width: '50%', minWidth:"100px" }}
+                        style={{ height: '100%', width: '50%', minWidth: "100px" }}
                     />
                 </Link>
 
@@ -120,14 +119,13 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                     {/* <!-- Menu Group --> */}
                     <div>
                         <ul className="mb-6 flex flex-col gap-1.5">
-                            {menuItems.map(({id,icon,link,label}) => {
+                            {menuItems.map(({ id, icon, link, label }) => {
                                 let isHighlight = pathname.includes(link);
                                 return <li key={id}>
                                     <Link
                                         href={link}
-                                        className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-normal duration-300 ease-in-out dark:hover:bg-meta-4 hover:bg-white hover:text-graydark hover:fill-graydark ${
-                                            isHighlight ? " bg-white text-graydark dark:bg-meta-4 fill-graydark" : "text-white fill-white" 
-                                        }`}
+                                        className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-normal duration-300 ease-in-out dark:hover:bg-meta-4 hover:bg-white hover:text-graydark hover:fill-graydark ${isHighlight ? " bg-white text-graydark dark:bg-meta-4 fill-graydark" : "text-white fill-white"
+                                            }`}
                                     >
                                         {icon}
                                         {label}
@@ -140,3 +138,6 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
             </div>
         </aside>
     );
+}
+
+export default Sidebar;

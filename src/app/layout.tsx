@@ -2,8 +2,8 @@
 import "./globals.css";
 import React, {useState, useEffect, Suspense} from "react";
 import Loader from "@/src/components/common/Loader";
-import Sidebar from "@/src/components/Bars/sidebar";
 import Header from "@/src/components/Header";
+import Sidebar from "@/src/components/bars/sidebar"
 
 export default function RootLayout({children,}: { children: React.ReactNode; }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
