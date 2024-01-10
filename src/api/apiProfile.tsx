@@ -1,0 +1,17 @@
+import axios from "axios"
+
+export const URL_PREFIX = process.env.REACT_APP_IS_PROD ? process.env.REACT_APP_PROD_URL_PREFIX : "http://localhost:7002";
+
+const apiProfile = (mainRouteName: string) => ({
+
+    getProfileInfo: () => axios.get(`${URL_PREFIX}/profile/profile`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJ5bWVoMHVSMXA0ODFkTXhUQjMxTGIwTXhJRDdsYmpLQktqWThmRThUYmE0In0.eyJleHAiOjE3MDQ3NjkzNDAsImlhdCI6MTcwNDc2OTA0MCwianRpIjoiMDQ5ZTY4MzMtYmMxNi00ZTlhLTkwOTktZWJiYzQwNDRhOWFmIiwiaXNzIjoiaHR0cDovL2xvY2FsaG9zdDo4MDgwL3JlYWxtcy9vY3RhLXJlYWxtcyIsImF1ZCI6ImFjY291bnQiLCJzdWIiOiI0ZDdlOTkxNS1hNTJkLTQ2NjAtODU4Yy05MTczMjAxMGRkYTAiLCJ0eXAiOiJCZWFyZXIiLCJhenAiOiJvY3RhLW1hbmFnZXIiLCJzZXNzaW9uX3N0YXRlIjoiNjZmOTBlMDMtZDdmOC00ZjYxLWI0ZDEtMjBmOGY5Njc0NDI1IiwiYWNyIjoiMSIsImFsbG93ZWQtb3JpZ2lucyI6WyJodHRwOi8vbG9jYWxob3N0OjcwMDEiXSwicmVhbG1fYWNjZXNzIjp7InJvbGVzIjpbIm9rdGEtdGVtcC1tYW5hZ2VyIiwib2ZmbGluZV9hY2Nlc3MiLCJ1bWFfYXV0aG9yaXphdGlvbiIsImRlZmF1bHQtcm9sZXMtb2N0YS1yZWFsbXMiXX0sInJlc291cmNlX2FjY2VzcyI6eyJhY2NvdW50Ijp7InJvbGVzIjpbIm1hbmFnZS1hY2NvdW50IiwibWFuYWdlLWFjY291bnQtbGlua3MiLCJ2aWV3LXByb2ZpbGUiXX19LCJzY29wZSI6Im9wZW5pZCBwcm9maWxlIGVtYWlsIiwic2lkIjoiNjZmOTBlMDMtZDdmOC00ZjYxLWI0ZDEtMjBmOGY5Njc0NDI1IiwiZW1haWxfdmVyaWZpZWQiOmZhbHNlLCJuYW1lIjoidGVtdXVsZW4gbmVtZWtoIiwicHJlZmVycmVkX3VzZXJuYW1lIjoidGVtdXVsZW4ubiIsImdpdmVuX25hbWUiOiJ0ZW11dWxlbiIsImZhbWlseV9uYW1lIjoibmVtZWtoIiwiZW1haWwiOiJ0ZW11dWxlbi5uQG1jcy5tbiJ9.VqLjXUJZ01ZGxiOyXC-iq-FXxiGUi3c-b2Uvu40dB5mUVzocnWu6YjRcP7C-AYfizxT27zSzT_jGwWiemtNXUgpnxM-w_YoaN5AOMaXWjwD5YK8vdUb3LSWaelu7kSNLC3UNM_-yZi4KI3WcuLORNuROp5ZBBcSeGz8GVovQ6aT_we_v7VAOnIbw3H4HlV7cSOJw6xCZFXoB6Ee2ZaPeJGeB25zNZl9bnO2pmLTcx2mJuc2qAqoPJiORof_bDXVgFRKdDu9c2DLVSmgUEOvccLnpMtp5BIYsWjfr9eP8m04XJ3FyfFi1eHwm83HNzXILcdNMC9ZK49peui-RBzP2Nw',
+            // Add more headers as needed
+        }
+    }),
+
+})
+
+export default apiProfile
