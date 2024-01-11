@@ -197,36 +197,36 @@ class DashboardController extends Component<{}, DashboardControllerState> {
               <div className="grid grid-cols-4 gap-5">
                 <div className="col-span-2 flex flex-col gap-5">
                   <div className="grid grid-cols-2 gap-8 place-items-start">
-                    <Card className="w-full h-32 shadow-md rounded-lg font-sans text-[#6d758f] text-md items-center justify-center flex flex-col">
-                      <Typography className="font-sans text-[#6d758fff] text-md text-center pt-5 align-center">
+                    <Card className="w-full h-32 shadow-md rounded-lg text-[#6d758f] text-md items-center justify-center flex flex-col">
+                      <Typography className="text-[#6d758fff] text-md text-center pt-5 align-center">
                         Нийт орлого
                       </Typography>
-                      <Typography className="font-sans font-bold text-[#6d758fff] text-xl text-center pt-2 align-center">
+                      <Typography className="font-bold text-[#6d758fff] text-xl text-center pt-2 align-center">
                         {this.formatMoney(this.state.dashboard.total_income)}
                       </Typography>
                       <ArrowUpwardIcon color="success" />
                     </Card>
-                    <Card className="w-full h-32 shadow-md rounded-lg font-sans text-[#6d758f] text-md items-center justify-center flex flex-col">
-                      <Typography className="font-sans text-[#6d758fff] text-md text-center pt-3 align-center">
+                    <Card className="w-full h-32 shadow-md rounded-lg text-[#6d758f] text-md items-center justify-center flex flex-col">
+                      <Typography className="text-[#6d758fff] text-md text-center pt-3 align-center">
                         Өнөөдрийн орлого
                       </Typography>
-                      <Typography className="font-sans font-bold text-[#6d758fff] text-xl text-center pt-2 align-center">
+                      <Typography className="font-bold text-[#6d758fff] text-xl text-center pt-2 align-center">
                         {this.formatMoney(this.state.dashboard.day_income)}
                       </Typography>
                     </Card>
-                    <Card className="w-full h-32 shadow-md rounded-lg font-sans text-[#6d758f] text-md items-center justify-center flex flex-col">
-                      <Typography className="font-sans text-[#6d758fff] text-md text-center pt-5 align-center">
+                    <Card className="w-full h-32 shadow-md rounded-lg text-[#6d758f] text-md items-center justify-center flex flex-col">
+                      <Typography className="text-[#6d758fff] text-md text-center pt-5 align-center">
                         Нийт ашиг /сар/
                       </Typography>
                       <Typography
-                        className="ffont-sans font-bold text-[#6d758fff] text-xl text-center pt-2 align-center"
+                        className="ffont-bold text-[#6d758fff] text-xl text-center pt-2 align-center"
                         gutterBottom
                       >
                         {this.formatMoney (this.state.dashboard.month_profit)}
                       </Typography>
                       <ArrowDownwardIcon sx={{ color: pink[500] }} />
                     </Card>
-                    <Card className="w-full h-32 shadow-md rounded-lg font-sans text-[#6d758f] text-md items-center justify-center flex flex-col">
+                    <Card className="w-full h-32 shadow-md rounded-lg text-[#6d758f] text-md items-center justify-center flex flex-col">
                       {" "}
                       Эрэлт ихтэй бараа
                       <Typography
@@ -246,7 +246,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                 </div>
                 <div className="col-span-2 flex flex-col gap-5">
                   <Card className="w-full shadow-md h-72 rounded-lg items-center justify-center flex flex-col">
-                    <Typography className="font-sans font-bold text-[#6d758f] text-xl align-top">
+                    <Typography className="font-bold text-[#6d758f] text-xl align-top">
                       Борлуулалт
                     </Typography>
                     <LineChart

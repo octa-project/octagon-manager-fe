@@ -839,7 +839,7 @@ class ItemController extends Component<{}, ItemState> {
                 <div className="col-span-1">
                   {open && (
                     <div className="col-span-1 bg-white shadow-md h-screen">
-                      <Typography className="font-sans text-center font-semibold pt-2 pb-3 text-[#6d758f] bg-[#f1f2f4]">
+                      <Typography className=" text-center font-semibold pt-2 pb-3 text-[#6d758f] bg-[#f1f2f4]">
                         {this.state.selectedItem.id === 0 ? "ШИНЭ БАРАА БҮРТГЭХ" : "БАРАА ЗАСАХ"}
                       </Typography>
                       <Divider className="bg-[#c5cee0] shadow"></Divider>
@@ -853,7 +853,7 @@ class ItemController extends Component<{}, ItemState> {
                    />
                    <Button
                      variant="contained"
-                     className="font-sans bg-[#6d758e] text-xs text-center capitalize hover:bg-[#6d758e] text-white w-32 h-8"
+                     className=" bg-[#6d758e] text-xs text-center capitalize hover:bg-[#6d758e] text-white w-32 h-8"
                    >
                      ЗУРАГ ОРУУЛАХ
                    </Button>
@@ -861,7 +861,7 @@ class ItemController extends Component<{}, ItemState> {
 
                       <div className="flex flex-col items-center gap-4 justify-center pt-5">
                         {/* <div className="w-9/12">
-                     <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                     <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                        Нийлүүлэгч
                      </Typography>
 
@@ -874,7 +874,7 @@ class ItemController extends Component<{}, ItemState> {
                      </Select>
                    </div> */}
                         <div className="w-9/12">
-                          <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                          <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                             БАРААНЫ НЭР {selectedItem.id !== 0 && `(№ ${selectedItem.id})`}
                           </Typography>
                           <TextField className="w-full" value={selectedItem?.name}
@@ -884,7 +884,7 @@ class ItemController extends Component<{}, ItemState> {
                           />
                         </div>
                         <div className="w-9/12">
-                          <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                          <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                             БАРКОД
                           </Typography>
                           <TextField variant="outlined" className="w-full" value={selectedItem?.code}
@@ -894,7 +894,7 @@ class ItemController extends Component<{}, ItemState> {
                           />
                         </div>
                         <div className="w-9/12">
-                          <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                          <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                             ХЭМЖИХ НЭГЖ
                           </Typography>
                           <Select className="w-full" value={selectedItem?.measureId}
@@ -909,7 +909,7 @@ class ItemController extends Component<{}, ItemState> {
                           </Select>
                         </div>
                         <div className="w-9/12">
-                          <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                          <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                             БАРААНЫ БҮЛЭГ
                           </Typography>
 
@@ -926,7 +926,7 @@ class ItemController extends Component<{}, ItemState> {
                           </Select>
                         </div>
                         {/* <div className="w-9/12">
-                     <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                     <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                        Үнэ
                      </Typography>
                      <TextField variant="outlined" type="number" className="w-full"
@@ -936,14 +936,14 @@ class ItemController extends Component<{}, ItemState> {
                         <div className="w-9/12 pt-5">
                           <Button
                             variant="contained"
-                            className="font-sans bg-[#6d758e] text-base text-center capitalize text-white w-full h-11 hover:bg-[#6d758e]"
+                            className=" bg-[#6d758e] text-base text-center capitalize text-white w-full h-11 hover:bg-[#6d758e]"
                             onClick={() => this.saveUpdateItem(selectedItem)}>
                             ХАДГАЛАХ
                           </Button>
                         </div>
                         <div className="w-9/12">
                           <Button
-                            className="font-sans text-[#6d758e] text-base text-center capitalize w-full h-8"
+                            className=" text-[#6d758e] text-base text-center capitalize w-full h-8"
                             onClick={() => this.handleCancelClick()}>
                             БОЛИХ
                           </Button>
@@ -971,13 +971,13 @@ class ItemController extends Component<{}, ItemState> {
                               <Table size="small">
                                 <TableHead className="bg-[#8a91a5] h-14">
                                   <TableRow>
-                                    <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
+                                    <TableCell className=" text-white font-semibold" align="center">ЗАСАХ</TableCell>
+                                    <TableCell className=" text-white font-semibold">БАРКОД</TableCell>
+                                    <TableCell className=" text-white font-semibold">НЭР</TableCell>
+                                    <TableCell className=" text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                    <TableCell className=" text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                    <TableCell className=" text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                    <TableCell className=" text-white font-semibold" align="right">ТОО</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -990,12 +990,12 @@ class ItemController extends Component<{}, ItemState> {
                                             <EditIcon />
                                           </IconButton>
                                         </TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.sellPrice)}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(row.purchasePrice)}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(row.qty)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.barcode}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.name}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.measureName}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right">{formatMoney(row.sellPrice)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right">{formatMoney(row.purchasePrice)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right">{formatQty(row.qty)}</TableCell>
                                       </TableRow>
                                     ))
                                   ) : (
@@ -1030,16 +1030,16 @@ class ItemController extends Component<{}, ItemState> {
                               <Table size="small">
                                 <TableHead className="bg-[#8a91a5] h-14">
                                   <TableRow className="bg-[#8a91a5]">
-                                    <TableCell className="font-sans font-semibold text-white "><ChecklistIcon /></TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="center">ЗАСАХ</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="center">НЭМЭХ</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="left">№</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="left">КОД</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="left">НЭР</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="left">ХЭМЖИХ НЭГЖ</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="left">БҮЛЭГ</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="center">БАРААНЫ ТӨРЛҮҮД</TableCell>
-                                    <TableCell className="font-sans font-semibold text-white " align="center">ТӨЛӨВ</TableCell>
+                                    <TableCell className=" font-semibold text-white "><ChecklistIcon /></TableCell>
+                                    <TableCell className=" font-semibold text-white " align="center">ЗАСАХ</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="center">НЭМЭХ</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="left">№</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="left">КОД</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="left">НЭР</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="left">ХЭМЖИХ НЭГЖ</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="left">БҮЛЭГ</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="center">БАРААНЫ ТӨРЛҮҮД</TableCell>
+                                    <TableCell className=" font-semibold text-white " align="center">ТӨЛӨВ</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -1074,33 +1074,33 @@ class ItemController extends Component<{}, ItemState> {
                                               </IconButton>
                                             </div>
                                           </TableCell>
-                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.id}</TableCell>
-                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.code}</TableCell>
-                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.name}</TableCell>
-                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.measureName}</TableCell>
-                                          <TableCell className="font-sans text-[#8a91a5]" align="left">{row.itemgroupName}</TableCell>
-                                          <TableCell className="font-sans text-[#8a91a5]" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
-                                          <TableCell className="font-sans w-6" align="center">
+                                          <TableCell className=" text-[#8a91a5]" align="left">{row.id}</TableCell>
+                                          <TableCell className=" text-[#8a91a5]" align="left">{row.code}</TableCell>
+                                          <TableCell className=" text-[#8a91a5]" align="left">{row.name}</TableCell>
+                                          <TableCell className=" text-[#8a91a5]" align="left">{row.measureName}</TableCell>
+                                          <TableCell className=" text-[#8a91a5]" align="left">{row.itemgroupName}</TableCell>
+                                          <TableCell className=" text-[#8a91a5]" align="center">{`( ${row.itemcodes.length} )`}</TableCell>
+                                          <TableCell className=" w-6" align="center">
                                             <Checkbox defaultChecked={row.isActive} disabled />
                                           </TableCell>
                                         </TableRow>
                                         <TableRow>
                                           <TableCell colSpan={9} className="p-0 m-0 bg-[#f1f2f4]">
                                             <Collapse in={selectedRowId === row.id && row.itemcodes && row.itemcodes.length > 0} timeout="auto" unmountOnExit className="p-3 w-full">
-                                              <Typography className="font-sans font-semibold text-[#8a91a5] text-left text-base">
+                                              <Typography className=" font-semibold text-[#8a91a5] text-left text-base">
                                                 БАРААНЫ ТӨРЛҮҮД
                                               </Typography>
                                               <Box className="w-full bg-white">
                                                 <Table className="w-full" size="small">
                                                   <TableHead className="bg-[#8a91a5] h-10">
                                                     <TableRow>
-                                                      <TableCell className="font-sans text-white font-semibold" align="center">ЗАСАХ</TableCell>
-                                                      <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                                      <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                                      <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                                      <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                                      <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                                      <TableCell className="font-sans text-white font-semibold" align="right">ТОО</TableCell>
+                                                      <TableCell className=" text-white font-semibold" align="center">ЗАСАХ</TableCell>
+                                                      <TableCell className=" text-white font-semibold">БАРКОД</TableCell>
+                                                      <TableCell className=" text-white font-semibold">НЭР</TableCell>
+                                                      <TableCell className=" text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                                      <TableCell className=" text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                                      <TableCell className=" text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                                      <TableCell className=" text-white font-semibold" align="right">ТОО</TableCell>
                                                     </TableRow>
                                                   </TableHead>
                                                   <TableBody>
@@ -1113,12 +1113,12 @@ class ItemController extends Component<{}, ItemState> {
                                                               <EditIcon />
                                                             </IconButton>
                                                           </TableCell>
-                                                          <TableCell className="font-sans text-[#8a91a5] ">{itemCode.barcode}</TableCell>
-                                                          <TableCell className="font-sans text-[#8a91a5] ">{itemCode.name}</TableCell>
-                                                          <TableCell className="font-sans text-[#8a91a5] ">{itemCode.measureName}</TableCell>
-                                                          <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.sellPrice)}</TableCell>
-                                                          <TableCell className="font-sans text-[#8a91a5] " align="right">{formatMoney(itemCode.purchasePrice)}</TableCell>
-                                                          <TableCell className="font-sans text-[#8a91a5] " align="right">{formatQty(itemCode.qty)}</TableCell>
+                                                          <TableCell className=" text-[#8a91a5] ">{itemCode.barcode}</TableCell>
+                                                          <TableCell className=" text-[#8a91a5] ">{itemCode.name}</TableCell>
+                                                          <TableCell className=" text-[#8a91a5] ">{itemCode.measureName}</TableCell>
+                                                          <TableCell className=" text-[#8a91a5] " align="right">{formatMoney(itemCode.sellPrice)}</TableCell>
+                                                          <TableCell className=" text-[#8a91a5] " align="right">{formatMoney(itemCode.purchasePrice)}</TableCell>
+                                                          <TableCell className=" text-[#8a91a5] " align="right">{formatQty(itemCode.qty)}</TableCell>
                                                         </TableRow>
                                                       ))
                                                       )}
@@ -1170,14 +1170,14 @@ class ItemController extends Component<{}, ItemState> {
                               <Table size="small">
                                 <TableHead className="bg-[#8a91a5] h-14">
                                   <TableRow>
-                                    <TableCell className="font-sans text-white font-semibold">№</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">БҮЛЭГ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">ҮҮСГЭСЭН ӨДӨР</TableCell>
+                                    <TableCell className=" text-white font-semibold">№</TableCell>
+                                    <TableCell className=" text-white font-semibold">БАРКОД</TableCell>
+                                    <TableCell className=" text-white font-semibold">НЭР</TableCell>
+                                    <TableCell className=" text-white font-semibold">ХЭМЖИХ НЭГЖ</TableCell>
+                                    <TableCell className=" text-white font-semibold">БҮЛЭГ</TableCell>
+                                    <TableCell className=" text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                    <TableCell className=" text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                    <TableCell className=" text-white font-semibold" align="right">ҮҮСГЭСЭН ӨДӨР</TableCell>
                                   </TableRow>
                                 </TableHead>
                                 <TableBody>
@@ -1191,14 +1191,14 @@ class ItemController extends Component<{}, ItemState> {
                                     <EditIcon />
                                   </IconButton>
                                 </TableCell> */}
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.measureName}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.groupName}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right" >{formatMoney(row.sellPrice)}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right" >{formatMoney(row.costPrice)}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right">{row.createdDate}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.id}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.barcode}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.name}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.measureName}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.groupName}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right" >{formatMoney(row.sellPrice)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right" >{formatMoney(row.costPrice)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right">{row.createdDate}</TableCell>
                                       </TableRow>
                                     ))
                                   ) : (
@@ -1264,17 +1264,17 @@ class ItemController extends Component<{}, ItemState> {
             role="presentation"
             className="flex flex-col bg-[#f1f2f4] h-full">
             <div className="flex flex-col w-full h-1/6 items-center justify-center bg-[#8a91a5]">
-              <Typography className="w-full font-sans font-semibold text-lg text-center text-white">
+              <Typography className="w-full  font-semibold text-lg text-center text-white">
                 {selectedItemCode.id === 0 ? "БАРААНЫ ТӨРӨЛ НЭМЭХ" : "БАРААНЫ ТӨРӨЛ ЗАСАХ"}
               </Typography>
-              <Typography className="w-full font-sans font-semibold text-lg text-center text-white">
+              <Typography className="w-full  font-semibold text-lg text-center text-white">
                 {selectedItem.name}
               </Typography>
             </div>
             <div className="flex flex-col items-center justify-start h-5/6 gap-5 p-7">
 
               <div className="w-full">
-                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   БАРКОД {selectedItemCode.id !== 0 && `(№ ${selectedItemCode.id})`}
                 </Typography>
                 <TextField
@@ -1287,7 +1287,7 @@ class ItemController extends Component<{}, ItemState> {
                 />
               </div>
               <div className="w-full">
-                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   НЭР
                 </Typography>
                 <TextField
@@ -1300,7 +1300,7 @@ class ItemController extends Component<{}, ItemState> {
                 />
               </div>
               <div className="w-full">
-                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   ЗАРАХ ҮНЭ
                 </Typography>
                 <TextField
@@ -1314,7 +1314,7 @@ class ItemController extends Component<{}, ItemState> {
                 />
               </div>
               <div className="w-full">
-                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   АВАХ ҮНЭ
                 </Typography>
                 <TextField
@@ -1328,7 +1328,7 @@ class ItemController extends Component<{}, ItemState> {
                 />
               </div>
               <div className="w-full">
-                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   ХЭМЖИХ НЭГЖ
                 </Typography>
                 <Select className="w-full" value={selectedItemCode?.measureId}
@@ -1343,7 +1343,7 @@ class ItemController extends Component<{}, ItemState> {
                 </Select>
               </div>
               <div className="w-full">
-                <Typography className="font-sans text-left text-xs font-semibold pb-1 text-[#6d758f]">
+                <Typography className=" text-left text-xs font-semibold pb-1 text-[#6d758f]">
                   ТОО
                 </Typography>
                 <TextField
@@ -1359,14 +1359,14 @@ class ItemController extends Component<{}, ItemState> {
               <div className="w-9/12">
                 <Button
                   variant="contained"
-                  className="font-sans bg-[#6d758e] text-base text-center capitalize text-white w-full h-11 hover:bg-[#6d758e]"
+                  className=" bg-[#6d758e] text-base text-center capitalize text-white w-full h-11 hover:bg-[#6d758e]"
                   onClick={() => this.saveUpdateItemCode(selectedItemCode)}>
                   {selectedItemCode.id === 0 ? "БҮРТГЭХ" : "ШИНЭЧЛЭХ"}
                 </Button>
               </div>
               <div className="w-9/12">
                 <Button
-                  className="font-sans text-[#6d758e] text-base text-center capitalize w-full h-8"
+                  className=" text-[#6d758e] text-base text-center capitalize w-full h-8"
                   onClick={() => this.setItemCodeState(false, nonSelectedItemCode)}>
                   БОЛИХ
                 </Button>

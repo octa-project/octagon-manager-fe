@@ -2,6 +2,8 @@ interface Purchase {
     id: string;
     items: PurchaseItem[];
     supplierId: string;
+    supplierName: string;
+    branchId: string;
     date: string;
     totalAmount: number;
     totalDiscount: number;
