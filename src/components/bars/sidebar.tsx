@@ -4,6 +4,10 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import DropdownUser from "@/src/components/Header/DropdownUser";
 import { DashboardIcon, HistoryIcon, ItemIcon, ReportIcon, SettingIcon } from "@/src/components/Icons/MenuIcons";
+import {Button, Tooltip} from '@mui/material';
+import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import api from "@/src/api";
 
 interface SidebarProps {
     sidebarOpen: boolean;
@@ -17,7 +21,21 @@ interface IMenuItem {
     icon: any,
 }
 
-const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
+interface profileInfo {
+
+    id: number,
+    email: string,
+    phoneNumber: string,
+    imagePath: string,
+    firstName: string,
+    lastName: string,
+    userClientId: string,
+    role: string,
+
+}
+
+const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : SidebarProps) => {
+
     const pathname = usePathname();
 
     const trigger = useRef<any>(null);
@@ -75,7 +93,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
         <aside
             ref={sidebar}
             className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden duration-300 ease-linear bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
-                }`}
+            }`}
         >
             <div className="flex items-center justify-between gap-2 px-6 my-2 h-8">
                 <Link href="/" className={"h-full w-full relative"}>
@@ -127,7 +145,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
                                     <Link
                                         href={link}
                                         className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-normal duration-300 ease-in-out dark:hover:bg-meta-4 hover:bg-white hover:text-graydark hover:fill-graydark ${isHighlight ? " bg-white text-graydark dark:bg-meta-4 fill-graydark" : "text-white fill-white"
-                                            }`}
+                                        }`}
                                     >
                                         {icon}
                                         {label}

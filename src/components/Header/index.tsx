@@ -72,7 +72,7 @@ const Header = (props: {
           <form action="" method="POST">
             <div className="relative">
               <span className={"font-medium pr-5 font-Sans"}>
-                Нархан дэлгүүр
+                Demo Store
               </span>
               <span>
                 2023-11-30 Пүрэв гараг

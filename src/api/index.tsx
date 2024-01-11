@@ -12,6 +12,7 @@ import apiSettings from "@/src/api/apiSettings";
 import apiSku from "./apiSku";
 import apiPurchase from "./apiPurchase";
 import apiSupplier from "./apiSupplier";
+import apiProfile from "@/src/api/apiProfile";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -83,6 +84,7 @@ const getDeviceSetting = apiSettings("device-settings")
 
 const GetPrinterList = apiSettings("get-printer-list")
 const get_Top_Ten_Item = apiSale("get-top-ten-item")
+const getProfileInfo = apiProfile("")
 
 const itemcode_getManyCustom = apiSku("custom-all")
 const itemcode_getOneBarcode = apiSku("by-barcode")
@@ -142,7 +144,7 @@ export default {
 
     measure_get_all,
     measure_get_by_id,
-
+    
     saleGetMany,
     saleGetOne,
     saleDelete,
@@ -164,7 +166,6 @@ export default {
     GetPrinterList,
     get_Top_Ten_Item,
 
-    itemcode_getManyCustom,
     groups_getManyGroups,
     itemcode_getOneBarcode,
 
@@ -174,4 +175,6 @@ export default {
     supplier_getMany,
     supplier_saveOne,
     supplier_updateOne,
+    itemcode_getManyCustom,
+    getProfileInfo
 }

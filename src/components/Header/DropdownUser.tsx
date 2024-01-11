@@ -1,12 +1,47 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import api from "@/src/api";
+
+interface profileInfo {
+
+  id: number,
+  email: string,
+  phoneNumber: string,
+  imagePath: string,
+  firstName: string,
+  lastName: string,
+  userClientId: string,
+  role: string,
+
+}
 
 const DropdownUser = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
+  const [data, setData] = useState<profileInfo | null>(null);
+
+  useEffect(() => {
+    // Define an asynchronous function for data fetching
+    const fetchData = async () => {
+      try {
+        const response = await api.getProfileInfo.getProfileInfo().then(res => {
+          const restResponse = res.data;
+
+          setData(restResponse);
+        });
+        console.log(data?.role);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+
+    // Call the fetchData function when the component mounts
+    fetchData().finally();
+  }, []);
+
 
   // close on click outside
   useEffect(() => {
@@ -53,9 +88,9 @@ const DropdownUser = () => {
 
         <span className="text-left lg:block">
           <span className="block text-sm font-medium text-black dark:text-white">
-            Данзан
+            {data?.firstName }
           </span>
-          <span className="block text-xs">FullStack Developer</span>
+          <span className="block text-xs">{data?.role}</span>
         </span>
 
         <svg
