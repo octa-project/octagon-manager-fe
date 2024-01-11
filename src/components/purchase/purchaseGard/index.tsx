@@ -4,9 +4,20 @@ import { formatMoney, formatQty } from '../../tools/utils';
 
 interface CardProps {
     purchase: Purchase;
+    onPayClick: (purchaseId: string) => void;
+    onDetailClick: (purchase: Purchase) => void;
 }
 
-const PurchaseCard: React.FC<CardProps> = ({ purchase }) => {
+const PurchaseCard: React.FC<CardProps> = ({ purchase, onPayClick, onDetailClick }) => {
+
+    const handlePayClick = () => {
+        onPayClick(purchase.id);
+    };
+
+    const handleDetailClick = () => {
+        onDetailClick(purchase);
+    };
+
     return (
         <div className="card col-span-1 gap-2 flex flex-col justify-between">
             <div className='flex flex-row justify-between'>
@@ -14,7 +25,7 @@ const PurchaseCard: React.FC<CardProps> = ({ purchase }) => {
                     {/* {purchase.id} */}
                 </div>
                 <div>
-                    
+
                 </div>
                 {/* <div className='font-sans font-semibold bg-[#e1f4de] text-[#71ca61] border-[#71ca61] border rounded-lg text-center w-2/6 p-1'>
                     Хүлээн авсан
@@ -79,8 +90,8 @@ const PurchaseCard: React.FC<CardProps> = ({ purchase }) => {
                 </div>
             </div>
             <div className='flex flex-row justify-between'>
-                <Button className='cardSecondaryButton w-40'>Дэлгэрэнгүй</Button>
-                <Button className='cardButton w-40' disabled={purchase.isPaid}> {purchase.isPaid ? "Төлөгдсөн" : "Төлөх" } </Button>
+                <Button className='cardSecondaryButton w-40' onClick={() => handleDetailClick()} >Дэлгэрэнгүй</Button>
+                <Button className='cardButton w-40' onClick={() => handlePayClick()} disabled={purchase.isPaid}> {purchase.isPaid ? "Төлөгдсөн" : "Төлөх"} </Button>
             </div>
         </div>
     );

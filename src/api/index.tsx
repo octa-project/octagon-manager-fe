@@ -11,6 +11,7 @@ import apiBranch from "./apiBranch";
 import apiSettings from "@/src/api/apiSettings";
 import apiSku from "./apiSku";
 import apiPurchase from "./apiPurchase";
+import apiSupplier from "./apiSupplier";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -90,6 +91,10 @@ const groups_getManyGroups = apiSku("all")
 const purchase_getMany = apiPurchase("get-all")
 const purchase_saveOne = apiPurchase("save")
 
+const supplier_getMany = apiSupplier("all")
+const supplier_saveOne = apiSupplier("add")
+const supplier_updateOne = apiSupplier("update")
+
 
 export default {
 
@@ -164,5 +169,9 @@ export default {
     itemcode_getOneBarcode,
 
     purchase_getMany,
-    purchase_saveOne
+    purchase_saveOne,
+
+    supplier_getMany,
+    supplier_saveOne,
+    supplier_updateOne,
 }

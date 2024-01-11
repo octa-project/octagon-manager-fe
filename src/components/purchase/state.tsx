@@ -26,3 +26,13 @@ interface PurchaseItem {
     createdBy: string;
     lastModifiedBy: string;
 }
+
+
+interface Supplier {
+    id: string;
+    code: string;
+    name: string;
+    email: number;
+    phone: number;
+    taxNumber: string;
+}
