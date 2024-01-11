@@ -19,9 +19,9 @@ const PurchaseCard: React.FC<CardProps> = ({ purchase, onPayClick, onDetailClick
     };
 
     return (
-        <div className={`card col-span-1 gap-2 flex flex-col justify-between`}>
+        <div className={`card col-span-1 gap-2 flex flex-col justify-between border ${purchase.isPaid ? 'border-green-500' : 'border-none'}`}>
             <div className='flex flex-row justify-between'>
-                <div className='bg-[#6d758f] text-white w-10 h-10 rounded text-center'>
+                <div className='bg-[#6d758f] text-white w-10 rounded text-center'>
                     {purchase.id}
                 </div>
                 <div>

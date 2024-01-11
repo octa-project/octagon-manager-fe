@@ -15,12 +15,16 @@ import { TabContext, TabPanel } from "@mui/lab";
 import { formatMoney } from "../tools/utils";
 import DeleteIcon from '@mui/icons-material/Delete';
 import SnackBar from "@/src/components/tools/snackAlert"
+import SearchIcon from '@mui/icons-material/Search';
 
 const PurchaseController = () => {
+
+    const [searchText, setSearchText] = useState('');
 
     // Purchase List
     const [filterValue, setFilterValue] = useState("0");
     const [tabValue, setTabValue] = useState("0");
+    const [filterSupplierValue, setFilterSupplierValue] = useState("0");
     const [startDate, setStartDateValue] = useState(moment().format("YYYY-MM-DD 00:00:00"));
     const [endDate, setEndDateValue] = useState(moment().format("YYYY-MM-DD 23:59:59"));
 
@@ -35,8 +39,8 @@ const PurchaseController = () => {
 
     const [supplier, setSupplier] = useState<Supplier>();
 
-    const { RangePicker } = DatePicker;
     const dateFormat = "YYYY-MM-DD";
+    const { RangePicker } = DatePicker;
 
     let first: boolean = false;
     useEffect(() => {
@@ -44,11 +48,17 @@ const PurchaseController = () => {
         first = true
         getSuppliers();
         getPurchases();
+        setBranches(["Салбар 1"]);
     }, []);
 
-    // const handleSupplier = (value: string) => {
-    //     setSupplier({ id: value });
-    // };
+    const handleDetailSupplier = (value: string) => {
+        if (purchaseDetail) {
+            setPurchaseDetail({
+                ...purchaseDetail,
+                supplierId: value,
+            });
+        }
+    };
 
     const handleFilterChange = (value: string) => {
         setFilterValue(value);
@@ -57,6 +67,17 @@ const PurchaseController = () => {
             setPurchasesData(purchases);
         } else {
             const filteredData = purchases.filter((t) => (value === "1" ? t.isPaid : !t.isPaid));
+            setPurchasesData(filteredData);
+        }
+    };
+
+    const handleFilterSupplierChange = (value: string) => {
+        setFilterSupplierValue(value);
+
+        if (value === "0") {
+            setPurchasesData(purchases);
+        } else {
+            const filteredData = purchases.filter((t) => t.supplierId === value);
             setPurchasesData(filteredData);
         }
     };
@@ -90,9 +111,70 @@ const PurchaseController = () => {
         }
     };
 
-    const handleTextSearch = (text: string) => {
+    const handleTextSearch = async (barcode: string) => {
+        setSearchText(barcode);
+        if (barcode.length === 13) {
+            try {
+                const isExist = purchaseDetail?.items.find((t) => t.barcode === barcode);
 
+                if (isExist) {
+                    SnackBar.success("Бараа нэмэгдлээ");
+                    setPurchaseDetail((prevPurchase) => {
+                        if (prevPurchase) {
+                            const updatedItems = prevPurchase.items.map((item) =>
+                                item.barcode === barcode ? { ...item, qty: item.qty + 1 } : item
+                            );
+
+                            return {
+                                ...prevPurchase,
+                                items: updatedItems,
+                            };
+                        }
+
+                        console.error('Invalid purchase data:', prevPurchase);
+                        return prevPurchase;
+                    });
+                } else {
+                    // If the item doesn't exist, add a new item
+                    const result: ItemCode = await getItem(barcode);
+                    const convertedPurchaseItem: PurchaseItem = {
+                        barcode: result.barcode,
+                        itemName: result.name,
+                        sellPrice: result.sellPrice,
+                        costPrice: result.purchasePrice,
+                        discount: 0,
+                        qty: 1,
+                        id: "",
+                        purchaseId: "",
+                        createdDate: "",
+                        lastModifiedDate: "",
+                        createdBy: "",
+                        lastModifiedBy: "",
+                    };
+
+                    setPurchaseDetail((prevPurchase) => {
+                        if (prevPurchase) {
+                            const updatedItems = [...prevPurchase.items, convertedPurchaseItem];
+                            return {
+                                ...prevPurchase,
+                                items: updatedItems,
+                            };
+                        }
+                        console.error('Invalid purchase data:', prevPurchase);
+                        return prevPurchase;
+                    });
+                }
+
+                // Clear the input value
+                setSearchText('');
+            } catch (error) {
+                // Handle error
+                console.error('Error fetching item:', error);
+            }
+        }
     };
+
+
 
     const handleQtyChange = (itemId: string, newQty: string) => {
         const parsedQty = parseInt(newQty, 10);
@@ -147,7 +229,7 @@ const PurchaseController = () => {
 
                 const mappedPurchases: Purchase[] = purchaseData.map((item) => {
                     const supplierName = suppliers.find((t) => t.id === item.id)?.name;
-                
+
                     const purchase: Purchase = {
                         id: item.id.toString(),
                         items: item.purchaseItems.map((itemData: any) => {
@@ -199,7 +281,7 @@ const PurchaseController = () => {
             const result = await api.supplier_getMany.getMany();
             if (result.data.code === "200") {
                 const supplierData: any[] = result.data.data;
-                
+
                 const mappedSuppliers: Supplier[] = supplierData.map((value) => {
                     const supplier: Supplier = {
                         id: value.id.toString(),
@@ -211,7 +293,6 @@ const PurchaseController = () => {
                     };
                     return supplier;
                 });
-                debugger
                 setSuppliers(mappedSuppliers);
             } else {
                 throw new Error("Failed to fetch data");
@@ -221,6 +302,21 @@ const PurchaseController = () => {
         } finally {
             // Any cleanup code can be added here
         }
+    };
+
+    const handleDateChange = (date: any, dateString: string) => {
+        setPurchaseDetail((prevPurchase) => {
+            if (prevPurchase) {
+                return {
+                    ...prevPurchase,
+                    date: dateString,
+                };
+            }
+
+            // Handle the case where prevPurchase is null or undefined
+            console.error('Invalid purchase data:', prevPurchase);
+            return prevPurchase;
+        });
     };
 
     const changePurchasePaidStatus = async (value: boolean) => {
@@ -243,21 +339,36 @@ const PurchaseController = () => {
         return suppliers.find((t) => t.id === id)?.name;
     };
 
-    return (
+    const getItem = async (value: string) => {
+        try {
+            const result = await api.itemCode_get_by_barcode.itemCodeGetItemCodeByBarcode(value);
 
-        <div className="flex flex-col h-full">
+            if (result.data.code === "200") {
+                SnackBar.success("Бараа олдлоо:" + result.data.data.name);
+                return result.data.data;
+            } else {
+                SnackBar.warning("Алдаа гарлаа:" + result.data.message);
+            }
+        } catch (error) {
+            // Handle error
+            SnackBar.warning("Алдаа гарлаа:" + error);
+        }
+    };
+
+    return (
+        < div className="flex flex-col h-full" >
             <TabContext value={tabValue}>
                 <TabPanel value={"0"} className="h-full">
                     <div className="flex flex-col col-span-6 gap-3">
-                        <div className="grid grid-cols-6 gap-3">
-                            <div className="col-span-3">
+                        <div className="grid grid-cols-12 gap-3">
+                            <div className="col-span-4">
                                 <div className="flex items-center bg-white h-10 w-full rounded shadow border border-[#cbcbcb]">
                                     <Input
                                         className="text-[#6d758f] w-full h-full rounded border-none"
                                         placeholder="Хайх..."
-                                        onChange={(e) =>
-                                            handleTextSearch(e.target.value)
-                                        }
+                                    // onChange={(e) =>
+                                    //     handleTextSearch(e.target.value)
+                                    // }
                                     />
                                     <Image
                                         src="/items/search.svg"
@@ -268,7 +379,7 @@ const PurchaseController = () => {
                                     />
                                 </div>
                             </div>
-                            <div className="col-span-1">
+                            <div className="col-span-2">
                                 <div
                                     className="flex flex-row bg-white h-10 w-full rounded shadow">
                                     <Select
@@ -291,7 +402,7 @@ const PurchaseController = () => {
                                     </Select>
                                 </div>
                             </div>
-                            <div className="col-span-2">
+                            <div className="col-span-5">
                                 <RangePicker
                                     className="bg-white h-10 w-full rounded shadow border border-[#cbcbcb]"
                                     defaultValue={[
@@ -302,14 +413,46 @@ const PurchaseController = () => {
                                     onChange={handleSearchDate}
                                 />
                             </div>
+                            <div className="col-span-1">
+                                <IconButton className="thirdButton w-full"
+                                    onClick={() => getPurchases()}
+                                >
+                                    <SearchIcon className="text-red" />
+                                </IconButton>
+                            </div>
                         </div>
                         <div className="grid grid-cols-6 gap-3">
-                            <div className="col-span-4">
-                                <Button className="thirdButton w-4/12"
+                            <div className="col-span-2">
+                                <Button className="thirdButton w-full"
                                     onClick={() => handleTabChange("1")}
                                 >
                                     ШИНЭЭР ОРЛОГО БҮРТГЭХ
                                 </Button>
+                            </div>
+                            <div
+                                className="flex flex-row bg-white h-10 w-full rounded shadow">
+                                <Select
+                                    className="capitalize text-[#6d758f] w-full rounded"
+                                    IconComponent={() => (
+                                        <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                            <Image
+                                                src="/items/filter.svg"
+                                                alt="filter"
+                                                width={24}
+                                                height={24}
+                                            />
+                                        </div>
+                                    )}
+                                    value={filterSupplierValue}
+                                    onChange={(event) => handleFilterSupplierChange(event.target.value as string)} >
+                                    <MenuItem value={"0"}>Бүгд</MenuItem>
+                                    {suppliers.map((value) => (
+                                        <MenuItem
+                                            key={value.id} value={value.id}>
+                                            {value.name}
+                                        </MenuItem>
+                                    ))}
+                                </Select>
                             </div>
                         </div>
                         <div className="h-full overflow-auto">
@@ -337,7 +480,10 @@ const PurchaseController = () => {
                             <div className="flex flex-col col-span-1 gap-3">
                                 <div className="flex flex-row gap-3">
                                     <div className="w-36">Орлогын огноо</div>
-                                    <DatePicker className="h-8 w-44 bg-white" />
+                                    <DatePicker defaultValue={dayjs()}
+                                        onChange={handleDateChange}
+                                        value={dayjs(purchaseDetail?.date, dateFormat)}
+                                        className="h-8 w-44 bg-white" />
                                 </div>
                                 <div className="flex flex-row gap-3">
                                     <div className="w-36">Салбар</div>
@@ -357,8 +503,8 @@ const PurchaseController = () => {
                             <div className="flex flex-col col-span-1 gap-3">
                                 <div className="flex flex-row gap-3">
                                     <div className="w-36" >Нийлүүлэгч</div>
-                                    <Select className="h-8 w-44 bg-white" value={supplier?.id}
-                                    // onChange={(e) => handleSupplier(e.target.value)}
+                                    <Select className="h-8 w-44 bg-white" value={purchaseDetail?.supplierId}
+                                        onChange={(e) => handleDetailSupplier(e.target.value)}
                                     >
                                         {suppliers.map((value) => (
                                             <MenuItem
@@ -394,12 +540,8 @@ const PurchaseController = () => {
                                         <Input
                                             className="text-[#6d758f] w-full h-full rounded border-none"
                                             placeholder="Хайх..."
-                                            onKeyDown={(e) => {
-                                                if (e.key === 'Enter') {
-                                                    // handleTextSearch();
-                                                }
-                                            }}
-                                        />
+                                            value={searchText}
+                                            onChange={(e) => handleTextSearch(e.target.value)} />
                                         <Image
                                             src="/items/search.svg"
                                             alt="icon"
@@ -458,7 +600,7 @@ const PurchaseController = () => {
                     </div>
                 </TabPanel>
             </TabContext>
-        </div>
+        </div >
     );
 
 
