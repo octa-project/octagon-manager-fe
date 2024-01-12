@@ -17,8 +17,10 @@ interface Printer {
 interface settingsPrinterState {
     first: boolean;
     open: boolean;
+    secondaryOpen: boolean;
     selectedPrinter: Printer;
     nonSelectedPrinter: Printer;
     printersData: Printer[];
     printersSearchData: Printer[];
+    skeleten:number[];
 }
