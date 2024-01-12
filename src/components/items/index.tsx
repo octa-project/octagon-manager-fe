@@ -29,7 +29,7 @@ class ItemController extends Component<{}, ItemState> {
     this.state = {
       first: false,
       downloadAll: false,
-      tabValue: "1",
+      tabValue: "0",
       loading: false,
       error: '',
       selectedItem: {
