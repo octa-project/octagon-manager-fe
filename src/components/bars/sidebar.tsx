@@ -7,7 +7,6 @@ import { DashboardIcon, HistoryIcon, ItemIcon, ReportIcon, SettingIcon } from "@
 import {Button, Tooltip} from '@mui/material';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import api from "@/src/api";
 
 interface SidebarProps {
     sidebarOpen: boolean;
