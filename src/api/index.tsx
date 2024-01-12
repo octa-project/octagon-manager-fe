@@ -82,6 +82,11 @@ const getMainSetting = apiSettings("get-setting-by-id")
 const insertDeviceSetting = apiSettings("device-settings")
 const updateDeviceSetting = apiSettings("device-settings")
 const getDeviceSetting = apiSettings("device-settings")
+const getDeviceListByBranch = apiSettings("device-settings-list")
+const getDeviceListByBranchForOrder = apiSettings("device-settings-list-order")
+const deleteDeviceSettings = apiSettings("device-settings")
+
+
 
 const GetPrinterList = apiSettings("get-printer-list")
 const get_Top_Ten_Item = apiSale("get-top-ten-item")
@@ -192,5 +197,8 @@ export default {
     supplier_saveOne,
     supplier_updateOne,
     itemcode_getManyCustom,
-    getProfileInfo
+    getProfileInfo,
+    getDeviceListByBranch,
+    getDeviceListByBranchForOrder,
+    deleteDeviceSettings
 }

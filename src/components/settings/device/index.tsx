@@ -86,6 +86,16 @@ class DeviceSettings extends Component<{}, ItemState> {
         const {
             deviceSettings
         } = this.state;
+
+        const params: TextFieldCustom[] = [
+            { id: "1", paramName: "name", title: "НЭР" },
+            { id: "2", paramName: "taxNumber", title: "ТАТВАР ТӨЛӨГЧИЙН ДУГААР" },
+            { id: "3", paramName: "contractNumber", title: "ГЭРЭЭНИЙ ДУГААР" },
+            { id: "4", paramName: "city", title: "ХОТ, АЙМАГ" },
+            { id: "5", paramName: "address", title: "ХАЯГ" },
+            { id: "6", paramName: "phone", title: "УТАС" },
+        ];
+
         return (<div className="h-full">
                 <div style={containerStyle}>
                     <div>

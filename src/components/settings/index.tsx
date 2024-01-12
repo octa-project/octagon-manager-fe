@@ -28,7 +28,7 @@ const SettingsController = () => {
     ];
 
     return (
-        <div className="flex flex-col gap-5 h-full">
+        <div className="flex flex-col gap-3 h-screen">
             <div className="bg-white h-14 shadow-lg rounded-lg">
                 <div className="w-full h-14 grid grid-cols-5 justify-items items-center gap-5 px-2">
                     {tabs.map((item, index) => (
@@ -39,7 +39,7 @@ const SettingsController = () => {
                     ))}
                 </div>
             </div>
-            <div className="bg-white h-full shadow-md rounded-lg overflow-y-auto">
+            <div className="bg-white h-full shadow-md rounded-lg">
                 <TabContext value={tabValue}>
                     <TabPanel value={"0"} className="p-4 h-full">
                         <MainSettings />
