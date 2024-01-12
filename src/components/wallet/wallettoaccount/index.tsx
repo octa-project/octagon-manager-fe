@@ -29,10 +29,6 @@ class WalletToAccount extends Component<Props> {
     };
     sendWalletToBank = async () => {
         try {
-            console.log(this.amount)
-            console.log(this.account)
-            console.log(this.props.phoneNum)
-            console.log(this.desc)
             const body = {
                 account: this.account,
                 account_name: "M bank",

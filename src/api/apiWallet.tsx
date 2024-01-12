@@ -10,7 +10,8 @@ const apiWallet = (mainRouteName: string) => ({
     cardToWalletTransaction: (data: any) => axios.post(`${URL_PREFIX}/wallet/${mainRouteName}`,data),
     getCardWeb: (data: any) => axios.post(`${URL_PREFIX}/wallet/${mainRouteName}`,data),
     getCardList: (phoneNum: any) => axios.get(`${URL_PREFIX}/wallet/${mainRouteName}?phoneNum=${phoneNum}`),
-    saveCard: (phoneNum: any) => axios.get(`${URL_PREFIX}/wallet/${mainRouteName}?phoneNum=${phoneNum}`)
+    saveCard: (phoneNum: any) => axios.get(`${URL_PREFIX}/wallet/${mainRouteName}?phoneNum=${phoneNum}`),
+    walletToWalletTransaction: (data: any) => axios.post(`${URL_PREFIX}/wallet/${mainRouteName}`,data),
 
 })
 
