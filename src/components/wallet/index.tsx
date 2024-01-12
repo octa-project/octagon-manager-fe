@@ -171,7 +171,6 @@ class WalletController extends Component<{}, Dialog> {
 
     render() {
         return (
-            <div className="p-3">
                 <div className="bg-white shadow rounded-lg">
                     <div className="flex items-center gap-2 p-3">
                         <div className=" font-bold w-9/12 text-2xl">PayGate Хэтэвч /{this.phoneNumber}/</div>
@@ -302,7 +301,6 @@ class WalletController extends Component<{}, Dialog> {
                         </div>
                     </div>
                 </div>
-            </div>
         )
     }
 }
