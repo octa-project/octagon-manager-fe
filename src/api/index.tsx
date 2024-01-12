@@ -9,6 +9,7 @@ import apiSale from "./apiSale";
 import apiDashboard from "./apiDashboard";
 import apiBranch from "./apiBranch";
 import apiSettings from "@/src/api/apiSettings";
+import apiWallet from "@/src/api/apiWallet";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -81,7 +82,22 @@ const getDeviceSetting = apiSettings("device-settings")
 const GetPrinterList = apiSettings("get-printer-list")
 const get_Top_Ten_Item = apiSale("get-top-ten-item")
 
+const getWalletBalance = apiWallet("get-balance")
+const getWalletTransactionHistory = apiWallet("get-history")
+const walletToAccountTransaction = apiWallet("wallet-to-account-transaction")
+const cardToWalletTransaction = apiWallet("card-to-wallet")
+const getCardWeb = apiWallet("card-web")
+const getCardList = apiWallet("get-card-list")
+const saveCard = apiWallet("save-card")
 export default {
+
+    getWalletBalance,
+    getWalletTransactionHistory,
+    walletToAccountTransaction,
+    cardToWalletTransaction,
+    getCardWeb,
+    getCardList,
+    saveCard,
 
     transaction_save,
     transaction_update,

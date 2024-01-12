@@ -27,6 +27,7 @@ const Sidebar: React.FC<SidebarProps> = ({ collapsed, toggleSidebar }) => {
     { id: "History", name: "Түүх", href: "/history", icon: "/sidebar/historyWhite.svg", nIcon: "/sidebar/historyGray.svg" },
     { id: "Setting", name: "Тохиргоо", href: "/settings", icon: "/sidebar/settingWhite.svg", nIcon: "/sidebar/settingGray.svg" },
     { id: "Branch", name: "Салбар", href: "/branch", icon: "/sidebar/dashboardWhite.svg", nIcon: "/sidebar/dashboardWhite.svg" },
+    { id: "Wallet", name: "Хэтэвч", href: "/wallet", icon: "/sidebar/wallet.svg", nIcon: "/sidebar/wallet.svg" },
   ];
 
   return (
