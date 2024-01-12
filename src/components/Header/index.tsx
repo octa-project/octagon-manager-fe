@@ -71,7 +71,7 @@ const Header = (props: {
         <div className="hidden sm:block">
           <form action="" method="POST">
             <div className="relative">
-              <span className={"font-medium pr-5 font-Sans"}>
+              <span className={"font-medium pr-5"}>
                 Demo Store
               </span>
               <span>

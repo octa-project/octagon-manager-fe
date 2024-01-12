@@ -22,7 +22,7 @@ const ReportController = () => {
 
     const tabClass = (index: string) =>
         classNames(
-            'font-sans capitalize font-semibold text-base rounded-lg',
+            'capitalize font-semibold text-base rounded-lg',
             {
                 'bg-[#e2e3e9] text-[#6d758f] hover:bg-[#6d758f] hover:text-white opacity-100':
                     tabValue === index,

@@ -13,11 +13,11 @@
 }
 
 .sideBarSelectedText {
-    @apply font-sans text-base pl-3 capitalize;
+    @apply text-base pl-3 capitalize;
 }
 
 .sideBarNoSelectedText {
-    @apply font-sans text-base pl-3 capitalize;
+    @apply text-base pl-3 capitalize;
 }
 
 .sideBarCollapsible {
@@ -25,11 +25,11 @@
 }
 
 .topBarSelected {
-    @apply font-sans font-semibold shadow-lg text-center pt-1 rounded-md w-full h-8 text-white bg-[#6d758f] hover:text-white hover:bg-[#44423e];
+    @apply font-semibold shadow-lg text-center pt-1 rounded-md w-full h-8 text-white bg-[#6d758f] hover:text-white hover:bg-[#44423e];
 }
 
 .topBarNoSelected {
-    @apply font-sans font-semibold shadow-lg text-center pt-1 rounded-md w-full h-8 text-[#6d758f] bg-[#f8f7f5] hover:text-white hover:bg-[#44423e];
+    @apply font-semibold shadow-lg text-center pt-1 rounded-md w-full h-8 text-[#6d758f] bg-[#f8f7f5] hover:text-white hover:bg-[#44423e];
 }
 
 .select {
@@ -42,23 +42,23 @@
 }
 
 .NormalText {
-    @apply font-sans font-semibold text-[#6d758f];
+    @apply font-semibold text-[#6d758f];
 }
 
 .headerText {
-    @apply font-sans font-semibold text-white;
+    @apply font-semibold text-white;
 }
 
 .button {
-    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+    @apply font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
 
 .thirdButton {
-    @apply font-sans font-semibold shadow-lg rounded-lg h-10 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+    @apply font-semibold shadow-lg rounded-lg h-10 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
 
 .headerButton {
-    @apply font-sans font-semibold shadow-lg rounded-lg h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+    @apply font-semibold shadow-lg rounded-lg h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
 
 .headerButton:hover img {
@@ -66,27 +66,27 @@
 }
 
 .secondaryButton {
-    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+    @apply font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
 
 
 .card {
-    @apply font-sans shadow-lg rounded p-3 text-[#6d758f] bg-white;
+    @apply shadow-lg rounded p-3 text-[#6d758f] bg-white;
 }
 
 .cardHeader {
-    @apply font-sans font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+    @apply font-semibold shadow-lg rounded-lg w-20 h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
 
 .cardTable {
-    @apply border-none p-1 font-sans text-[#6d758f] font-semibold;
+    @apply border-none p-1 text-[#6d758f] font-semibold;
 }
 
 .cardSecondaryButton {
-    @apply font-sans font-semibold shadow-lg rounded-lg h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
+    @apply font-semibold shadow-lg rounded-lg h-8 text-[#6d758f] bg-[#f1f2f4] hover:bg-[#44423e] hover:text-white;
 }
 
 .cardButton{
-    @apply font-sans font-semibold shadow-lg rounded-lg h-8 text-white bg-[#6d758f] hover:bg-[#44423e] hover:text-white;
+    @apply font-semibold shadow-lg rounded-lg h-8 text-white bg-[#6d758f] hover:bg-[#44423e] hover:text-white;
 }
 

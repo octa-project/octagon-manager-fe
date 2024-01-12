@@ -60,13 +60,13 @@ class TaxReport extends Component<{}, AgReportState> {
             className="capitalize text-[#6d758f] w-full rounded-2xl"
             value={10}
           >
-            <MenuItem className="font-sans" value={10}>
+            <MenuItem className="" value={10}>
               Салбар-01
             </MenuItem>
-            <MenuItem className="font-sans" value={20}>
+            <MenuItem className="" value={20}>
               Салбар-02
             </MenuItem>
-            <MenuItem className="font-sans" value={30}>
+            <MenuItem className="" value={30}>
               Салбар-03
             </MenuItem>
           </Select>

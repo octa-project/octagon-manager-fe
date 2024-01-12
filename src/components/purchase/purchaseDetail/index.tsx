@@ -43,7 +43,9 @@ class PurchaseDetailController extends Component<ChooseCardProps, PurchaseDetail
                 totalCost: 0,
                 vat: 0,
                 cityTax: 0,
-                isPaid: false
+                isPaid: false,
+                supplierName: "",
+                branchId: "0"
             },
             nonData: {
                 id: "0",
@@ -56,7 +58,9 @@ class PurchaseDetailController extends Component<ChooseCardProps, PurchaseDetail
                 totalCost: 0,
                 vat: 0,
                 cityTax: 0,
-                isPaid: false
+                isPaid: false,
+                supplierName: "",
+                branchId: "0"
             },
             suppliers: [],
             branches: [],
@@ -213,14 +217,14 @@ class PurchaseDetailController extends Component<ChooseCardProps, PurchaseDetail
                         <Table size="small">
                             <TableHead className="bg-[#8a91a5] h-14">
                                 <TableRow>
-                                    <TableCell className="font-sans text-white font-semibold">№</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">БАРКОД</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">НЭР</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">ХӨНГӨЛӨЛТ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold">ТОО</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
-                                    <TableCell className="font-sans text-white font-semibold" align="right">НИЙТ АВАХ ҮНЭ</TableCell>
+                                    <TableCell className="text-white font-semibold">№</TableCell>
+                                    <TableCell className="text-white font-semibold">БАРКОД</TableCell>
+                                    <TableCell className="text-white font-semibold">НЭР</TableCell>
+                                    <TableCell className="text-white font-semibold">ХӨНГӨЛӨЛТ</TableCell>
+                                    <TableCell className="text-white font-semibold">ТОО</TableCell>
+                                    <TableCell className="text-white font-semibold" align="right">ЗАРАХ ҮНЭ</TableCell>
+                                    <TableCell className="text-white font-semibold" align="right">АВАХ ҮНЭ</TableCell>
+                                    <TableCell className="text-white font-semibold" align="right">НИЙТ АВАХ ҮНЭ</TableCell>
                                 </TableRow>
                             </TableHead>
                             <TableBody>
@@ -233,14 +237,14 @@ class PurchaseDetailController extends Component<ChooseCardProps, PurchaseDetail
                                     <EditIcon />
                                   </IconButton>
                                 </TableCell> */}
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.barcode}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.itemName}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.discount}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] ">{row.qty}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right" >{formatMoney(row.sellPrice)}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right" >{formatMoney(row.costPrice)}</TableCell>
-                                        <TableCell className="font-sans text-[#8a91a5] " align="right" >{formatMoney(row.costPrice)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.id}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.barcode}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.itemName}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.discount}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] ">{row.qty}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right" >{formatMoney(row.sellPrice)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right" >{formatMoney(row.costPrice)}</TableCell>
+                                        <TableCell className=" text-[#8a91a5] " align="right" >{formatMoney(row.costPrice)}</TableCell>
                                     </TableRow>
                                 )
                                 )}

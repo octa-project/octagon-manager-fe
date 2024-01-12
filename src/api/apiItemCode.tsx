@@ -9,7 +9,7 @@ const apiItemCode = (mainRouteName: string) => ({
     itemCodeUpdateItemCodes:(data:any) => axios.post(`${URL_PREFIX}/itemcode/${mainRouteName}`,data),
     itemCodeGetAllItemCodes: () => axios.get(`${URL_PREFIX}/itemcode/${mainRouteName}`,),  
     itemCodeGetItemCodeByIdItemCodes:(id:any) => axios.get(`${URL_PREFIX}/itemcode/${mainRouteName}?id=${id}`),
-    itemCodeGetItemCodeByBarcode:(id:any) => axios.get(`${URL_PREFIX}/itemcode/${mainRouteName}?id=${id}`),
+    itemCodeGetItemCodeByBarcode:(barcode:any) => axios.get(`${URL_PREFIX}/itemcode/${mainRouteName}?barcode=${barcode}`),
     itemCodeDeleteItemCodeById:(id:any) => axios.post(`${URL_PREFIX}/itemcode/${mainRouteName}?id=${id}`),
 })
 
