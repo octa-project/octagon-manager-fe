@@ -7,6 +7,7 @@ const apiPurchase = (mainRouteName: string) => ({
 
     getMany: () => axios.get(`${URL_PREFIX}/purchase/${mainRouteName}`),
     saveOne: (data: any) => axios.post(`${URL_PREFIX}/purchase/${mainRouteName}`, data),
+    updateStatus: (data: any) => axios.post(`${URL_PREFIX}/purchase/${mainRouteName}`, data),
 })
 
 export default apiPurchase;

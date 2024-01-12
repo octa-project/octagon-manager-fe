@@ -51,9 +51,9 @@ class TotalSales extends Component<{}, TotalSaleControllerState> {
   renderTableRows() {
     return this.state.rowData.map((item, index) => (
       <TableRow key={index}>
-        <TableCell className="font-sans text-sm">{item.itemName}</TableCell>
-        <TableCell className="font-sans text-sm">{item.itemBarCode}</TableCell>
-        <TableCell className="font-sans text-sm">{item.qty}</TableCell>
+        <TableCell className="text-sm">{item.itemName}</TableCell>
+        <TableCell className="text-sm">{item.itemBarCode}</TableCell>
+        <TableCell className="text-sm">{item.qty}</TableCell>
       </TableRow>
     ));
   }
@@ -67,13 +67,13 @@ class TotalSales extends Component<{}, TotalSaleControllerState> {
               <Table style={{ maxHeight: "300px", overflowY: "auto" }}>
                 <TableHead>
                   <TableRow>
-                    <TableCell className="bg-[#6d758fff] text-white font-sans">
+                    <TableCell className="bg-[#6d758fff] text-white ">
                       Нэр
                     </TableCell>
-                    <TableCell className="bg-[#6d758fff] text-white font-sans">
+                    <TableCell className="bg-[#6d758fff] text-white ">
                       Код
                     </TableCell>
-                    <TableCell className="bg-[#6d758fff] text-white font-sans">
+                    <TableCell className="bg-[#6d758fff] text-white ">
                       Тоо
                     </TableCell>
                   </TableRow>

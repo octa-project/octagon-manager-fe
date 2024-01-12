@@ -2,6 +2,8 @@ interface Purchase {
     id: string;
     items: PurchaseItem[];
     supplierId: string;
+    supplierName: string;
+    branchId: string;
     date: string;
     totalAmount: number;
     totalDiscount: number;
@@ -25,4 +27,14 @@ interface PurchaseItem {
     lastModifiedDate: string;
     createdBy: string;
     lastModifiedBy: string;
+}
+
+
+interface Supplier {
+    id: string;
+    code: string;
+    name: string;
+    email: number;
+    phone: number;
+    taxNumber: string;
 }

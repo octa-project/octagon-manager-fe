@@ -4,36 +4,47 @@ import { formatMoney, formatQty } from '../../tools/utils';
 
 interface CardProps {
     purchase: Purchase;
+    onPayClick: (purchaseId: string) => void;
+    onDetailClick: (purchase: Purchase) => void;
 }
 
-const PurchaseCard: React.FC<CardProps> = ({ purchase }) => {
+const PurchaseCard: React.FC<CardProps> = ({ purchase, onPayClick, onDetailClick }) => {
+
+    const handlePayClick = () => {
+        onPayClick(purchase.id);
+    };
+
+    const handleDetailClick = () => {
+        onDetailClick(purchase);
+    };
+
     return (
-        <div className="card col-span-1 gap-2 flex flex-col justify-between">
+        <div className={`card col-span-1 gap-2 flex flex-col justify-between border ${purchase.isPaid ? 'border-green-500' : 'border-none'}`}>
             <div className='flex flex-row justify-between'>
-                <div className='bg-[#6d758f] text-white w-10 h-10 rounded text-center'>
-                    {/* {purchase.id} */}
+                <div className='bg-[#6d758f] text-white w-10 rounded text-center'>
+                    {purchase.id}
                 </div>
                 <div>
-                    
+
                 </div>
-                {/* <div className='font-sans font-semibold bg-[#e1f4de] text-[#71ca61] border-[#71ca61] border rounded-lg text-center w-2/6 p-1'>
+                {/* <div className=' font-semibold bg-[#e1f4de] text-[#71ca61] border-[#71ca61] border rounded-lg text-center w-2/6 p-1'>
                     Хүлээн авсан
                 </div> */}
             </div>
             <div className='flex flex-row justify-between font-semibold'>
-                <div className='text-[#6d758f] h-8'>
-                    Нийлүүлэгч
+                <div className='text-[#6d758f] h-8 text-sm'>
+                    Нийлүүлэгч : {purchase.supplierName}
                 </div>
-                <div className='text-[#6d758f] h-8'>
-                    {purchase.supplierId}
+                <div className='text-[#6d758f] h-8 text-sm'>
+                    Н/№ : {purchase.supplierId}
                 </div>
             </div>
             <div className='flex flex-row justify-between'>
-                <div className='text-[#6d758f] h-8'>
+                <div className='text-[#6d758f] h-8 text-sm'>
                     {purchase.date}
                 </div>
-                <div className='text-[#6d758f] h-8'>
-                    {purchase.id}
+                <div className='text-[#6d758f] h-8 text-sm'>
+
                 </div>
             </div>
             <Divider light />
@@ -79,8 +90,8 @@ const PurchaseCard: React.FC<CardProps> = ({ purchase }) => {
                 </div>
             </div>
             <div className='flex flex-row justify-between'>
-                <Button className='cardSecondaryButton w-40'>Дэлгэрэнгүй</Button>
-                <Button className='cardButton w-40' disabled={purchase.isPaid}> {purchase.isPaid ? "Төлөгдсөн" : "Төлөх" } </Button>
+                <Button className='cardSecondaryButton w-40' onClick={() => handleDetailClick()} >Дэлгэрэнгүй</Button>
+                <Button className='cardButton w-40' onClick={() => handlePayClick()} disabled={purchase.isPaid}> {purchase.isPaid ? "Төлөгдсөн" : "Төлөх"} </Button>
             </div>
         </div>
     );

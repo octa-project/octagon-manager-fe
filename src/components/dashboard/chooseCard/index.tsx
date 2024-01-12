@@ -139,7 +139,7 @@ class ChooseCard extends Component<ChooseCardProps, CardControllerState> {
               Дуусаж буй барааны жагсаалт
             </MenuItem>
           </Menu>
-          <Typography className="font-sans text-[#6d758f] text- text-center pt-6 align-bottom">
+          <Typography className=" text-[#6d758f] text- text-center pt-6 align-bottom">
             Та өөрийн хэрэгцээнд зохицуулан хүссэн датагаа харах боложтой
           </Typography>
         </Card>
