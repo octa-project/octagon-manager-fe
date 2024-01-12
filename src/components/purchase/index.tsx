@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import moment from "moment";
 import PurchaseCard from "./purchaseGard";
 import classNames from 'classnames';
+import api from "@/src/api";
 
 const PurchaseController = () => {
 
@@ -13,70 +14,24 @@ const PurchaseController = () => {
     const [startDate, setStartDateValue] = useState(moment().format("YYYY-MM-DD 00:00:00"));
     const [endDate, setEndDateValue] = useState(moment().format("YYYY-MM-DD 23:59:59"));
     const [purchases, setPurchases] = useState<Purchase[]>([]);
+    const [purchasesData, setPurchasesData] = useState<Purchase[]>([]);
 
     const { RangePicker } = DatePicker;
     const dateFormat = "YYYY-MM-DD";
 
     useEffect(() => {
-        fetchSamplePurchases();
+        getPurchases();
     }, []);
-
-    const fetchSamplePurchases = () => {
-        const samplePurchases: Purchase[] = [
-            {
-                id: "1",
-                items: [
-                    { id: "1", name: "Product A", barcode: "123456789", qty: 5, costPrice: 1000.0 },
-                    { id: "2", name: "Product B", barcode: "987654321", qty: 3, costPrice: 5000.0 },
-                ],
-                suplierId: "S1",
-                suplierName: "Supplier A",
-                date: "2023-01-01",
-                time: "10:30",
-                totalAmount: 150.25,
-            },
-            {
-                id: "2",
-                items: [
-                    { id: "1", name: "Product A", barcode: "123456789", qty: 5, costPrice: 1000.0 },
-                    { id: "2", name: "Product B", barcode: "987654321", qty: 3, costPrice: 5000.0 },
-                ],
-                suplierId: "S2",
-                suplierName: "Supplier B",
-                date: "2023-01-02",
-                time: "14:45",
-                totalAmount: 280.75,
-            },
-            {
-                id: "3",
-                items: [
-                    { id: "1", name: "Product A", barcode: "123456789", qty: 5, costPrice: 1000.0 },
-                    { id: "2", name: "Product B", barcode: "987654321", qty: 3, costPrice: 5000.0 },
-                ],
-                suplierId: "S2",
-                suplierName: "Supplier B",
-                date: "2023-01-02",
-                time: "14:45",
-                totalAmount: 280.75,
-            },
-            {
-                id: "4",
-                items: [
-                    { id: "1", name: "Product A", barcode: "123456789", qty: 5, costPrice: 1000.0 },
-                    { id: "2", name: "Product B", barcode: "987654321", qty: 3, costPrice: 5000.0 },
-                ],
-                suplierId: "S2",
-                suplierName: "Supplier B",
-                date: "2023-01-02",
-                time: "14:45",
-                totalAmount: 280.75,
-            },
-        ];
-        setPurchases(samplePurchases);
-    };
 
     const handleFilterChange = (value: string) => {
         setFilterValue(value);
+
+        if (value === "0") {
+            setPurchasesData(purchases);
+        } else {
+            const filteredData = purchases.filter((t) => (value === "1" ? t.isPaid : !t.isPaid));
+            setPurchasesData(filteredData);
+        }
     };
 
     const handleTextSearch = (text: string) => {
@@ -115,17 +70,63 @@ const PurchaseController = () => {
     };
 
     const getPurchases = async () => {
+        try {
+            const result = await api.purchase_getMany.getMany();
+            if (result.data.code === "200") {
+                const purchaseData: any[] = result.data.data;
 
+                const mappedPurchases: Purchase[] = purchaseData.map((item) => {
+                    const purchase: Purchase = {
+                        id: item.id.toString(),
+                        items: item.purchaseItems.map((itemData: any) => {
+                            const purchaseItem: PurchaseItem = {
+                                id: itemData.id.toString(),
+                                barcode: itemData.barcode,
+                                itemName: itemData.itemName,
+                                sellPrice: itemData.sellPrice,
+                                costPrice: itemData.costPrice,
+                                purchaseId: itemData.purchaseId.toString(),
+                                discount: itemData.discount,
+                                qty: itemData.qty,
+                                createdDate: itemData.createdDate,
+                                lastModifiedDate: itemData.lastModifiedDate,
+                                createdBy: itemData.createdBy,
+                                lastModifiedBy: itemData.lastModifiedBy,
+                            };
+                            return purchaseItem;
+                        }),
+                        supplierId: item.supplierId.toString(),
+                        date: item.date,
+                        totalAmount: item.totalAmount,
+                        totalDiscount: item.totalDiscount,
+                        totalQty: item.totalQty,
+                        totalCost: item.totalCost,
+                        vat: item.vat,
+                        cityTax: item.cityTax,
+                        isPaid: item.isPaid,
+                    };
+                    return purchase;
+                });
+
+                setPurchases(mappedPurchases);
+                setPurchasesData(mappedPurchases);
+            } else {
+                throw new Error("Failed to fetch data");
+            }
+        } catch (error) {
+            console.error("Error fetching data:", error);
+        } finally {
+            // Any cleanup code can be added here
+        }
     };
 
     return (
 
-        <div className="flex flex-col p-3 h-full">
+        <div className="flex flex-col h-full">
             <div className="grid grid-cols-6 gap-5 h-full">
-                <div className="col-span-1 bg-white flex flex-col h-full"> {/* Add flex and flex-col */}
-                    {/* Content for the first column */}
-                </div>
-                <div className="flex flex-col col-span-5 gap-3">
+                {/* <div className="col-span-1 bg-white rounded-lg shadow-lg flex flex-col h-full"> 
+                </div> */}
+                <div className="flex flex-col col-span-6 gap-3">
                     <div className="grid grid-cols-6 gap-3">
                         <div className="col-span-3">
                             <div className="flex items-center bg-white h-10 w-full rounded shadow border border-[#cbcbcb]">
@@ -186,7 +187,7 @@ const PurchaseController = () => {
                         </div>
                     </div>
                     <div className="grid grid-cols-3 gap-3 overflow-auto">
-                        {purchases.map((purchase) => (
+                        {purchasesData.map((purchase) => (
                             <PurchaseCard key={purchase.id} purchase={purchase} />
                         ))}
                     </div>

@@ -40,7 +40,7 @@ export default function RootLayout({children,}: { children: React.ReactNode; }) 
 
                         {/* <!-- ===== Main Content Start ===== --> */}
                         <main>
-                            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+                            <div className="bg-[#f8f7f5] mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
                                 <Suspense fallback={Loader()}>
                                     {children}
                                 </Suspense>

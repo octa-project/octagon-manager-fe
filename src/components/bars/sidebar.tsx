@@ -25,9 +25,11 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }: SidebarProps) => {
     const menuItems: IMenuItem[] = [
         { id: 1, label: "Дашборд", link: "/dashboard", icon: <DashboardIcon fill={"inherit"} />, },
         { id: 2, label: "Бараа бүртгэл", link: "/items", icon: <ItemIcon fill={"inherit"} />, },
-        { id: 3, label: "Тайлан", link: "/reports", icon: <ReportIcon fill={"inherit"} />, },
-        { id: 4, label: "Түүх", link: "/history", icon: <HistoryIcon fill={"inherit"} />, },
-        { id: 5, label: "Тохиргоо", link: "/settings", icon: <SettingIcon fill={"inherit"} />, }
+        { id: 3, label: "Татан авалт", link: "/purchase", icon: <ItemIcon fill={"inherit"} />, },
+        { id: 5, label: "Тайлан", link: "/reports", icon: <ReportIcon fill={"inherit"} />, },
+        { id: 6, label: "Түүх", link: "/history", icon: <HistoryIcon fill={"inherit"} />, },
+        { id: 7, label: "Тохиргоо", link: "/settings", icon: <SettingIcon fill={"inherit"} />, },
+        { id: 4, label: "Салбар", link: "/branch", icon: <ItemIcon fill={"inherit"} />, },
     ];
     let storedSidebarExpanded = "true";
     const [sidebarExpanded, setSidebarExpanded] = useState(

@@ -1,19 +1,28 @@
 interface Purchase {
-
     id: string;
     items: PurchaseItem[];
-    suplierId: string;
-    suplierName: string;
+    supplierId: string;
     date: string;
-    time: string;
     totalAmount: number;
+    totalDiscount: number;
+    totalQty: number;
+    totalCost: number;
+    vat: number;
+    cityTax: number;
+    isPaid: boolean;
 }
 
 interface PurchaseItem {
-
     id: string;
-    name: string;
     barcode: string;
+    itemName: string;
+    sellPrice: number;
+    costPrice: number;
+    purchaseId: string;
+    discount: number;
     qty: number;
-    costPrice:number;
+    createdDate: string;
+    lastModifiedDate: string;
+    createdBy: string;
+    lastModifiedBy: string;
 }
