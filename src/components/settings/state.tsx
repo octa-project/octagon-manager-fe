@@ -23,10 +23,12 @@ interface Printer {
 interface SettingsPrinterState {
     first: boolean;
     open: boolean;
+    secondaryOpen: boolean;
     selectedPrinter: Printer;
     nonSelectedPrinter: Printer;
     printersData: Printer[];
     printersSearchData: Printer[];
+    skeleten: number[];
 }
 
 interface MainSettings {

@@ -2,9 +2,10 @@ import {Button, Card, Skeleton, Switch, Table, TableBody, TableCell, TableHead, 
 import {Component, useState} from "react";
 import {formatMoney} from "@/src/components/tools/utils";
 import * as React from "react";
+import api from "@/src/api";
 
 
-class PrinterSettings extends Component<{}, settingsPrinterState> {
+class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
     constructor(props: any) {
         super(props);
@@ -52,9 +53,29 @@ class PrinterSettings extends Component<{}, settingsPrinterState> {
 
     }
 
+    getList = async () => {
+        const result = api.getDeviceListByBranch.GetDeviceSettingsListByBranch(1).then(res => {
+            this.setState({printersData: res.data.data}, () => {
+                console.log(this.state.printersData);
+            });
+        })
+    }
+
+    getListForOrder = async () => {
+        const result = api.getDeviceListByBranchForOrder.GetDeviceSettingsListByBranchForOrder(1).then(res => {
+            this.setState({printersData: res.data.data}, () => {
+                console.log(this.state.printersData);
+            });
+        })
+    }
+
+
     cashierPrinterOnclickHandler = () => {
+        this.getList().then(r => {
+            console.log(r)
+        });
         console.log("sda")
-        this.setState({open : true}, ()=>{
+        this.setState({open: true}, () => {
             this.setState({secondaryOpen: false})
             console.log(this.state.open)
         });
@@ -62,12 +83,23 @@ class PrinterSettings extends Component<{}, settingsPrinterState> {
     }
 
     purchasePrinterOnclickHandler = () => {
+        this.getListForOrder().then(r => {
+            console.log(r)
+        });
         console.log("sdaw")
-        this.setState({secondaryOpen : true}, ()=>{
+        this.setState({secondaryOpen: true}, () => {
             this.setState({open: false})
             console.log(this.state.open)
         });
 
+    }
+
+    deletePrinter = (id: any) => {
+        const result = api.deleteDeviceSettings.DeleteDeviceSettings(id).then(res => {
+            this.setState({printersData: res.data.data}, () => {
+                console.log(this.state.printersData);
+            });
+        })
     }
 
     render() {
@@ -107,7 +139,7 @@ class PrinterSettings extends Component<{}, settingsPrinterState> {
                                         </div>
                                         <Switch defaultChecked className="SelectedSwitch col-span-1"/>
                                         <Button className="secondaryButton col-span-1 "
-                                        onClick={this.purchasePrinterOnclickHandler}>
+                                                onClick={this.purchasePrinterOnclickHandler}>
                                             харах
                                         </Button>
                                     </div>
@@ -129,11 +161,13 @@ class PrinterSettings extends Component<{}, settingsPrinterState> {
                                                 нэр</TableCell>
                                             <TableCell className="font-sans text-white font-semibold">Төрөл</TableCell>
                                             <TableCell className="font-sans text-white font-semibold">Төлөв</TableCell>
+                                            <TableCell
+                                                className="font-sans text-white font-semibold">Үйлдэлүүд</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
-                                        {this.state.printersSearchData.length > 0 ? (
-                                            this.state.printersSearchData.map((row) => (
+                                        {this.state.printersData.length > 0 ? (
+                                            this.state.printersData.map((row: any) => (
                                                 <TableRow key={row.id}>
                                                     {/* <TableCell align="center">
                                   <IconButton className="w-8 h-8"
@@ -152,6 +186,11 @@ class PrinterSettings extends Component<{}, settingsPrinterState> {
                                                         className="font-sans text-[#8a91a5] ">{row.branchId}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.ownerName}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">
+                                                        <Button
+                                                            onClick={()=>this.deletePrinter(row.id)}
+                                                        >Устгах</Button></TableCell>
 
                                                 </TableRow>
                                             ))
@@ -185,7 +224,7 @@ class PrinterSettings extends Component<{}, settingsPrinterState> {
                                     </TableHead>
                                     <TableBody>
                                         {this.state.printersSearchData.length > 0 ? (
-                                            this.state.printersSearchData.map((row) => (
+                                            this.state.printersSearchData.map((row: any) => (
                                                 <TableRow key={row.id}>
                                                     {/* <TableCell align="center">
                                   <IconButton className="w-8 h-8"
@@ -204,7 +243,9 @@ class PrinterSettings extends Component<{}, settingsPrinterState> {
                                                         className="font-sans text-[#8a91a5] ">{row.branchId}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.ownerName}</TableCell>
-
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] "><Button
+                                                    >Устгах</Button></TableCell>
                                                 </TableRow>
                                             ))
                                         ) : (
