@@ -1,13 +1,16 @@
-import React, { Component, useEffect, useRef, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import {usePathname} from "next/navigation";
 import Image from "next/image";
 import DropdownUser from "@/src/components/Header/DropdownUser";
-import { DashboardIcon, HistoryIcon, ItemIcon, ReportIcon, SettingIcon } from "@/src/components/Icons/MenuIcons";
-import {Button, Tooltip} from '@mui/material';
-import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import api from "@/src/api";
+import {
+    DashboardIcon,
+    HistoryIcon,
+    ItemIcon,
+    ReportIcon,
+    SettingIcon,
+    WalletIcon
+} from "@/src/components/Icons/MenuIcons";
 
 interface SidebarProps {
     sidebarOpen: boolean;
@@ -48,6 +51,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : Sideb
         { id: 6, label: "Түүх", link: "/history", icon: <HistoryIcon fill={"inherit"} />, },
         { id: 7, label: "Тохиргоо", link: "/settings", icon: <SettingIcon fill={"inherit"} />, },
         { id: 4, label: "Салбар", link: "/branch", icon: <ItemIcon fill={"inherit"} />, },
+        { id: 8, label: "Хэтэвч", link: "/wallet", icon: <WalletIcon fill={"inherit"} />, },
     ];
     let storedSidebarExpanded = "true";
     const [sidebarExpanded, setSidebarExpanded] = useState(

@@ -1,14 +1,18 @@
-import { Button, Card, Switch } from "@mui/material";
-import { Component } from "react";
+import {Button, Card, Skeleton, Switch, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
+import {Component, useState} from "react";
+import {formatMoney} from "@/src/components/tools/utils";
+import * as React from "react";
+import api from "@/src/api";
 
 
-class PrinterSettings extends Component<{}, settingsPrinterState>{
+class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
     constructor(props: any) {
         super(props);
         this.state = {
             first: false,
             open: false,
+            secondaryOpen: false,
             selectedPrinter: {
                 id: "",
                 name: "",
@@ -28,11 +32,13 @@ class PrinterSettings extends Component<{}, settingsPrinterState>{
                 isActive: false
             },
             printersData: [],
-            printersSearchData: []
+            printersSearchData: [],
+            skeleten: [1, 2, 3, 4, 5, 6]
         };
     }
 
     first: boolean = false;
+
     componentDidMount() {
         if (this.first) return
         this.first = true
@@ -47,8 +53,70 @@ class PrinterSettings extends Component<{}, settingsPrinterState>{
 
     }
 
+    getList = async () => {
+        const result = api.getDeviceListByBranch.GetDeviceSettingsListByBranch(1).then(res => {
+            this.setState({printersData: res.data.data}, () => {
+                console.log(this.state.printersData);
+            });
+        })
+    }
+
+    getListForOrder = async () => {
+        const result = api.getDeviceListByBranchForOrder.GetDeviceSettingsListByBranchForOrder(1).then(res => {
+            this.setState({printersData: res.data.data}, () => {
+                console.log(this.state.printersData);
+            });
+        })
+    }
+
+
+    cashierPrinterOnclickHandler = () => {
+        this.getList().then(r => {
+            console.log(r)
+        });
+        console.log("sda")
+        this.setState({open: true}, () => {
+            this.setState({secondaryOpen: false})
+            console.log(this.state.open)
+        });
+
+    }
+
+    purchasePrinterOnclickHandler = () => {
+        this.getListForOrder().then(r => {
+            console.log(r)
+        });
+        console.log("sdaw")
+        this.setState({secondaryOpen: true}, () => {
+            this.setState({open: false})
+            console.log(this.state.open)
+        });
+
+    }
+
+    deletePrinter = (id: any) => {
+        const result = api.deleteDeviceSettings.DeleteDeviceSettings(id).then(res => {
+            this.setState({printersData: res.data.data}, () => {
+                console.log(this.state.printersData);
+            });
+        })
+    }
+
     render() {
+
+        const {
+            first,
+            open,
+            selectedPrinter,
+            nonSelectedPrinter,
+            printersData,
+            printersSearchData,
+            skeleten
+        } = this.state
+
         return (
+
+
             <div className="h-full">
                 <div className="flex flex-col">
                     <div className="grid grid-rows-2">
@@ -59,8 +127,9 @@ class PrinterSettings extends Component<{}, settingsPrinterState>{
                                         <div className="NormalText col-span-1">
                                             Кассын принтер
                                         </div>
-                                        <Switch defaultChecked className="SelectedSwitch col-span-1" />
-                                        <Button className="secondaryButton col-span-1">
+                                        <Switch defaultChecked className="SelectedSwitch col-span-1"/>
+                                        <Button className="secondaryButton col-span-1"
+                                                onClick={this.cashierPrinterOnclickHandler}>
                                             харах
                                         </Button>
                                     </div>
@@ -68,8 +137,9 @@ class PrinterSettings extends Component<{}, settingsPrinterState>{
                                         <div className="NormalText col-span-1">
                                             Захилагын принтер
                                         </div>
-                                        <Switch defaultChecked className="SelectedSwitch col-span-1" />
-                                        <Button className="secondaryButton col-span-1">
+                                        <Switch defaultChecked className="SelectedSwitch col-span-1"/>
+                                        <Button className="secondaryButton col-span-1 "
+                                                onClick={this.purchasePrinterOnclickHandler}>
                                             харах
                                         </Button>
                                     </div>
@@ -81,6 +151,118 @@ class PrinterSettings extends Component<{}, settingsPrinterState>{
                         </div>
                         <div className="row-span-1 h-full">
                             <Card className="w-full h-full shadow rounded">
+                                {this.state.open && (<Table size="small">
+                                    <TableHead className="bg-[#8a91a5] h-14">
+                                        <TableRow>
+                                            <TableCell className="font-sans text-white font-semibold">№</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Компьютер
+                                                нэр</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Принтер
+                                                нэр</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Төрөл</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Төлөв</TableCell>
+                                            <TableCell
+                                                className="font-sans text-white font-semibold">Үйлдэлүүд</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {this.state.printersData.length > 0 ? (
+                                            this.state.printersData.map((row: any) => (
+                                                <TableRow key={row.id}>
+                                                    {/* <TableCell align="center">
+                                  <IconButton className="w-8 h-8"
+                                  // onClick={() => this.handleEditClick(row)}
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                </TableCell> */}
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.branchName}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.branchId}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.ownerName}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">
+                                                        <Button
+                                                            onClick={()=>this.deletePrinter(row.id)}
+                                                        >Устгах</Button></TableCell>
+
+                                                </TableRow>
+                                            ))
+                                        ) : (
+                                            <>
+                                                {skeleten.map((row) =>
+                                                    <TableRow key={row}>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                    </TableRow>
+                                                )}
+                                            </>
+                                        )}
+                                    </TableBody>
+                                </Table>)}
+
+                                {this.state.secondaryOpen && (<Table size="small">
+                                    <TableHead className="bg-[#8a91a5] h-14">
+                                        <TableRow>
+                                            <TableCell className="font-sans text-white font-semibold">№</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Компьютер
+                                                нэр</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Принтер
+                                                нэр</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Төрөл</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">test</TableCell>
+                                        </TableRow>
+                                    </TableHead>
+                                    <TableBody>
+                                        {this.state.printersSearchData.length > 0 ? (
+                                            this.state.printersSearchData.map((row: any) => (
+                                                <TableRow key={row.id}>
+                                                    {/* <TableCell align="center">
+                                  <IconButton className="w-8 h-8"
+                                  // onClick={() => this.handleEditClick(row)}
+                                  >
+                                    <EditIcon />
+                                  </IconButton>
+                                </TableCell> */}
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.branchName}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.branchId}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] ">{row.ownerName}</TableCell>
+                                                    <TableCell
+                                                        className="font-sans text-[#8a91a5] "><Button
+                                                    >Устгах</Button></TableCell>
+                                                </TableRow>
+                                            ))
+                                        ) : (
+                                            <>
+                                                {skeleten.map((row) =>
+                                                    <TableRow key={row}>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                    </TableRow>
+                                                )}
+                                            </>
+                                        )}
+                                    </TableBody>
+                                </Table>)}
 
                             </Card>
                         </div>

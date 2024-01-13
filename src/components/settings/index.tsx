@@ -13,7 +13,7 @@ import AccessSettings from "@/src/components/settings/access";
 
 const SettingsController = () => {
 
-    const [tabValue, setTabValue] = useState("4");
+    const [tabValue, setTabValue] = useState("0");
 
     const tabChange = (tabIndex: string) => {
         setTabValue(tabIndex);
@@ -28,7 +28,7 @@ const SettingsController = () => {
     ];
 
     return (
-        <div className="flex flex-col p-5 gap-5 h-full">
+        <div className="flex flex-col gap-3 h-screen">
             <div className="bg-white h-14 shadow-lg rounded-lg">
                 <div className="w-full h-14 grid grid-cols-5 justify-items items-center gap-5 px-2">
                     {tabs.map((item, index) => (
@@ -39,21 +39,21 @@ const SettingsController = () => {
                     ))}
                 </div>
             </div>
-            <div className="bg-white h-full shadow-md rounded-lg overflow-y-auto">
+            <div className="bg-white h-full shadow-md rounded-lg">
                 <TabContext value={tabValue}>
-                    <TabPanel value={"0"} className="p-4">
+                    <TabPanel value={"0"} className="p-4 h-full">
                         <MainSettings />
                     </TabPanel>
-                    <TabPanel value={"1"} className="p-4">
+                    <TabPanel value={"1"} className="p-4 h-full">
                         <DeviceSettings />
                     </TabPanel>
-                    <TabPanel value={"2"} className="p-4">
+                    <TabPanel value={"2"} className="p-4 h-full">
                         <AccessSettings />
                     </TabPanel>
-                    <TabPanel value={"3"} className="p-4">
+                    <TabPanel value={"3"} className="p-4 h-full">
                         <BranchSettings />
                     </TabPanel>
-                    <TabPanel value={"4"} className="p-4">
+                    <TabPanel value={"4"} className="p-4 h-full">
                         <PrinterSettings />
                     </TabPanel>
                 </TabContext>

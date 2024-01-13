@@ -344,7 +344,7 @@ const PurchaseController = () => {
             const result = await api.itemCode_get_by_barcode.itemCodeGetItemCodeByBarcode(value);
 
             if (result.data.code === "200") {
-                SnackBar.success("Бараа олдлоо:" + result.data.data.name);
+                SnackBar.success("Шинэ :" + result.data.data.name);
                 return result.data.data;
             } else {
                 SnackBar.warning("Алдаа гарлаа:" + result.data.message);

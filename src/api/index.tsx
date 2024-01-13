@@ -9,6 +9,7 @@ import apiSale from "./apiSale";
 import apiDashboard from "./apiDashboard";
 import apiBranch from "./apiBranch";
 import apiSettings from "@/src/api/apiSettings";
+import apiWallet from "@/src/api/apiWallet";
 import apiSku from "./apiSku";
 import apiPurchase from "./apiPurchase";
 import apiSupplier from "./apiSupplier";
@@ -81,6 +82,11 @@ const getMainSetting = apiSettings("get-setting-by-id")
 const insertDeviceSetting = apiSettings("device-settings")
 const updateDeviceSetting = apiSettings("device-settings")
 const getDeviceSetting = apiSettings("device-settings")
+const getDeviceListByBranch = apiSettings("device-settings-list")
+const getDeviceListByBranchForOrder = apiSettings("device-settings-list-order")
+const deleteDeviceSettings = apiSettings("device-settings")
+
+
 
 const GetPrinterList = apiSettings("get-printer-list")
 const get_Top_Ten_Item = apiSale("get-top-ten-item")
@@ -98,7 +104,24 @@ const supplier_saveOne = apiSupplier("add")
 const supplier_updateOne = apiSupplier("update")
 
 
+const getWalletBalance = apiWallet("get-balance")
+const getWalletTransactionHistory = apiWallet("get-history")
+const walletToAccountTransaction = apiWallet("wallet-to-account-transaction")
+const cardToWalletTransaction = apiWallet("card-to-wallet")
+const getCardWeb = apiWallet("card-web")
+const getCardList = apiWallet("get-card-list")
+const saveCard = apiWallet("save-card")
+const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction")
 export default {
+
+    getWalletBalance,
+    getWalletTransactionHistory,
+    walletToAccountTransaction,
+    walletToWalletTransaction,
+    cardToWalletTransaction,
+    getCardWeb,
+    getCardList,
+    saveCard,
 
     transaction_save,
     transaction_update,
@@ -176,5 +199,8 @@ export default {
     supplier_saveOne,
     supplier_updateOne,
     itemcode_getManyCustom,
-    getProfileInfo
+    getProfileInfo,
+    getDeviceListByBranch,
+    getDeviceListByBranchForOrder,
+    deleteDeviceSettings
 }
