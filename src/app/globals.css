@@ -89,4 +89,3 @@
 .cardButton{
     @apply font-semibold shadow-lg rounded-lg h-8 text-white bg-[#6d758f] hover:bg-[#44423e] hover:text-white;
 }
-
