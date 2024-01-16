@@ -11,6 +11,14 @@ import {
     SettingIcon,
     WalletIcon
 } from "@/src/components/Icons/MenuIcons";
+import {
+    ArrowForwardIos,
+    ArrowForwardOutlined,
+    KeyboardArrowLeftOutlined,
+    KeyboardArrowRight, KeyboardArrowRightOutlined
+} from "@mui/icons-material";
+import {Box, IconButton, LinearProgress, LinearProgressProps, Tooltip, Typography} from "@mui/material";
+import Button from "@mui/material/Button";
 
 interface SidebarProps {
     sidebarOpen: boolean;
@@ -37,12 +45,27 @@ interface profileInfo {
 
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : SidebarProps) => {
+function LinearProgressWithLabel(props: LinearProgressProps & { value: number }) {
+    return (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+            <Box sx={{ width: '100%', mr: 1, '& .MuiLinearProgress-root': {
+                    backgroundColor: "#fff"
+                } }} className={"rounded overflow-hidden h-5 p-1 bg-white"}>
+                <LinearProgress className={"!h-full rounded"} variant="determinate" color={"success"} {...props}/>
+            </Box>
+            <Box sx={{ minWidth: 35 }}>
+                <span className={"font-bold text-white"} color="#fff">{`${Math.round(props.value)}%`}</span>
+            </Box>
+        </Box>
+    );
+}
 
+const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : SidebarProps) => {
     const pathname = usePathname();
 
     const trigger = useRef<any>(null);
     const sidebar = useRef<any>(null);
+    const [sideBarMini, setSideBarMini] = useState<boolean>(false);
     const menuItems: IMenuItem[] = [
         { id: 1, label: "Дашборд", link: "/dashboard", icon: <DashboardIcon fill={"inherit"} />, },
         { id: 2, label: "Бараа бүртгэл", link: "/items", icon: <ItemIcon fill={"inherit"} />, },
@@ -73,6 +96,9 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : Sideb
         document.addEventListener("click", clickHandler);
         return () => document.removeEventListener("click", clickHandler);
     });
+    const setSideBarMiniTrigger = ()=>{
+        setSideBarMini(!sideBarMini)
+    }
 
     // close if the esc key is pressed
     useEffect(() => {
@@ -96,11 +122,11 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : Sideb
     return (
         <aside
             ref={sidebar}
-            className={`absolute left-0 top-0 z-9999 flex h-screen w-72.5 flex-col overflow-y-hidden duration-300 ease-linear bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            className={`absolute left-0 top-0 z-1 flex h-screen ${sideBarMini ? "w-[49px]":"w-72.5"} flex-col overflow-y-hidden duration-300 ease-linear bg-boxdark lg:static lg:translate-x-0 ${sidebarOpen ? "translate-x-0" : "-translate-x-full"
             }`}
         >
-            <div className="flex items-center justify-between gap-2 px-6 my-2 h-8">
-                <Link href="/" className={"h-full w-full relative"}>
+            <div className={`flex items-center gap-2 ${sideBarMini ? "justify-center" : "justify-between px-6"} my-2 h-8`}>
+                {!sideBarMini && <Link href="/" className={"h-full w-full relative"}>
                     <Image
                         src={"/assets/images/octa.svg"}
                         width={0}
@@ -108,7 +134,14 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : Sideb
                         alt={"logo"}
                         style={{ height: '100%', width: '50%', minWidth: "100px" }}
                     />
-                </Link>
+                </Link>}
+                <div>
+                    <span>
+                        <IconButton color={"secondary"} onClick={setSideBarMiniTrigger}>
+                            {sideBarMini ? <KeyboardArrowRightOutlined/> : <KeyboardArrowLeftOutlined/>}
+                        </IconButton>
+                    </span>
+                </div>
 
                 <button
                     ref={trigger}
@@ -133,32 +166,53 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : Sideb
                 </button>
             </div>
 
-            <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear">
-                <div className="mt-5 pt-4 px-4">
-                    <div>
-                        <DropdownUser />
-                    </div>
+            <div className="no-scrollbar flex flex-col overflow-y-auto duration-300 ease-linear h-full">
+                <div className={`mt-5 pt-4 ${sideBarMini ? "px-2":"px-4"}`}>
+                    <DropdownUser sideBarMini={sideBarMini}/>
                 </div>
-                <nav className="mt-5 py-4 px-4">
+                <nav className={`mt-5 py-4 ${sideBarMini ? "px-2":"px-4"} basis-full`}>
                     {/* <!-- Menu Group --> */}
                     <div>
                         <ul className="mb-6 flex flex-col gap-1.5">
-                            {menuItems.map(({ id, icon, link, label }) => {
+                            {menuItems.map(({id, icon, link, label}) => {
                                 let isHighlight = pathname.includes(link);
                                 return <li key={id}>
                                     <Link
                                         href={link}
-                                        className={`group relative flex items-center gap-2.5 rounded-xl py-2 px-4 font-normal duration-300 ease-in-out dark:hover:bg-stroke hover:bg-white hover:text-graydark hover:fill-graydark ${isHighlight ? " bg-white text-graydark dark:bg-stroke fill-graydark" : "text-white fill-white"
+                                        className={`group relative flex items-center gap-2.5 rounded-xl py-2 ${sideBarMini ? "justify-center" : "px-4"} font-normal duration-300 ease-in-out dark:hover:bg-stroke hover:bg-white hover:text-graydark hover:fill-graydark ${isHighlight ? " bg-white text-graydark dark:bg-stroke fill-graydark" : "text-white fill-white"
                                         }`}
                                     >
-                                        {icon}
-                                        {label}
+                                        <Tooltip title={label}>
+                                            <span>{icon}</span>
+                                        </Tooltip>
+                                        {!sideBarMini && label}
                                     </Link>
                                 </li>
                             })}
                         </ul>
                     </div>
                 </nav>
+                {!sideBarMini &&
+                    <div className={`pt-4 px-4`}>
+                        <div>
+                            <LinearProgressWithLabel value={80}/>
+                        </div>
+                        <div>
+                            <div className={"flex items-center text-secondary dark:text-white"}>
+                                <span className={"mr-2"}>Бүртгэлээ дуусгах</span>
+                                <span
+                                    className={"rounded bg-secondary w-5 h-5 flex justify-center items-center text-graydark"}>
+                                    <ArrowForwardIos style={{height: "12px", width: "12px"}}/>
+                                </span>
+                            </div>
+                        </div>
+                        <div className={"mt-5 mb-5"}>
+                            <Button variant={"contained"} color={"secondary"} fullWidth>
+                                <span className={"font-bold"}>Багц ахиулах</span>
+                            </Button>
+                        </div>
+                    </div>
+                }
             </div>
         </aside>
     );

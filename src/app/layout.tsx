@@ -8,10 +8,18 @@ import {ThemeProvider} from "@mui/system";
 import {createTheme} from "@mui/material/styles";
 import useLocalStorage from "@/src/hooks/useLocalStorage";
 import {ThemeContext} from "../context/GlobalContext";
+import {SnackbarProvider} from "notistack";
 
 const themeMuiPalette:any = {
+    overrides: {
+        MuiPaper: {
+            root: {
+                background:"red"
+            },
+        },
+    },
     palette: {
-        mode: 'dark',
+        mode: 'light',
         primary: {
             main: '#6D758F',
         },
@@ -39,57 +47,54 @@ export default function RootLayout({children,}: { children: React.ReactNode; }) 
         setTimeout(() => setLoading(false), 1000); // just for fancy
     }, []);
 
-    useEffect(() => {
-        console.log(theme)
-    }, [theme]);
-
     let useMemo = React.useMemo(()=>{
         themeMuiPalette.palette.mode = theme;
         return createTheme(themeMuiPalette);
     },[theme]);
-    console.log(useMemo.palette.mode)
 
     return (
         <html lang="en">
         <body suppressHydrationWarning={true}>
             <ThemeContext.Provider value={{theme:theme, setTheme}}>
                 <ThemeProvider theme={useMemo}>
-                    <div className="dark:bg-boxdark-2 dark:text-bodydark">
-                        {loading ? (
-                            <Loader/>
-                        ) : (
-                            <div className="flex h-screen overflow-hidden">
-                                {/* <!-- ===== Sidebar Start ===== --> */}
-                                <Sidebar
-                                    sidebarOpen={sidebarOpen}
-                                    setSidebarOpen={setSidebarOpen}
-                                />
-                                {/* <!-- ===== Sidebar End ===== --> */}
-
-                                {/* <!-- ===== Content Area Start ===== --> */}
-                                <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
-                                    {/* <!-- ===== Header Start ===== --> */}
-                                    <Header
+                    <SnackbarProvider>
+                        <div className="dark:bg-boxdark-2 dark:text-bodydark">
+                            {loading ? (
+                                <Loader/>
+                            ) : (
+                                <div className="flex h-screen overflow-hidden">
+                                    {/* <!-- ===== Sidebar Start ===== --> */}
+                                    <Sidebar
                                         sidebarOpen={sidebarOpen}
                                         setSidebarOpen={setSidebarOpen}
                                     />
-                                    {/* <!-- ===== Header End ===== --> */}
+                                    {/* <!-- ===== Sidebar End ===== --> */}
 
-                                    {/* <!-- ===== Main Content Start ===== --> */}
-                                    <main>
-                                        <div
-                                            className="bg-[#f8f7f5] mx-auto max-w-screen-3xl max-h-full p-4 md:p-6 2xl:p-10">
-                                            <Suspense fallback={Loader()}>
-                                                {children}
-                                            </Suspense>
-                                        </div>
-                                    </main>
-                                    {/* <!-- ===== Main Content End ===== --> */}
+                                    {/* <!-- ===== Content Area Start ===== --> */}
+                                    <div className="relative flex flex-1 flex-col overflow-y-auto overflow-x-hidden">
+                                        {/* <!-- ===== Header Start ===== --> */}
+                                        <Header
+                                            sidebarOpen={sidebarOpen}
+                                            setSidebarOpen={setSidebarOpen}
+                                        />
+                                        {/* <!-- ===== Header End ===== --> */}
+
+                                        {/* <!-- ===== Main Content Start ===== --> */}
+                                        <main>
+                                            <div
+                                                className="mx-auto max-w-screen-3xl max-h-full p-4 md:p-6 2xl:p-10">
+                                                <Suspense fallback={Loader()}>
+                                                    {children}
+                                                </Suspense>
+                                            </div>
+                                        </main>
+                                        {/* <!-- ===== Main Content End ===== --> */}
+                                    </div>
+                                    {/* <!-- ===== Content Area End ===== --> */}
                                 </div>
-                                {/* <!-- ===== Content Area End ===== --> */}
-                            </div>
-                        )}
-                    </div>
+                            )}
+                        </div>
+                    </SnackbarProvider>
                 </ThemeProvider>
             </ThemeContext.Provider>
         </body>
