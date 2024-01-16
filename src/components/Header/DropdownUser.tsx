@@ -115,7 +115,7 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-2 flex w-62.5 flex-col rounded-xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark z-1  ${
+        className={`absolute right-0 mt-2 flex w-62.5 flex-col rounded-xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-strokedark z-1  ${
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
@@ -123,7 +123,7 @@ const DropdownUser = () => {
           <li>
             <Link
               href="/profile"
-              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base dark:text-white"
             >
               <svg
                 className="fill-current"
