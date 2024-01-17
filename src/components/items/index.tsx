@@ -559,6 +559,52 @@ class ItemController extends Component<{}, ItemState> {
       const result =
         await api.item_get_all_complete_items.GetAllCompleteItems();
 
+      //Note
+      //ingej promise irjee huseltee shalgaval zugeer shuu   then(), catch()
+      // #NOTE
+      // api.item_get_all_items.GetAllItems().then(res=>{
+      //   const rowData: Item[] = result.data.data.map((item: any) => {
+      //     const {
+      //       id,
+      //       code,
+      //       name,
+      //       measureName,
+      //       itemgroupName,
+      //       itemgroupId,
+      //       measureId,
+      //       isActive,
+      //       createdDate,
+      //       itemcodes,
+      //     } = item;
+      //
+      //     return {
+      //       id,
+      //       code,
+      //       name,
+      //       measureName,
+      //       itemgroupName,
+      //       itemgroupId,
+      //       measureId,
+      //       isActive,
+      //       createdDate,
+      //       itemcodes: itemcodes.map((itemCode: any) => ({
+      //         id: itemCode.id,
+      //         itemId: itemCode.itemId,
+      //         barcode: itemCode.barcode,
+      //         name: itemCode.name,
+      //         sellPrice: itemCode.sellPrice,
+      //         purchasePrice: itemCode.purchasePrice,
+      //         qty: itemCode.qty,
+      //         measureId: itemCode?.measureId,
+      //         measureName: itemCode?.measureName,
+      //         createdDate: itemCode.createdDate,
+      //         isDeleted: itemCode.isDeleted,
+      //       })),
+      //     };
+      //   });
+      //   this.setState({ rowData:rowData,rowSearchData: rowData });
+      // })
+
       if (result.data.code === "200") {
         const rowData: Item[] = result.data.data.map((item: any) => {
           const {

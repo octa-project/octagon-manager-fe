@@ -42,7 +42,7 @@ const DropdownNotification = () => {
           setDropdownOpen(!dropdownOpen);
         }}
         href="#"
-        className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0] border-stroke hover:text-primary dark:bg-meta-4 dark:text-white"
+        className="relative flex h-8.5 w-8.5 items-center justify-center rounded-full border-[0] border-stroke hover:text-primary dark:bg-stroke dark:text-white"
       >
         <span
           className={`absolute -top-0.5 right-0 z-1 h-2 w-2 rounded-full bg-meta-1 ${
@@ -56,7 +56,7 @@ const DropdownNotification = () => {
           className="fill-current duration-300 ease-in-out"
           width="20"
           height="20"
-          viewBox="0 0 18 18"
+          viewBox="0 0 20 20"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
