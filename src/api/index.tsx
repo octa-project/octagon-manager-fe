@@ -45,7 +45,8 @@ const itemCode_delete = apiItemCode("delete-itemCode_by_id");
 
 const item_save = apiItem("save-item");
 const item_update = apiItem("update-item");
-const item_get_all_items = apiItem("get-all-items");
+//const item_get_all_items = apiItem("get-all-items");
+const item_get_all_complete_items = apiItem("complete");
 const item_get_item_by_id = apiItem("get-item-by-id");
 const item_get_item_by_code = apiItem("get-item-by-code");
 const item_delete = apiItem("delete-item-by-id");
@@ -156,7 +157,8 @@ export default {
 
   item_save,
   item_update,
-  item_get_all_items,
+  //item_get_all_items,
+  item_get_all_complete_items,
   item_get_item_by_id,
   item_get_item_by_code,
   item_delete,

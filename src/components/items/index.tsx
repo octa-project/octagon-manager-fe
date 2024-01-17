@@ -53,28 +53,28 @@ class ItemController extends Component<{}, ItemState> {
         code: "",
         name: "",
         measureName: "",
-        itemgroupName: "",
+        itemGroupName: "",
         measureId: 0,
         itemgroupId: 0,
         createdDate: "",
         isActive: false,
 
         branchId: 0,
-        itemcodes: [],
+        children: [],
       },
       nonSelectedItem: {
         id: 0,
         code: "",
         name: "",
         measureName: "",
-        itemgroupName: "",
+        itemGroupName: "",
         measureId: 0,
         itemgroupId: 0,
         createdDate: "",
         isActive: false,
 
         branchId: 0,
-        itemcodes: [],
+        children: [],
       },
       selectedItemCode: {
         id: 0,
@@ -508,7 +508,7 @@ class ItemController extends Component<{}, ItemState> {
       this.setState({ loading: true, error: "" });
 
       const result =
-        await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
+        await api.itemCode_get_custom_all_itemcodes.itemCodeGetCustomAllItemCodes();
 
       if (result.data.code === "200") {
         const rowItemCodeData: ItemCode[] = result.data.data.map(
@@ -518,7 +518,7 @@ class ItemController extends Component<{}, ItemState> {
             barcode: any;
             name: any;
             sellPrice: any;
-            purchasePrice: any;
+            costPrice: any;
             measureId: any;
             measureName: any;
             qty: any;
@@ -530,7 +530,7 @@ class ItemController extends Component<{}, ItemState> {
             barcode: item.barcode,
             name: item.name,
             sellPrice: item.sellPrice,
-            purchasePrice: item.purchasePrice,
+            costPrice: item.costPrice,
             measureId: item.measureId,
             measureName: item.measureName,
             qty: item.qty,
@@ -556,7 +556,8 @@ class ItemController extends Component<{}, ItemState> {
     try {
       this.setState({ loading: true, error: "" });
 
-      const result = await api.item_get_all_items.GetAllItems();
+      const result =
+        await api.item_get_all_complete_items.GetAllCompleteItems();
 
       if (result.data.code === "200") {
         const rowData: Item[] = result.data.data.map((item: any) => {
@@ -565,7 +566,7 @@ class ItemController extends Component<{}, ItemState> {
             code,
             name,
             measureName,
-            itemgroupName,
+            itemGroupName,
             itemgroupId,
             measureId,
             isActive,
@@ -578,7 +579,7 @@ class ItemController extends Component<{}, ItemState> {
             code,
             name,
             measureName,
-            itemgroupName,
+            itemGroupName,
             itemgroupId,
             measureId,
             isActive,
@@ -1398,12 +1399,12 @@ class ItemController extends Component<{}, ItemState> {
                                             className=" text-[#8a91a5]"
                                             align="left"
                                           >
-                                            {row.itemgroupName}
+                                            {row.itemGroupName}
                                           </TableCell>
                                           <TableCell
                                             className=" text-[#8a91a5]"
                                             align="center"
-                                          >{`( ${row.itemcodes.length} )`}</TableCell>
+                                          >{`( ${row.children.length} )`}</TableCell>
                                           <TableCell
                                             className=" w-6"
                                             align="center"
@@ -1422,8 +1423,8 @@ class ItemController extends Component<{}, ItemState> {
                                             <Collapse
                                               in={
                                                 selectedRowId === row.id &&
-                                                row.itemcodes &&
-                                                row.itemcodes.length > 0
+                                                row.children &&
+                                                row.children.length > 0
                                               }
                                               timeout="auto"
                                               unmountOnExit
@@ -1476,10 +1477,9 @@ class ItemController extends Component<{}, ItemState> {
                                                   </TableHead>
                                                   <TableBody>
                                                     {selectedRowId === row.id &&
-                                                      row.itemcodes &&
-                                                      row.itemcodes.length >
-                                                        0 &&
-                                                      row.itemcodes.map(
+                                                      row.children &&
+                                                      row.children.length > 0 &&
+                                                      row.children.map(
                                                         (itemCode) => (
                                                           <TableRow
                                                             key={itemCode.id}

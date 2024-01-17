@@ -3,13 +3,13 @@ interface Item {
   code: string;
   name: string;
   measureName: string;
-  itemgroupName: string;
+  itemGroupName: string;
   measureId: number;
   itemgroupId: number;
   createdDate: string;
   branchId: number;
   isActive: boolean;
-  itemcodes: ItemCode[];
+  children: ItemCode[];
 }
 interface ItemCode {
   id: number;
@@ -17,7 +17,7 @@ interface ItemCode {
   barcode: string;
   name: string;
   sellPrice: number;
-  purchasePrice: number;
+  costPrice: number;
   measureId: number;
   measureName: string;
   qty: number;
