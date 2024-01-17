@@ -70,7 +70,7 @@ const Header = (props: {
 
         <div className="hidden sm:block">
           <form action="" method="POST">
-            <div className="relative">
+            <div className="relative dark:text-white">
               <span className={"font-medium pr-5"}>
                 Demo Store
               </span>

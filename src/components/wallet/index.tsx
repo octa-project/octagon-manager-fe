@@ -87,18 +87,13 @@ class WalletController extends Component<{}, Dialog> {
         }
     };
 
-    saveCard = async () => {
-        try {
-            await api.saveCard.saveCard(this.phoneNumber).then(res => {
-                if (res.status == 200 && res.data.isSuccess) {
-                    //      this.cardList = res.data.data
-                    console.log("res ", res)
-                }
-            });
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        } finally {
-        }
+    saveCard = () => {
+        api.saveCard.saveCard(this.phoneNumber).then(res => {
+            if (res.status == 200 && res.data.isSuccess) {
+                //      this.cardList = res.data.data
+                console.log("res ", res)
+            }
+        });
     };
 
     getWeb = async () => {
@@ -173,82 +168,61 @@ class WalletController extends Component<{}, Dialog> {
         return (
             <Paper elevation={2} className={"p-6"}>
                 <Grid container spacing={3}>
-                    <Grid xs={12} md={7}>
+                    <Grid xs={12} md={9}>
                         <div className="flex items-center">
                             <div className=" font-bold text-2xl">PayGate Хэтэвч /{this.phoneNumber}/</div>
                         </div>
                     </Grid>
-                    <Grid xs={12} md={5}>
+                    <Grid xs={12} md={3}>
                         <div className={"flex justify-between items-center"}>
-                            <div>
-                                <div className={"bg-secondary dark:bg-graydark flex flex-col px-6 pt-2 rounded "}>
-                                    <Typography className="!font-normal "> Үлдэгдэл</Typography>
+                            <div className={"w-50 mr-2"}>
+                                <div className={"bg-secondary dark:bg-graydark flex flex-col p-2 rounded text-center"}>
+                                    <Typography className="font-normal text-sm whitespace-nowrap"> Үлдэгдэл</Typography>
                                     <Typography
                                         className="!font-bold text-center"> {currencyFormatter(this.state.accBalance)}</Typography>
                                 </div>
                             </div>
-                            <div>
-                                <div className={"bg-success flex flex-col px-6 pt-2 rounded text-white"}>
-                                    <label className="font-normal "> Боломжит зээлийн дүн</label>
+                            <div className={"w-50 ml-2"}>
+                                <div className={"bg-success flex flex-col p-2 rounded text-white text-center"}>
+                                    <label className="font-normal text-sm whitespace-nowrap"> Боломжит зээлийн дүн</label>
                                     <label
                                         className="font-bold text-center"> {currencyFormatter(this.state.accBalance)}</label>
                                 </div>
                             </div>
                         </div>
                     </Grid>
-                    <Grid xs={12} md={7}>
+                    <Grid xs={12} md={9} className={"relative"}>
                         <div>
                             <Grid container spacing={3}>
                                 <Grid xs={6}>
                                     Орлого хийх
                                     <div className="flex">
+
                                         <button className={styles.btn} onClick={() => this.openHandle(1)}>
                                             <PaymentIcon color="action" sx={{fontSize: 50}}></PaymentIcon>
-                                            <p className="font-light"> Картаар цэнэглэх</p>
-                                            <CardToWallet
-                                                open={this.state.walletDialog}
-                                                onClose={() => this.closeHandle(1)}
-                                                data={this.state.cardList}
-                                                phoneNum={this.phoneNumber}
-                                            />
+                                            <label className="font-light"> Картаар цэнэглэх</label>
                                         </button>
                                         <button className={styles.btn}>
                                             <CurrencyExchangeOutlinedIcon color="action"
                                                                           sx={{fontSize: 50}}></CurrencyExchangeOutlinedIcon>
-                                            <p className="font-light"> Зээлээр цэнэглэх</p>
+                                            <label className="font-light"> Зээлээр цэнэглэх</label>
                                         </button>
                                     </div>
                                 </Grid>
                                 <Grid xs={6}>
-                                    Зарлага гаргах
+                                Зарлага гаргах
                                     <div className="flex">
                                         <button className={styles.btn} onClick={() => this.openHandle(3)}>
-                                            <PaymentsOutlinedIcon color="action"
-                                                                  sx={{fontSize: 50}}></PaymentsOutlinedIcon>
-                                            <p className="font-light"> Хувийн дансруу</p>
-                                            <WalletToAccount
-                                                open={this.state.bankDialog}
-                                                onClose={() => this.closeHandle(3)}
-                                                phoneNum={this.phoneNumber}
-                                            />
+                                            <PaymentsOutlinedIcon color="action" sx={{fontSize: 50}}></PaymentsOutlinedIcon>
+                                            <label className="font-light"> Хувийн дансруу</label>
                                         </button>
                                         <button className={styles.btn} onClick={() => this.openHandle(4)}>
                                             <CachedOutlinedIcon color="action" sx={{fontSize: 50}}></CachedOutlinedIcon>
-                                            <p className="font-light"> Салбар хооронд</p>
-                                            <WalletToWallet
-                                                open={this.state.branchDialog}
-                                                onClose={() => this.closeHandle(4)}
-                                                phoneNum={this.phoneNumber}
-                                            />
+                                            <label className="font-light"> Салбар хооронд</label>
                                         </button>
                                         <button className={styles.btn} onClick={() => this.openHandle(5)}>
-                                            <DocumentScannerOutlinedIcon color="action"
-                                                                         sx={{fontSize: 50}}></DocumentScannerOutlinedIcon>
-                                            <p className="font-light"> Нэхэмжлэл</p>
-                                            <Invoice
-                                                open={this.state.invoiceDialog}
-                                                onClose={() => this.closeHandle(5)}
-                                            />
+                                            <DocumentScannerOutlinedIcon color="action" sx={{fontSize: 50}}></DocumentScannerOutlinedIcon>
+                                            <label className="font-light"> Нэхэмжлэл</label>
                                         </button>
                                     </div>
                                 </Grid>
@@ -266,10 +240,36 @@ class WalletController extends Component<{}, Dialog> {
                                 </Grid>
                             </Grid>
                         </div>
-
+                        {(this.state.walletDialog ||
+                                this.state.invoiceDialog ||
+                                this.state.branchDialog ||
+                                this.state.bankDialog) &&
+                            <div className={"absolute w-full h-full top-0 left-0 z-[2] backdrop-blur-[20px]"}>
+                                <CardToWallet
+                                    open={this.state.walletDialog}
+                                    onClose={() => this.closeHandle(1)}
+                                    data={this.state.cardList}
+                                    phoneNum={this.phoneNumber}
+                                />
+                                <Invoice
+                                    open={this.state.invoiceDialog}
+                                    onClose={() => this.closeHandle(5)}
+                                />
+                                <WalletToWallet
+                                    open={this.state.branchDialog}
+                                    onClose={() => this.closeHandle(4)}
+                                    phoneNum={this.phoneNumber}
+                                />
+                                <WalletToAccount
+                                    open={this.state.bankDialog}
+                                    onClose={() => this.closeHandle(3)}
+                                    phoneNum={this.phoneNumber}
+                                />
+                            </div>
+                        }
                     </Grid>
-                    <Grid xs={12} md={5}>
-                        <div className={"h-full bg-secondary rounded p-6 flex flex-col"}>
+                    <Grid xs={12} md={3}>
+                        <div className={"h-full bg-secondary rounded-3xl p-6 flex flex-col dark:bg-boxdark-2"}>
                             <div>
                                 <CardWeb
                                     open={this.state.cardWeb}
@@ -284,26 +284,23 @@ class WalletController extends Component<{}, Dialog> {
                                         </IconButton>
                                     </Tooltip>
                                 </div>
-                                {this.state.cardList.map((data) => (
-                                    <div className=" mb-2 bg-white shadow rounded-2xl text-center max-h-16">
-                                        <div>
-                                            <p className=" font-bold"> {data.card_number}</p>
-                                        </div>
-                                        <div>
-                                            <p> {data.card_bank_name}</p>
+                                {this.state.cardList.map((data, index) => (
+                                    <div className={"relative h-40"}>
+                                        <div className={`mb-2 bg-white shadow-5 shadow-black rounded-2xl text-center absolute left-0 w-full`} style={{top:index*(-40)+"%"}}>
+                                            <div
+                                                className={"absolute left-[50%] top-[20%] -translate-x-[50%] -translate-y-[50%] rounded bg-opacity-50 bg-black-2 text-white p-1.5"}>
+                                                <p className="font-normal text-lg"> {data.card_number}</p>
+                                                {/*<p> {data.card_bank_name}</p>*/}
+                                            </div>
+                                            <img src={"/creditCards/card1.png"} alt={"card"} className={"w-full pointer-events-none"}/>
                                         </div>
                                     </div>
                                 ))}
                             </div>
                             <div className={"h-full"}>
-                                Зөвхөн таньд
+                                <b>Зөвхөн таньд</b>
                                 <div className="relative w-full h-full">
-                                    <Image className='rounded-lg'
-                                           src="/img/cs.png"
-                                           fill
-                                           alt="Credit Scoring"
-                                           style={{objectFit:"contain", width:"100%"}}
-                                    />
+                                    <img src="/img/cs.png" alt={"cscore"} className={"rounded"}/>
                                 </div>
                             </div>
                         </div>

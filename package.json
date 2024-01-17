@@ -38,6 +38,7 @@
     "react": "^18.2.0",
     "react-datetime": "^3.2.0",
     "react-dom": "^18",
+    "react-material-ui-carousel": "^3.4.2",
     "react-number-format": "^5.3.1",
     "react-string-replace": "^1.1.1",
     "styled-components": "^6.1.1",
