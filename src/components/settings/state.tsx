@@ -23,7 +23,7 @@ interface Printer {
     printType: number;
     branchId: number;
     branchName: string;
-    isActive: boolean;
+    active: boolean;
     ipAddress: string;
     cashierPrinter: boolean;
     retailDeviceName:string;

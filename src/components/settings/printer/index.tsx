@@ -24,7 +24,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                 printType: 0,
                 branchId: 0,
                 branchName: "",
-                isActive: false,
+                active: true,
                 retailDeviceName: "",
                 ipAddress:"",
                 cashierPrinter: true
@@ -36,7 +36,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                 printType: 0,
                 branchId: 0,
                 branchName: "",
-                isActive: false,
+                active: true,
                 retailDeviceName: "",
                 ipAddress:"",
                 cashierPrinter: true
@@ -66,15 +66,16 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
     getList = async () => {
         const result = api.getDeviceListByBranch.GetDeviceSettingsListByBranch(1).then(res => {
             this.setState({printersData: res.data.data}, () => {
-                console.log(this.state.printersData);
+
             });
         })
     }
 
     getListForOrder = async () => {
         const result = api.getDeviceListByBranchForOrder.GetDeviceSettingsListByBranchForOrder(1).then(res => {
-            this.setState({printersData: res.data.data}, () => {
-                console.log(this.state.printersData);
+            this.setState({printersSearchData: res.data.data}, () => {
+
+
             });
         })
     }
@@ -82,7 +83,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
     cashierPrinterOnclickHandler = () => {
         this.getList().then(r => {
-            console.log(r)
+
         });
         console.log("sda")
         this.setState({open: true}, () => {
@@ -205,7 +206,11 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.branchId}</TableCell>
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.isActive}</TableCell>
+                                                        className="font-sans text-[#8a91a5] ">
+                                                        <Switch defaultChecked={row.active} className="SelectedSwitch col-span-1">
+
+                                                        </Switch>
+                                                    </TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">
                                                         <Button
@@ -258,7 +263,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.branchName}</TableCell>
+                                                        className="font-sans text-[#8a91a5] ">{row.retailDeviceName}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
                                                     <TableCell
