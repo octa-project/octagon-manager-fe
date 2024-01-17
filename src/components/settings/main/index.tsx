@@ -27,7 +27,8 @@ class MainSettingsController extends Component<{}, MainSettingState> {
                 contractNumber: "",
                 city: "",
                 address: "",
-                phone: ""
+                phone: "",
+                motto: ""
             }
         }
     }
@@ -84,6 +85,7 @@ class MainSettingsController extends Component<{}, MainSettingState> {
             { id: "4", paramName: "city", title: "ХОТ, АЙМАГ" },
             { id: "5", paramName: "address", title: "ХАЯГ" },
             { id: "6", paramName: "phone", title: "УТАС" },
+            { id: "7", paramName: "motto", title: "УРИА ҮГ" },
         ];
 
 
@@ -100,19 +102,20 @@ class MainSettingsController extends Component<{}, MainSettingState> {
                                     </div>
                                     <TextField
                                         className="w-full"
+                                        value={this.state.mainSettings[value.paramName]}
                                         onChange={(e) =>
                                             this.handleItemTextFieldChange(value.paramName, e.target.value)
                                         }
+
                                     />
                                 </div>
                             ))
                         }
-                        <Button className="bg-black text-white w-1/6 hover:">ХАДГАЛАХ</Button>
+                        <Button className="bg-black text-white w-1/6 hover:" onClick={(e) =>this.saveUpdateSettings(this.state.mainSettings)}>ХАДГАЛАХ</Button>
                     </div>
                     <div className="flex flex-col col-span-1 gap-3">
                     </div>
                 </div>
-
             </div>
         );
     }

@@ -1,4 +1,16 @@
-const Additional = () => {
+import { useState, useEffect } from 'react';
+
+const Additional: React.FC = () => {
+    const [token, setToken] = useState<string | null>(null);
+
+    useEffect(() => {
+        const storedToken = localStorage.getItem('accessToken');
+        if (storedToken) {
+            setToken(storedToken);
+            console.log(storedToken);
+        }
+    }, []);
+
   return (
     <div className={"flex justify-center items-center bg-whiter text-graydark py-1.5 px-2"}>
       <span className={"text-sm pr-2"}>Борлуулалт</span>

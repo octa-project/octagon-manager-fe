@@ -3,6 +3,8 @@ import {Component, useState} from "react";
 import {formatMoney} from "@/src/components/tools/utils";
 import * as React from "react";
 import api from "@/src/api";
+import CustomModal from "@/src/components/settings/printer/Modal";
+import DialogForSettings from "@/src/components/settings/printer/DialogForSettings";
 
 
 class PrinterSettings extends Component<{}, SettingsPrinterState> {
@@ -12,6 +14,8 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
         this.state = {
             first: false,
             open: false,
+            modalOpen: false,
+            modalClose: true,
             secondaryOpen: false,
             selectedPrinter: {
                 id: "",
@@ -20,7 +24,10 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                 printType: 0,
                 branchId: 0,
                 branchName: "",
-                isActive: false
+                isActive: false,
+                retailDeviceName: "",
+                ipAddress:"",
+                cashierPrinter: true
             },
             nonSelectedPrinter: {
                 id: "",
@@ -29,7 +36,10 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                 printType: 0,
                 branchId: 0,
                 branchName: "",
-                isActive: false
+                isActive: false,
+                retailDeviceName: "",
+                ipAddress:"",
+                cashierPrinter: true
             },
             printersData: [],
             printersSearchData: [],
@@ -96,11 +106,21 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
     deletePrinter = (id: any) => {
         const result = api.deleteDeviceSettings.DeleteDeviceSettings(id).then(res => {
-            this.setState({printersData: res.data.data}, () => {
-                console.log(this.state.printersData);
-            });
-        })
+           this.getList().then(r =>{
+               if (this.state.printersData.length == 0){
+                   this.setState({open:false})
+               }
+           })
+        });
     }
+
+     openModal = () => {
+         this.setState({modalOpen:true})
+    };
+
+     closeModal = () => {
+         this.setState({modalOpen:false})
+    };
 
     render() {
 
@@ -179,13 +199,13 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.branchName}</TableCell>
+                                                        className="font-sans text-[#8a91a5] ">{row.retailDeviceName}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.branchId}</TableCell>
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.ownerName}</TableCell>
+                                                        className="font-sans text-[#8a91a5] ">{row.isActive}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">
                                                         <Button
@@ -198,6 +218,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                             <>
                                                 {skeleten.map((row) =>
                                                     <TableRow key={row}>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
@@ -220,6 +241,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                 нэр</TableCell>
                                             <TableCell className="font-sans text-white font-semibold">Төрөл</TableCell>
                                             <TableCell className="font-sans text-white font-semibold">test</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Үйлдэлүүд</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -257,12 +279,21 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                     </TableRow>
                                                 )}
                                             </>
                                         )}
                                     </TableBody>
                                 </Table>)}
+
+                                <Button className="bg-red text-white w-1/6 hover:" onClick={()=>this.openModal()}>
+
+                                    Нэмэх</Button>
+                                <DialogForSettings   open={this.state.modalOpen}
+                                                     onClose={ this.closeModal}>
+
+                                </DialogForSettings>
 
                             </Card>
                         </div>
