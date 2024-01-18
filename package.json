@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules dist build",
-    "dev": "next dev -p 3002",
+    "dev": "next dev",
     "build": "next build",
-    "start": "next start -p 3002",
+    "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
