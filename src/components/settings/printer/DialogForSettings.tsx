@@ -72,7 +72,9 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
 
     getComputerName =()=>{
         api.getComputerName.GetComputerName().then(res =>{
+
             this.setState({computerName: res.data.data});
+            this.handleItemTextFieldChange("retailDeviceName" , this.state.computerName);
         })
     }
 
@@ -182,7 +184,7 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
                                         Төлөв
                                     </div>
-                                    <Switch className="w-full" onChange={(e) =>this.handleItemTextFieldChange('active', !this.state.printer.active)}>
+                                    <Switch className="w-full" value={this.state.printer.active} onChange={(e) =>this.handleItemTextFieldChange('active', !this.state.printer.active)}>
 
                                     </Switch>
                                 </div>
@@ -190,7 +192,7 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
                                         Принтерын төрөл
                                     </div>
-                                    <Switch className="w-full" onChange={(e) =>this.handleItemTextFieldChange( 'cashierPrinter', !this.state.printer.cashierPrinter)}>
+                                    <Switch className="w-full" value={this.state.printer.active} onChange={(e) =>this.handleItemTextFieldChange( 'cashierPrinter', !this.state.printer.cashierPrinter)}>
 
                                     </Switch>
                                 </div>
