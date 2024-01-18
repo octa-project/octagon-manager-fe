@@ -3,9 +3,11 @@ import SettingsController from "@/src/components/settings";
 import { SnackbarProvider } from "notistack";
 
 const Settings = () => (
-    <div className='screen'>
-        <SettingsController/>
-    </div>
+    <SnackbarProvider>
+        <div>
+            <SettingsController />
+        </div>
+    </SnackbarProvider>
 )
 
 export default Settings;

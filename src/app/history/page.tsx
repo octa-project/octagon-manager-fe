@@ -1,11 +1,14 @@
 "use client"
 import HistoryController from "@/src/components/history";
+import { SnackbarProvider } from "notistack";
 
 const History = () => {
     return (
-        <div>
-            <HistoryController/>
-      </div>
+        <SnackbarProvider>
+            <div>
+                <HistoryController />
+            </div>
+        </SnackbarProvider>
     )
 }
 

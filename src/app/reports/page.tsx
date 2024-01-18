@@ -4,9 +4,11 @@ import { SnackbarProvider } from "notistack";
 
 
 const Reports = () => (
-    <div className='h-full'>
-        <ReportController/>
-    </div>
+    <SnackbarProvider>
+        <div>
+            <ReportController />
+        </div>
+    </SnackbarProvider>
 )
 
 export default Reports;
