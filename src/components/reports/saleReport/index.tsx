@@ -40,6 +40,7 @@ interface SaleReportState {
   rowSearchData: any[];
   rowData: any[];
   open: boolean;
+  reportFile: any
 }
 
 class SaleReportController extends Component<{}, SaleReportState> {
@@ -53,6 +54,7 @@ class SaleReportController extends Component<{}, SaleReportState> {
       rowData: [],
       rowSearchData: [],
       open: false,
+      reportFile: ''
     };
   }
 
@@ -92,7 +94,25 @@ class SaleReportController extends Component<{}, SaleReportState> {
   };
 
   handleDialog = (value: boolean) => {
+    this.getReportFile();
+    //const result = await api.getReportFile.getReportFile();
     this.setState({ open: value });
+  };
+
+
+
+
+  getReportFile = async () => {
+    try {
+      const result = await api.getReportFile.getReportFile();
+      this.setState({ reportFile: result });
+
+      console.log(this.state.reportFile);
+
+      // if (result.data.code === "200") {
+      //   this.setState({ rowData: result.data.data });
+      // }
+    } catch (error) {}
   };
 
   render() {
@@ -167,7 +187,7 @@ class SaleReportController extends Component<{}, SaleReportState> {
                 ХААХ
               </Button>
             </div>
-            asdasdfaskjd
+            <div dangerouslySetInnerHTML={{ __html: this.state.reportFile.data }}></div> 
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-3">

@@ -121,6 +121,8 @@ const getCardWeb = apiWallet("card-web");
 const getCardList = apiWallet("get-card-list");
 const saveCard = apiWallet("save-card");
 const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction");
+const getReportFile = apiReport("getReportFile")
+
 export default {
     getWalletBalance,
     getWalletTransactionHistory,
@@ -214,4 +216,5 @@ export default {
     deleteDeviceSettings,
 
     getPdf,
+    getReportFile,
 };
