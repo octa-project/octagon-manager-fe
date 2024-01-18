@@ -138,7 +138,6 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
             <div className="h-full">
                 <div className="flex flex-col">
-                    <div className="grid grid-rows-2">
                             <div className="grid grid-cols-2">
                                 <div className="flex flex-col col-span-1">
                                     <div className="flex flex-row grid grid-cols-3">
@@ -300,7 +299,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
                             </Card>
                         </div>
-                    </div>
+
                 </div>
             </div>
         );
