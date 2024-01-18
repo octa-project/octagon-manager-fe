@@ -17,7 +17,7 @@ interface ItemCode {
   barcode: string;
   name: string;
   sellPrice: number;
-  purchasePrice: number;
+  costPrice: number;
   measureId: number;
   measureName: string;
   qty: number;

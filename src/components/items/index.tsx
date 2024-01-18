@@ -508,7 +508,7 @@ class ItemController extends Component<{}, ItemState> {
       this.setState({ loading: true, error: "" });
 
       const result =
-        await api.itemCode_get_all_itemcodes.itemCodeGetAllItemCodes();
+        await api.itemCode_get_custom_all_itemcodes.itemCodeGetCustomAllItemCodes();
 
       if (result.data.code === "200") {
         const rowItemCodeData: ItemCode[] = result.data.data.map(
@@ -518,7 +518,7 @@ class ItemController extends Component<{}, ItemState> {
             barcode: any;
             name: any;
             sellPrice: any;
-            purchasePrice: any;
+            costPrice: any;
             measureId: any;
             measureName: any;
             qty: any;
@@ -530,7 +530,7 @@ class ItemController extends Component<{}, ItemState> {
             barcode: item.barcode,
             name: item.name,
             sellPrice: item.sellPrice,
-            purchasePrice: item.purchasePrice,
+            costPrice: item.costPrice,
             measureId: item.measureId,
             measureName: item.measureName,
             qty: item.qty,
