@@ -17,7 +17,7 @@ const PurchaseController = () => {
   ];
 
   return (
-    <div className="flex flex-col gap-3 h-screen">
+    <div className="flex flex-col gap-3">
       <div className="bg-white h-14 shadow-lg rounded-lg">
         <div className="w-full h-14 grid grid-cols-5 justify-items items-center gap-5 px-2">
           {tabs.map((item, index) => (
@@ -26,8 +26,7 @@ const PurchaseController = () => {
               onClick={() => tabChange(item.index)}
               className={
                 tabValue === item.index ? "topBarSelected" : "topBarNoSelected"
-              }
-            >
+              }>
               {item.name}
             </div>
           ))}

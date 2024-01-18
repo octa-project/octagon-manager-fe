@@ -13,7 +13,7 @@ import {
   TableRow,
   TextField,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { DatePicker, Input } from "antd";
 import dayjs from "dayjs";
@@ -29,7 +29,11 @@ import SnackBar from "@/src/components/tools/snackAlert";
 import SearchIcon from "@mui/icons-material/Search";
 
 const PurchaseMain = () => {
+
+  const inputBarcode = useRef<any>(null);
+
   const [searchText, setSearchText] = useState("");
+  const [barcodeText, setBarcodeText] = useState("");
 
   // Purchase List
   const [filterValue, setFilterValue] = useState("0");
@@ -40,6 +44,9 @@ const PurchaseMain = () => {
   );
   const [endDate, setEndDateValue] = useState(
     moment().format("YYYY-MM-DD 23:59:59")
+  );
+  const [purchaseDate, setPurchaseDateValue] = useState(
+    moment().format("YYYY-MM-DD 00:00:00")
   );
 
   const [purchases, setPurchases] = useState<Purchase[]>([]);
@@ -76,7 +83,6 @@ const PurchaseMain = () => {
 
   const handleFilterChange = (value: string) => {
     setFilterValue(value);
-
     if (value === "0") {
       setPurchasesData(purchases);
     } else {
@@ -89,7 +95,6 @@ const PurchaseMain = () => {
 
   const handleFilterSupplierChange = (value: string) => {
     setFilterSupplierValue(value);
-
     if (value === "0") {
       setPurchasesData(purchases);
     } else {
@@ -100,7 +105,7 @@ const PurchaseMain = () => {
 
   const handleTabChange = (value: string) => {
     setPurchaseDetail({
-      id: "0",
+      id: 0,
       items: [],
       supplierId: "0",
       branchId: "0",
@@ -129,34 +134,32 @@ const PurchaseMain = () => {
     }
   };
 
-  const handleTextSearch = async (barcode: string) => {
-    setSearchText(barcode);
-    if (barcode.length === 13) {
-      try {
-        const isExist = purchaseDetail?.items.find(
-          (t) => t.barcode === barcode
-        );
+  const handleTextSearch = async () => {
+    try {
+      const isExist = purchaseDetail?.items.find(
+        (t) => t.barcode === barcodeText
+      );
+      if (isExist) {
+        SnackBar.success("Бараа нэмэгдлээ");
+        setPurchaseDetail((prevPurchase) => {
+          if (prevPurchase) {
+            const updatedItems = prevPurchase.items.map((item) =>
+              item.barcode === barcodeText ? { ...item, qty: item.qty + 1 } : item
+            );
 
-        if (isExist) {
-          SnackBar.success("Бараа нэмэгдлээ");
-          setPurchaseDetail((prevPurchase) => {
-            if (prevPurchase) {
-              const updatedItems = prevPurchase.items.map((item) =>
-                item.barcode === barcode ? { ...item, qty: item.qty + 1 } : item
-              );
+            return {
+              ...prevPurchase,
+              items: updatedItems,
+            };
+          }
 
-              return {
-                ...prevPurchase,
-                items: updatedItems,
-              };
-            }
-
-            console.error("Invalid purchase data:", prevPurchase);
-            return prevPurchase;
-          });
-        } else {
-          // If the item doesn't exist, add a new item
-          const result: ItemCode = await getItem(barcode);
+          console.error("Invalid purchase data:", prevPurchase);
+          return prevPurchase;
+        });
+      } else {
+        // If the item doesn't exist, add a new item
+        const result: ItemCode = await getItem(barcodeText);
+        if (result) {
           const convertedPurchaseItem: PurchaseItem = {
             barcode: result.barcode,
             itemName: result.name,
@@ -164,12 +167,8 @@ const PurchaseMain = () => {
             costPrice: result.costPrice,
             discount: 0,
             qty: 1,
-            id: "",
+            id: ((purchaseDetail?.items?.length || 0) + 1).toString(),
             purchaseId: "",
-            createdDate: "",
-            lastModifiedDate: "",
-            createdBy: "",
-            lastModifiedBy: "",
           };
 
           setPurchaseDetail((prevPurchase) => {
@@ -187,13 +186,17 @@ const PurchaseMain = () => {
             return prevPurchase;
           });
         }
-
-        // Clear the input value
-        setSearchText("");
-      } catch (error) {
-        // Handle error
-        console.error("Error fetching item:", error);
       }
+      setSearchText("");
+    } catch (error) {
+      console.error("Error fetching item:", error);
+    }
+  };
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleTextSearch();
+      setBarcodeText("")
     }
   };
 
@@ -262,10 +265,6 @@ const PurchaseMain = () => {
                 purchaseId: itemData.purchaseId.toString(),
                 discount: itemData.discount,
                 qty: itemData.qty,
-                createdDate: itemData.createdDate,
-                lastModifiedDate: itemData.lastModifiedDate,
-                createdBy: itemData.createdBy,
-                lastModifiedBy: itemData.lastModifiedBy,
               };
               return purchaseItem;
             }),
@@ -374,6 +373,50 @@ const PurchaseMain = () => {
       SnackBar.warning("Алдаа гарлаа:" + error);
     }
   };
+
+  const saveUpdatePurchase = async (): Promise<boolean> => {
+    try {
+      debugger;
+      const localPurchase = purchaseDetail;
+
+      const purchaseItems = localPurchase?.items.map((itemData: any) => {
+        const purchaseItem: PurchaseItem = {
+          id: itemData.id.toString(),
+          barcode: itemData.barcode,
+          itemName: itemData.itemName,
+          sellPrice: itemData.sellPrice,
+          costPrice: itemData.costPrice,
+          purchaseId: localPurchase?.id.toString(),
+          discount: itemData.discount,
+          qty: itemData.qty,
+        };
+        return purchaseItem;
+      });
+
+      const body = {
+        ...(localPurchase?.id !== 0 && { id: localPurchase?.id }),
+        date: purchaseDate,
+        vat: 0,
+        cityTax: 0,
+        isPaid: true,
+        supplierId: purchaseDetail?.supplierId,
+        purchaseItems: purchaseItems,
+      };
+      const result = await api.purchase_saveOne.saveOne(body);
+      if (result.data.code === "200") {
+        SnackBar.success("Татан авалт амжилттай хийгдлээ");
+        handleTabChange("0")
+        getPurchases();
+        return true;
+      } else {
+        throw new Error("Failed data");
+      }
+    } catch (error) {
+      SnackBar.warning("Алдаа гарлаа :" + error);
+      return false;
+    }
+  };
+
 
   return (
     <div className="flex flex-col h-full">
@@ -508,7 +551,7 @@ const PurchaseMain = () => {
               </div>
               <div>
                 {" "}
-                <Button onClick={() => handlePayClick(true)}>ТӨЛӨХ</Button>
+                <Button onClick={() => saveUpdatePurchase()}>ТӨЛӨХ</Button>
               </div>
             </div>
             <div> Орлогын бүртгэл</div>
@@ -517,10 +560,11 @@ const PurchaseMain = () => {
                 <div className="flex flex-row gap-3">
                   <div className="w-36">Орлогын огноо</div>
                   <DatePicker
-                    defaultValue={dayjs()}
+                    defaultValue={dayjs(purchaseDate, dateFormat)}
                     onChange={handleDateChange}
-                    value={dayjs(purchaseDetail?.date, dateFormat)}
+                    value={dayjs(purchaseDate, dateFormat)}
                     className="h-8 w-44 bg-white"
+                    format={dateFormat}
                   />
                 </div>
                 <div className="flex flex-row gap-3">
@@ -575,14 +619,16 @@ const PurchaseMain = () => {
             </div>
             <div>
               <div>
-                <div className="flex flex-rows p-3 gap-3">
-                  <div>Баркод уншуулах</div>
+                <div className="flex flex-col pb-2">
+                  <span className="text-sm">Баркод уншуулах</span>
                   <div className="flex items-center bg-white h-10 w-3/12 rounded shadow border border-[#cbcbcb]">
                     <Input
+                      ref={inputBarcode}
                       className="text-[#6d758f] w-full h-full rounded border-none"
-                      placeholder="Хайх..."
-                      value={searchText}
-                      onChange={(e) => handleTextSearch(e.target.value)}
+                      placeholder="Баркод уншуулах..."
+                      value={barcodeText}
+                      onChange={(e) => setBarcodeText(e.target.value)}
+                      onKeyPress={handleKeyPress}
                     />
                     <Image
                       src="/items/search.svg"
@@ -592,7 +638,6 @@ const PurchaseMain = () => {
                       className="mr-3 cursor-pointer"
                     />
                   </div>
-                  <Button className="thirdButton w-32">ЦЭВЭРЛЭХ</Button>
                 </div>
                 <Table size="small">
                   <TableHead className="bg-[#8a91a5] h-14">
@@ -609,9 +654,9 @@ const PurchaseMain = () => {
                       <TableCell className="text-white font-semibold">
                         НЭР
                       </TableCell>
-                      <TableCell className="text-white font-semibold">
+                      {/* <TableCell className="text-white font-semibold">
                         ХӨНГӨЛӨЛТ
-                      </TableCell>
+                      </TableCell> */}
                       <TableCell className="text-white font-semibold">
                         ТОО
                       </TableCell>
@@ -655,9 +700,9 @@ const PurchaseMain = () => {
                         <TableCell className=" text-[#8a91a5] ">
                           {row.itemName}
                         </TableCell>
-                        <TableCell className=" text-[#8a91a5] ">
+                        {/* <TableCell className=" text-[#8a91a5] ">
                           {row.discount}
-                        </TableCell>
+                        </TableCell> */}
                         <TableCell className=" text-[#8a91a5] ">
                           <TextField
                             className="w-2/6"

@@ -1,5 +1,5 @@
 interface Purchase {
-    id: string;
+    id: number;
     items: PurchaseItem[];
     supplierId: string;
     supplierName: string;
@@ -23,10 +23,6 @@ interface PurchaseItem {
     purchaseId: string;
     discount: number;
     qty: number;
-    createdDate: string;
-    lastModifiedDate: string;
-    createdBy: string;
-    lastModifiedBy: string;
 }
 
 
