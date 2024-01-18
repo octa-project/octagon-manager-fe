@@ -13,6 +13,7 @@ import TotalProfit from "./totalProfit";
 import TotalSales from "./totalSales";
 import api from "@/src/api";
 import { Dashboard } from "@mui/icons-material";
+import SnackBar from "@/src/components/tools/snackAlert";
 
 interface DashboardControllerState {
   topLeft: number;
@@ -38,14 +39,11 @@ interface DashboardDataWeekly {
   weekDay: number;
 }
 
-
-
 class DashboardController extends Component<{}, DashboardControllerState> {
   constructor(props: any) {
     super(props);
-
     this.state = {
-      topLeft: 0,
+      topLeft: 1,
       topRight: 0,
       bottomLeft: 0,
       bottomRight: 0,
@@ -157,11 +155,6 @@ class DashboardController extends Component<{}, DashboardControllerState> {
     }
   };
 
-  handleTopLeftChange = (value:number) => {
-    this.setState({ topLeft: value });
-    // Add any additional logic based on the changed value if needed
-  };
-
   handleCardStates = (tl: number, tr: number, bl: number, br: number) => {
     this.setState({
       topLeft: tl,
@@ -190,7 +183,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
   render() {
     return (
       <div className="grid grid-cols-5">
-        <div className="col-span-4 h-screen bg-[#f7f7f5ff] p-5">
+        <div className="col-span-4 h-screen pr-5">
           <div className="grid grid-rows-5">
             {/* <div className="row-span-1 w-full">aaaa</div> */}
             <div className="row-span-5 w-full">
@@ -238,11 +231,11 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                       </Typography>
                     </Card>
                   </div>
-                  {this.state.topLeft === 0 ? <ChooseCard onTopLeftChange={this.handleTopLeftChange} /> : null}
-                  {this.state.topLeft === 4 ? <TopSales /> : null}
+                  {this.state.topLeft === 0 ? <ChooseCard /> : null}
+                  {this.state.topLeft === 1 ? <TopSales /> : null}
                   {this.state.topLeft === 2 ? <TopdaysSales /> : null}
                   {this.state.topLeft === 3 ? <TotalProfit /> : null}
-                  {this.state.topLeft === 1 ? <TotalSales /> : null}
+                  {this.state.topLeft === 4 ? <TotalSales /> : null}
                 </div>
                 <div className="col-span-2 flex flex-col gap-5">
                   <Card className="w-full shadow-md h-72 rounded-lg items-center justify-center flex flex-col">
@@ -276,11 +269,11 @@ class DashboardController extends Component<{}, DashboardControllerState> {
                       height={250}
                     />
                   </Card>
-                  {this.state.topRight === 0 ? <ChooseCard onTopLeftChange={this.handleTopLeftChange} /> : null}
-                  {this.state.topRight === 4 ? <TopSales /> : null}
-                  {this.state.topRight === 2 ? <TopdaysSales /> : null}
-                  {this.state.topRight === 3 ? <TotalProfit /> : null}
-                  {this.state.topRight === 1 ? <TotalSales /> : null}
+                  {this.state.topLeft === 0 ? <ChooseCard /> : null}
+                  {this.state.topLeft === 1 ? <TopSales /> : null}
+                  {this.state.topLeft === 2 ? <TopdaysSales /> : null}
+                  {this.state.topLeft === 3 ? <TotalProfit /> : null}
+                  {this.state.topLeft === 4 ? <TotalSales /> : null}
                 </div>
               </div>
             </div>

@@ -7,55 +7,51 @@ import { DatePicker, Input } from "antd";
 import Image from "next/image";
 import dayjs from "dayjs";
 import moment from "moment";
-import { Button } from "@mui/material";
+import {
+  Button,
+  IconButton,
+  Skeleton,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+} from "@mui/material";
 import api from "@/src/api";
+import {
+  ArrowRight as ArrowRightIcon,
+  ArrowDropDown as ArrowDropDownIcon,
+  Edit as EditIcon,
+  Checklist as ChecklistIcon,
+  Add as AddIcon,
+  Autorenew as AutorenewIcon,
+} from "@mui/icons-material";
+import { formatMoney, formatQty, formatDate } from "../../tools/utils";
 
-interface AgReportState {
+interface SaleHistoryState {
   startDate: string;
   endDate: string;
-  columnDefs: any[];
-  defaultColDef: any;
-  autoGroupColumnDef: any;
-  rowData: any[];
-  rowSearchData: any[]; // Added rowSearchData to the state
+  skeleten: number[];
+  rowData: Sale[];
+  rowSearchData: Sale[]; // Added rowSearchData to the state
+
+  rowItemData: SaleItem[];
+  rowSearchItemData: SaleItem[]; // Added rowSearchData to the state
 }
 
-class SaleHistoryController extends Component<{}, AgReportState> {
+class SaleHistoryController extends Component<{}, SaleHistoryState> {
   constructor(props: any) {
     super(props);
 
     this.state = {
       startDate: moment().format("YYYY-MM-DD 00:00:00"),
       endDate: moment().format("YYYY-MM-DD 23:59:59"),
-      columnDefs: [
-        { field: "id", headerName: "№" },
-        { field: "createdDate", headerName: "Огноо" },
-        { field: "itemName", headerName: "Барааны нэр" },
-        { field: "totalQty", headerName: "Нийт тоо" },
-        { field: "totalAmount", headerName: "Нийт дүн" },
-        // { field: "paidTotalAmount", headerName: "Нийт төлсөн дүн" },
-        //{ field: "isPaid", headerName: "Төлсөн эсэх" },
-        //{ field: "date", headerName: "Төлсөн цаг" },
-        //{ field: "isDeleted", headerName: "Устгасан" },
-        // { field: 'branchId', headerName: 'Нийт дүн' },
-        //{ field: "createdUserId", headerName: "Ажилтан" },
-      ],
-      defaultColDef: {
-        flex: 1,
-        minWidth: 200,
-        cellDataType: false,
-        resizable: true,
-        sortable: true,
-        enablePivot: true,
-        filter: true,
-        enableRowGroup: true,
-        enableValue: true,
-      },
-      autoGroupColumnDef: {
-        minWidth: 200,
-      },
+      skeleten: [1, 2, 3, 4, 5],
       rowData: [],
-      rowSearchData: [], // Initialize rowSearchData
+      rowSearchData: [], 
+
+      rowItemData: [], 
+      rowSearchItemData: [], 
     };
   }
 
@@ -68,15 +64,15 @@ class SaleHistoryController extends Component<{}, AgReportState> {
 
   getSale = async () => {
     try {
-      const startDate = moment(this.state.startDate).format("YYYY-MM-DD HH:mm:ss");
-      const endDate = moment(this.state.endDate).format("YYYY-MM-DD HH:mm:ss");  
-
-      const result = await api.saleGetMany.GetMany(
-        startDate,
-        endDate
+      const startDate = moment(this.state.startDate).format(
+        "YYYY-MM-DD HH:mm:ss"
       );
+      const endDate = moment(this.state.endDate).format("YYYY-MM-DD HH:mm:ss");
+
+      const result = await api.saleGetMany.GetMany(startDate, endDate);
       if (result.data.code === "200") {
         this.setState({ rowData: result.data.data });
+        this.setState({ rowSearchData: result.data.data });
       }
     } catch (error) {
       // Handle error
@@ -113,9 +109,7 @@ class SaleHistoryController extends Component<{}, AgReportState> {
   render() {
     const { RangePicker } = DatePicker;
     const dateFormat = "YYYY-MM-DD";
-    const { rowData } = this.state;
-    const containerStyle = { width: "100%", height: "100%" }
-    const gridStyle = { height: "100%", width: "100%" }
+    
     return (
       <div className="flex flex-col">
         <div className="flex-row">
@@ -156,14 +150,81 @@ class SaleHistoryController extends Component<{}, AgReportState> {
           </div>
         </div>
         <div className="bg-white flex-initial w-full h-full pt-2">
-        <div className="ag-theme-alpine" style={gridStyle}>
-              <AgGridReact
-                domLayout="autoHeight"
-                rowData={rowData}
-                columnDefs={this.state.columnDefs}
-                defaultColDef={this.state.defaultColDef}
-              />
-            </div>
+          <Table>
+            <TableHead className="bg-[#8a91a5] h-14">
+              <TableRow className="bg-[#8a91a5]">
+                <TableCell className=" font-semibold text-white ">
+                  <ChecklistIcon />
+                </TableCell>
+                <TableCell
+                  className=" font-semibold text-white "
+                  align="center"
+                >
+                  №
+                </TableCell>
+                <TableCell
+                  className=" font-semibold text-white "
+                  align="center"
+                >
+                  ОГНОО
+                </TableCell>
+                <TableCell className=" font-semibold text-white " align="left">
+                  НИЙТ ТОО
+                </TableCell>
+                <TableCell className=" font-semibold text-white " align="left">
+                  НИЙТ ДҮН
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {this.state.rowSearchData.length > 0 ? (
+                this.state.rowSearchData.map((row) => (
+                  <TableRow key={row.id}>
+                    <TableCell align="center">
+                      <IconButton
+                        className="w-8 h-8"
+                        // onClick={() => this.handleItemRowAddClick(row)}
+                      >
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                    <TableCell className=" text-[#8a91a5] ">{row.id}</TableCell>
+                    <TableCell className=" text-[#8a91a5] ">
+                      {row.formatDate}
+                    </TableCell>
+                    <TableCell className=" text-[#8a91a5] " align="right">
+                      {formatQty(row.qty)}
+                    </TableCell>
+                    <TableCell className=" text-[#8a91a5] " align="right">
+                      {formatMoney(row.sellPrice)}
+                    </TableCell>
+                  </TableRow>
+                ))
+              ) : (
+                <>
+                  {this.state.skeleten.map((row) => (
+                    <TableRow key={row}>
+                      <TableCell>
+                        <Skeleton variant="rounded" height={20} />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="rounded" height={20} />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="rounded" height={20} />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="rounded" height={20} />
+                      </TableCell>
+                      <TableCell>
+                        <Skeleton variant="rounded" height={20} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </>
+              )}
+            </TableBody>
+          </Table>
         </div>
       </div>
     );

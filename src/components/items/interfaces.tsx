@@ -3,14 +3,13 @@ interface Item {
   code: string;
   name: string;
   measureName: string;
-  itemgroupName: string;
+  itemGroupName: string;
   measureId: number;
   itemgroupId: number;
   createdDate: string;
   branchId: number;
   isActive: boolean;
-  isDeleted: boolean;
-  itemcodes: ItemCode[]
+  children: ItemCode[];
 }
 interface ItemCode {
   id: number;
@@ -18,12 +17,11 @@ interface ItemCode {
   barcode: string;
   name: string;
   sellPrice: number;
-  purchasePrice: number;
+  costPrice: number;
   measureId: number;
   measureName: string;
   qty: number;
   createdDate: string;
-  isDeleted: boolean;
 }
 
 interface ItemCodeSku {
@@ -77,11 +75,11 @@ interface ItemState {
   defaultColDef: any;
   autoGroupColumnDef: any;
   rowData: Item[];
-  rowItemCodeData: ItemCode[],
-  rowItemCodeSkuData: ItemCodeSku[],
-  rowSearchData: Item[],
-  rowSearchItemCodeData: ItemCode[],
-  rowSearchItemCodeSkuData: ItemCodeSku[],
+  rowItemCodeData: ItemCode[];
+  rowItemCodeSkuData: ItemCodeSku[];
+  rowSearchData: Item[];
+  rowSearchItemCodeData: ItemCode[];
+  rowSearchItemCodeSkuData: ItemCodeSku[];
   measures: Measure[];
   itemGroups: ItemGroup[];
   skuItemGroups: ItemGroup[];

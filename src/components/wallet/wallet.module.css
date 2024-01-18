@@ -5,11 +5,17 @@
     box-shadow: 0 7px 25px rgba(0,0,0,0.05);
     border-radius: 2rem;
     border: #e5e5e5 solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    cursor: pointer;
 }
 
 .btn:hover {
   opacity: 80%;
-  cursor: pointer;box-shadow: 0 7px 25px rgba(0,0,0,0.15);
+
+  box-shadow: 0 7px 25px rgba(0,0,0,0.15);
 }
 
 .comp{
@@ -27,4 +33,24 @@
     border-radius: 2rem;
     border: #98d39c solid;
     background-color:#98d39c ;
+}
+
+.bankIcon{
+    height:128px;
+    width:128px;
+    border-radius: 12px;
+    filter:grayscale(1);
+    transition: .3s;
+    margin:8px;
+    display: flex;
+    justify-content: center;
+}
+
+.bankIcon > img{
+    border-radius: 12px;
+}
+
+.bankIcon:hover,
+.bankIcon.selected{
+    filter:grayscale(0);
 }
