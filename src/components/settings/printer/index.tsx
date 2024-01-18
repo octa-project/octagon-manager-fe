@@ -55,9 +55,6 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
         this.getPrinters()
     }
 
-    handleValueChange = () => {
-
-    }
 
     getPrinters = () => {
 
@@ -81,7 +78,8 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
     }
 
 
-    cashierPrinterOnclickHandler = () => {
+    cashierPrinterOnclickHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+
         this.getList().then(r => {
 
         });
@@ -93,7 +91,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
     }
 
-    purchasePrinterOnclickHandler = () => {
+    purchasePrinterOnclickHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.getListForOrder().then(r => {
             console.log(r)
         });
@@ -141,36 +139,35 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
             <div className="h-full">
                 <div className="flex flex-col">
                     <div className="grid grid-rows-2">
-                        <div className="row-span-1">
                             <div className="grid grid-cols-2">
                                 <div className="flex flex-col col-span-1">
                                     <div className="flex flex-row grid grid-cols-3">
                                         <div className="NormalText col-span-1">
                                             Кассын принтер
                                         </div>
-                                        <Switch defaultChecked className="SelectedSwitch col-span-1"/>
-                                        <Button className="secondaryButton col-span-1"
-                                                onClick={this.cashierPrinterOnclickHandler}>
-                                            харах
-                                        </Button>
+                                        <Switch     checked={this.state.open}
+                                                    onChange={this.cashierPrinterOnclickHandler}
+                                                    className="SelectedSwitch col-span-1"/>
+                                        {/*<Button className="secondaryButton col-span-1"*/}
+                                        {/*        onClick={this.cashierPrinterOnclickHandler}>*/}
+                                        {/*    харах*/}
+                                        {/*</Button>*/}
                                     </div>
                                     <div className="flex flex-row grid grid-cols-3">
                                         <div className="NormalText col-span-1">
                                             Захилагын принтер
                                         </div>
-                                        <Switch defaultChecked className="SelectedSwitch col-span-1"/>
-                                        <Button className="secondaryButton col-span-1 "
-                                                onClick={this.purchasePrinterOnclickHandler}>
-                                            харах
-                                        </Button>
+                                        <Switch checked={this.state.secondaryOpen}
+                                                onChange={this.purchasePrinterOnclickHandler}
+                                                className="SelectedSwitch col-span-1"/>
+                                        {/*<Button className="secondaryButton col-span-1 "*/}
+                                        {/*        onClick={this.purchasePrinterOnclickHandler}>*/}
+                                        {/*    харах*/}
+                                        {/*</Button>*/}
                                     </div>
                                 </div>
-                                <div className="col-span-1">
-
-                                </div>
-                            </div>
                         </div>
-                        <div className="row-span-1 h-full">
+                        <div className="flex flex-col">
                             <Card className="w-full h-full shadow rounded">
                                 {this.state.open && (<Table size="small">
                                     <TableHead className="bg-[#8a91a5] h-14">

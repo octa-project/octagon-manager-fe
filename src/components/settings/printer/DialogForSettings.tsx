@@ -36,12 +36,14 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                retailDeviceName: "",
            },
             value:"",
+            computerName: "",
             printerName: []
         };
     }
 
     componentDidMount() {
         this.getPrinterList();
+        this.getComputerName();
     }
 
     close = () => {
@@ -65,6 +67,12 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
     getPrinterList = ()=>{
         api.getListOfPrinters.GetListOfPrinters().then( res =>{
             this.setState({ printerName: res.data.data.name });
+        })
+    }
+
+    getComputerName =()=>{
+        api.getComputerName.GetComputerName().then(res =>{
+            this.setState({computerName: res.data.data});
         })
     }
 
@@ -114,7 +122,7 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                 {/*}*/}
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                                        НЭР
+                                        Принтер нэр
                                     </div>
                                     <Select
                                         className="capitalize text-[#6d758f] w-full rounded"
@@ -140,15 +148,15 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                 </div>
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                                        ТӨХӨӨРӨМЖИЙН НЭР
+                                        Компьютер нэр
                                     </div>
-                                    <TextField className="w-full" onChange={(e) =>this.handleItemTextFieldChange('retailDeviceName', e.target.value)}>
+                                    <TextField className="w-full" defaultValue={this.state.computerName} onChange={(e) =>this.handleItemTextFieldChange('retailDeviceName', e.target.value)}>
 
                                     </TextField>
                                 </div>
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                                        ГАРАЛТЫН ТӨРӨЛ
+                                        Төрөл
                                     </div>
                                     <TextField type="number" className="w-full" onChange={(e) =>this.handleItemTextFieldChange('printType', e.target.value)}>
 
@@ -156,7 +164,7 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                 </div>
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                                        САЛБАРЫН ДУГААР
+                                        Салбарын дугаар
                                     </div>
                                     <TextField type="number" className="w-full" onChange={(e) =>this.handleItemTextFieldChange('branchId', e.target.value)}>
 
@@ -164,7 +172,7 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                 </div>
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                                        IP ХАЯГ
+                                        IP Хаяг
                                     </div>
                                     <TextField className="w-full" onChange={(e) =>this.handleItemTextFieldChange('ipAddress', e.target.value)}>
 
@@ -172,7 +180,7 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                 </div>
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                                        ТӨЛӨВ
+                                        Төлөв
                                     </div>
                                     <Switch className="w-full" onChange={(e) =>this.handleItemTextFieldChange('active', !this.state.printer.active)}>
 
@@ -180,7 +188,7 @@ class DialogForSettings  extends Component<Props, PrinterRegisterState> {
                                 </div>
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
-                                        ПРИНТ ТӨРӨЛ
+                                        Принтерын төрөл
                                     </div>
                                     <Switch className="w-full" onChange={(e) =>this.handleItemTextFieldChange( 'cashierPrinter', !this.state.printer.cashierPrinter)}>
 

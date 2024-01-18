@@ -37,6 +37,7 @@ interface PrinterState{
 interface PrinterRegisterState{
     printer: Printer;
     value: string;
+    computerName: string;
     printerName: string[];
 }
 

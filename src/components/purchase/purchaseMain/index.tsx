@@ -60,8 +60,12 @@ const PurchaseMain = () => {
   useEffect(() => {
     if (first) return;
     first = true;
-    getSuppliers();
-    getPurchases();
+    getSuppliers().then(res => (
+        console.log(res)
+    ));
+    getPurchases().then(res => (
+        console.log(res)
+    ));
     setBranches(["Салбар 1"]);
   }, []);
 

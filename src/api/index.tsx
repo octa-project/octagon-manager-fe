@@ -15,6 +15,7 @@ import apiPurchase from "./apiPurchase";
 import apiSupplier from "./apiSupplier";
 import apiProfile from "@/src/api/apiProfile";
 import apiPdfGenerator from "./apiPdfGenerator";
+import apiMiddleware from "@/src/api/apiMiddleware";
 
 const transaction_save = apiTransaction("save-transaction");
 const transaction_update = apiTransaction("update-transaction");
@@ -130,6 +131,8 @@ const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction")
 
 const getPdf = apiPdfGenerator("pdf=generate")
 
+const getComputerName = apiMiddleware("")
+
 export default {
     getWalletBalance,
     getWalletTransactionHistory,
@@ -223,5 +226,7 @@ export default {
     getDeviceListByBranchForOrder,
     deleteDeviceSettings,
 
-    getPdf
+    getPdf,
+
+    getComputerName
 }
