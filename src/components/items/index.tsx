@@ -53,28 +53,28 @@ class ItemController extends Component<{}, ItemState> {
         code: "",
         name: "",
         measureName: "",
-        itemgroupName: "",
+        itemGroupName: "",
         measureId: 0,
         itemgroupId: 0,
         createdDate: "",
         isActive: false,
 
         branchId: 0,
-        itemcodes: [],
+        children: [],
       },
       nonSelectedItem: {
         id: 0,
         code: "",
         name: "",
         measureName: "",
-        itemgroupName: "",
+        itemGroupName: "",
         measureId: 0,
         itemgroupId: 0,
         createdDate: "",
         isActive: false,
 
         branchId: 0,
-        itemcodes: [],
+        children: [],
       },
       selectedItemCode: {
         id: 0,
@@ -556,7 +556,54 @@ class ItemController extends Component<{}, ItemState> {
     try {
       this.setState({ loading: true, error: "" });
 
-      const result = await api.item_get_all_items.GetAllItems();
+      const result =
+        await api.item_get_all_complete_items.GetAllCompleteItems();
+
+      //Note
+      //ingej promise irjee huseltee shalgaval zugeer shuu   then(), catch()
+      // #NOTE
+      api.item_get_all_complete_items.GetAllItems().then((res) => {
+        const rowData: Item[] = result.data.data.map((item: any) => {
+          const {
+            id,
+            code,
+            name,
+            measureName,
+            itemGroupName,
+            itemGroupId,
+            measureId,
+            isActive,
+            createdDate,
+            children,
+          } = item;
+
+          return {
+            id,
+            code,
+            name,
+            measureName,
+            itemGroupName,
+            itemGroupId,
+            measureId,
+            isActive,
+            createdDate,
+            children: children.map((itemCode: any) => ({
+              id: itemCode.id,
+              itemId: itemCode.itemId,
+              barcode: itemCode.barcode,
+              name: itemCode.name,
+              sellPrice: itemCode.sellPrice,
+              costPrice: itemCode.costPrice,
+              qty: itemCode.qty,
+              measureId: itemCode?.measureId,
+              measureName: itemCode?.measureName,
+              createdDate: itemCode.createdDate,
+              isDeleted: itemCode.isDeleted,
+            })),
+          };
+        });
+        this.setState({ rowData: rowData, rowSearchData: rowData });
+      });
 
       if (result.data.code === "200") {
         const rowData: Item[] = result.data.data.map((item: any) => {
@@ -565,12 +612,12 @@ class ItemController extends Component<{}, ItemState> {
             code,
             name,
             measureName,
-            itemgroupName,
-            itemgroupId,
+            itemGroupName,
+            itemGroupId,
             measureId,
             isActive,
             createdDate,
-            itemcodes,
+            children,
           } = item;
 
           return {
@@ -578,18 +625,18 @@ class ItemController extends Component<{}, ItemState> {
             code,
             name,
             measureName,
-            itemgroupName,
-            itemgroupId,
+            itemGroupName,
+            itemGroupId,
             measureId,
             isActive,
             createdDate,
-            itemcodes: itemcodes.map((itemCode: any) => ({
+            children: children.map((itemCode: any) => ({
               id: itemCode.id,
               itemId: itemCode.itemId,
               barcode: itemCode.barcode,
               name: itemCode.name,
               sellPrice: itemCode.sellPrice,
-              purchasePrice: itemCode.purchasePrice,
+              costPrice: itemCode.costPrice,
               qty: itemCode.qty,
               measureId: itemCode?.measureId,
               measureName: itemCode?.measureName,
@@ -1398,12 +1445,12 @@ class ItemController extends Component<{}, ItemState> {
                                             className=" text-[#8a91a5]"
                                             align="left"
                                           >
-                                            {row.itemgroupName}
+                                            {row.itemGroupName}
                                           </TableCell>
                                           <TableCell
                                             className=" text-[#8a91a5]"
                                             align="center"
-                                          >{`( ${row.itemcodes.length} )`}</TableCell>
+                                          >{`( ${row.children.length} )`}</TableCell>
                                           <TableCell
                                             className=" w-6"
                                             align="center"
@@ -1422,8 +1469,8 @@ class ItemController extends Component<{}, ItemState> {
                                             <Collapse
                                               in={
                                                 selectedRowId === row.id &&
-                                                row.itemcodes &&
-                                                row.itemcodes.length > 0
+                                                row.children &&
+                                                row.children.length > 0
                                               }
                                               timeout="auto"
                                               unmountOnExit
@@ -1476,10 +1523,9 @@ class ItemController extends Component<{}, ItemState> {
                                                   </TableHead>
                                                   <TableBody>
                                                     {selectedRowId === row.id &&
-                                                      row.itemcodes &&
-                                                      row.itemcodes.length >
-                                                        0 &&
-                                                      row.itemcodes.map(
+                                                      row.children &&
+                                                      row.children.length > 0 &&
+                                                      row.children.map(
                                                         (itemCode) => (
                                                           <TableRow
                                                             key={itemCode.id}

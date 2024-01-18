@@ -43,19 +43,14 @@ class WalletToWallet extends Component<Props> {
         }
     };
 
-    handleClose = (event: SyntheticEvent<Element, Event>, reason: string) => {
-        if (reason === 'backdropClick')
-            return
-    };
-
     close = () => {
-        this.props.onClose;
+        this.props.onClose();
     };
 
 
     render() {
         return (
-            <Dialog onClose={this.handleClose} open={this.props.open}>
+            <Dialog onClose={this.close} open={this.props.open}>
                 <DialogTitle>Салбар хооронд</DialogTitle>
                 <DialogContent>
                     <div className="m-2">

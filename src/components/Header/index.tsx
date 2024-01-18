@@ -21,7 +21,7 @@ const Header = (props: {
               e.stopPropagation();
               props.setSidebarOpen(!props.sidebarOpen);
             }}
-            className="z-99999 block rounded-sm border border-stroke bg-white p-1.5 shadow-sm dark:border-strokedark dark:bg-boxdark lg:hidden"
+            className="z-1 block rounded-sm border border-graydark bg-white p-1.5 shadow-sm dark:border-dark dark:bg-boxdark lg:hidden"
           >
             <span className="relative block h-5.5 w-5.5 cursor-pointer">
               <span className="du-block absolute right-0 h-full w-full">
@@ -70,7 +70,7 @@ const Header = (props: {
 
         <div className="hidden sm:block">
           <form action="" method="POST">
-            <div className="relative">
+            <div className="relative dark:text-white">
               <span className={"font-medium pr-5"}>
                 Demo Store
               </span>
@@ -84,6 +84,7 @@ const Header = (props: {
         <div className="flex items-center gap-3 2xsm:gap-7">
           <ul className="flex items-center gap-2 2xsm:gap-4">
             <Additional />
+            <DarkModeSwitcher/>
             <DropdownNotification />
             <DropdownMessage />
           </ul>

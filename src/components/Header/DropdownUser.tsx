@@ -1,47 +1,45 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import api from "@/src/api";
 
 interface profileInfo {
-
-  id: number,
-  email: string,
-  phoneNumber: string,
-  imagePath: string,
-  firstName: string,
-  lastName: string,
-  userClientId: string,
-  role: string,
-
+  id: number;
+  email: string;
+  phoneNumber: string;
+  imagePath: string;
+  firstName: string;
+  lastName: string;
+  userClientId: string;
+  role: string;
 }
 
-const DropdownUser = () => {
+const DropdownUser = ({ sideBarMini }: { sideBarMini: Boolean }) => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 
   const trigger = useRef<any>(null);
   const dropdown = useRef<any>(null);
   const [data, setData] = useState<profileInfo | null>(null);
-
   useEffect(() => {
     // Define an asynchronous function for data fetching
     const fetchData = async () => {
       try {
-        const response = await api.getProfileInfo.getProfileInfo().then(res => {
-          const restResponse = res.data;
+        const response = await api.getProfileInfo
+          .getProfileInfo()
+          .then((res) => {
+            const restResponse = res.data;
 
-          setData(restResponse);
-        });
+            setData(restResponse);
+          });
         console.log(data?.role);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     };
 
     // Call the fetchData function when the component mounts
     fetchData().finally();
   }, []);
-
 
   // close on click outside
   useEffect(() => {
@@ -74,40 +72,48 @@ const DropdownUser = () => {
       <Link
         ref={trigger}
         onClick={() => setDropdownOpen(!dropdownOpen)}
-        className="flex items-center gap-4 bg-white p-2.5 rounded-xl"
+        className={`flex items-center gap-4 bg-white ${
+          sideBarMini ? "" : "p-2.5"
+        } rounded-xl`}
         href="#"
       >
-        <span className="h-12 w-12 rounded-full">
-          <Image
-              width={112}
-              height={112}
-              src={"/assets/images/user-01.png"}
-              alt="User"
-          />
-        </span>
-
-        <span className="text-left lg:block">
-          <span className="block text-sm font-medium text-black dark:text-white">
-            {data?.firstName }
-          </span>
-          <span className="block text-xs">{data?.role}</span>
-        </span>
-
-        <svg
-          className="fill-current sm:block"
-          width="12"
-          height="8"
-          viewBox="0 0 12 8"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <span
+          className={`h-12 w-12 rounded-full ${
+            sideBarMini && "flex justify-center items-center"
+          }`}
         >
-          <path
-            fillRule="evenodd"
-            clipRule="evenodd"
-            d="M0.410765 0.910734C0.736202 0.585297 1.26384 0.585297 1.58928 0.910734L6.00002 5.32148L10.4108 0.910734C10.7362 0.585297 11.2638 0.585297 11.5893 0.910734C11.9147 1.23617 11.9147 1.76381 11.5893 2.08924L6.58928 7.08924C6.26384 7.41468 5.7362 7.41468 5.41077 7.08924L0.410765 2.08924C0.0853277 1.76381 0.0853277 1.23617 0.410765 0.910734Z"
-            fill=""
+          <Image
+            width={100}
+            height={100}
+            src={"/assets/images/user.png"}
+            alt="User"
           />
-        </svg>
+        </span>
+        {!sideBarMini && (
+          <>
+            <span className="text-left lg:block">
+              <span className="block text-sm font-medium text-black dark:text-white">
+                {data?.firstName}
+              </span>
+              <span className="block text-xs">{data?.role}</span>
+            </span>
+            <svg
+              className="fill-current sm:block"
+              width="12"
+              height="8"
+              viewBox="0 0 12 8"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <path
+                fillRule="evenodd"
+                clipRule="evenodd"
+                d="M0.410765 0.910734C0.736202 0.585297 1.26384 0.585297 1.58928 0.910734L6.00002 5.32148L10.4108 0.910734C10.7362 0.585297 11.2638 0.585297 11.5893 0.910734C11.9147 1.23617 11.9147 1.76381 11.5893 2.08924L6.58928 7.08924C6.26384 7.41468 5.7362 7.41468 5.41077 7.08924L0.410765 2.08924C0.0853277 1.76381 0.0853277 1.23617 0.410765 0.910734Z"
+                fill=""
+              />
+            </svg>
+          </>
+        )}
       </Link>
 
       {/* <!-- Dropdown Start --> */}
@@ -115,7 +121,7 @@ const DropdownUser = () => {
         ref={dropdown}
         onFocus={() => setDropdownOpen(true)}
         onBlur={() => setDropdownOpen(false)}
-        className={`absolute right-0 mt-2 flex w-62.5 flex-col rounded-xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-boxdark z-1  ${
+        className={`absolute right-0 mt-2 flex w-62.5 flex-col rounded-xl border border-stroke bg-white shadow-default dark:border-strokedark dark:bg-strokedark z-1  ${
           dropdownOpen === true ? "block" : "hidden"
         }`}
       >
@@ -123,7 +129,7 @@ const DropdownUser = () => {
           <li>
             <Link
               href="/profile"
-              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base"
+              className="flex items-center gap-3.5 text-sm font-medium duration-300 ease-in-out hover:text-primary lg:text-base dark:text-white"
             >
               <svg
                 className="fill-current"
