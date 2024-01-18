@@ -1,10 +1,16 @@
 "use client"
 import WalletController from "@/src/components/wallet";
-import {SnackbarProvider} from "notistack";
+import { SnackbarProvider } from "notistack";
 const wallet = () => {
     return (
-        <WalletController/>
+        <SnackbarProvider>
+            <div>
+                <WalletController />
+            </div>
+        </SnackbarProvider>
     )
+
+
 }
 
 export default wallet;

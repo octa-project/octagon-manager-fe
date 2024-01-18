@@ -1,11 +1,14 @@
 "use client"
 import BranchController from "@/src/components/branch";
+import { SnackbarProvider } from "notistack";
 
 const branch = () => {
     return (
-        <div className='p-5'>
-            <BranchController/>
-        </div>
+        <SnackbarProvider>
+            <div>
+                <BranchController />
+            </div>
+        </SnackbarProvider>
     )
 }
 

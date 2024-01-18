@@ -4,9 +4,11 @@ import { SnackbarProvider } from "notistack";
 
 const items = () => {
   return (
+    <SnackbarProvider>
       <div>
-          <ItemController/>
+        <ItemController />
       </div>
+    </SnackbarProvider>
   )
 }
 
