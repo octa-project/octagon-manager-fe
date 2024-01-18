@@ -85,6 +85,7 @@ const getDeviceSetting = apiSettings("device-settings")
 const getDeviceListByBranch = apiSettings("device-settings-list")
 const getDeviceListByBranchForOrder = apiSettings("device-settings-list-order")
 const deleteDeviceSettings = apiSettings("device-settings")
+const getListOfPrinters = apiSettings("get-printer-list")
 
 
 
@@ -183,6 +184,7 @@ export default {
     insertDeviceSetting,
     updateDeviceSetting,
     getDeviceSetting,
+    getListOfPrinters,
 
     GetPrinterList,
     get_Top_Ten_Item,

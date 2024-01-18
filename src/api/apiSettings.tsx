@@ -14,6 +14,7 @@ const apiSettings = (mainRouteName: string) => ({
     GetDeviceSettingsListByBranchForOrder:(id:any) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
     DeleteDeviceSettings:(id:any) => axios.delete(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
 
+    GetListOfPrinters:() => axios.get(`${URL_PREFIX}/setting/${mainRouteName}`),
     GetPrinterList:() => axios.get(`${URL_PREFIX}/setting/${mainRouteName}`)
 })
 export default apiSettings

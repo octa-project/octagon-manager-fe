@@ -260,8 +260,9 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                     <EditIcon />
                                   </IconButton>
                                 </TableCell> */}
+
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
+                                                        className="font-sans  text-[#8a91a5] ">{row.id}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.retailDeviceName}</TableCell>
                                                     <TableCell

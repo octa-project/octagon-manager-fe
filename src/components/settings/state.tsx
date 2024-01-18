@@ -34,6 +34,12 @@ interface PrinterState{
     printer: Printer;
 }
 
+interface PrinterRegisterState{
+    printer: Printer;
+    value: string;
+    printerName: string[];
+}
+
 interface SettingsPrinterState {
     first: boolean;
     open: boolean;

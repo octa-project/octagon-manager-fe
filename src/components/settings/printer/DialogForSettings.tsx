@@ -1,6 +1,17 @@
 import React, {Component, useRef} from 'react';
-import {Button, DialogActions, DialogContent, DialogTitle, Dialog, TextField, Switch} from "@mui/material";
+import {
+    Button,
+    DialogActions,
+    DialogContent,
+    DialogTitle,
+    Dialog,
+    TextField,
+    Switch,
+    MenuItem,
+    Select
+} from "@mui/material";
 import api from "@/src/api";
+import Image from "next/image";
 
 interface Props {
     open: boolean;
@@ -8,7 +19,7 @@ interface Props {
 }
 
 
-class DialogForSettings  extends Component<Props, PrinterState> {
+class DialogForSettings  extends Component<Props, PrinterRegisterState> {
     constructor(props: Props) {
         super(props);
         this.state = {
@@ -23,8 +34,14 @@ class DialogForSettings  extends Component<Props, PrinterState> {
                active: false,
                cashierPrinter: false,
                retailDeviceName: "",
-           }
+           },
+            value:"",
+            printerName: []
         };
+    }
+
+    componentDidMount() {
+        this.getPrinterList();
     }
 
     close = () => {
@@ -40,12 +57,21 @@ class DialogForSettings  extends Component<Props, PrinterState> {
         }));
     };
 
+    handleFilterChange =(value : string)=>{
+        this.setState({ value : value }) ;
+        this.handleItemTextFieldChange("name", value);
+    }
 
+    getPrinterList = ()=>{
+        api.getListOfPrinters.GetListOfPrinters().then( res =>{
+            this.setState({ printerName: res.data.data.name });
+        })
+    }
 
     updatePrinter = (printer: any) => {
         const result = api.insertDeviceSetting.InsertDeviceSettings(this.state.printer).then(res => {
            if (res.data.code == 200){
-
+                this.close();
            }
         });
     }
@@ -64,7 +90,7 @@ class DialogForSettings  extends Component<Props, PrinterState> {
 
         return (
             <Dialog open={this.props.open}>
-                <DialogTitle>Картаар хэтэвч цэнэглэх</DialogTitle>
+                <DialogTitle>ТӨХӨӨРӨМЖ НЭМЭХ</DialogTitle>
                 <DialogContent>
 
                     <div className="h-full">
@@ -90,9 +116,27 @@ class DialogForSettings  extends Component<Props, PrinterState> {
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
                                         НЭР
                                     </div>
-                                    <TextField className="w-full" onChange={(e) =>this.handleItemTextFieldChange('name', e.target.value)}>
+                                    <Select
+                                        className="capitalize text-[#6d758f] w-full rounded"
+                                        IconComponent={() => (
+                                            <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                                                <Image
+                                                    src="/items/filter.svg"
+                                                    alt="filter"
+                                                    width={24}
+                                                    height={24}
+                                                />
+                                            </div>
+                                        )}
+                                        value={this.state.value}
+                                        onChange={(event) => this.handleFilterChange(event.target.value as string)} >
 
-                                    </TextField>
+                                        {this.state.printerName.length > 0 ? (
+                                            this.state.printerName.map((row:any) =>(
+                                                <MenuItem value={row}>{row}</MenuItem>
+                                            ))
+                                        ): <MenuItem value={"0"}>None</MenuItem>}
+                                    </Select>
                                 </div>
                                 <div className="w-full">
                                     <div className="text-left text-xs font-semibold pb-1 text-[#6d758f]">
