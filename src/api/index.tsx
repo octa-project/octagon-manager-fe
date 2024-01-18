@@ -22,17 +22,17 @@ const transaction_delete = apiTransaction("delete-transaction-by-id");
 const transaction_get_by_id = apiTransaction("get-transaction-by-id");
 const transaction_get_transactions = apiTransaction("get-transactions");
 const transaction_get_transactions_amount_sale_id = apiTransaction(
-  "get-transaction-amount-by-sale-id"
+    "get-transaction-amount-by-sale-id"
 );
 const transaction_get_transactions_sale_id = apiTransaction(
-  "get-transaction-by-sale-id"
+    "get-transaction-by-sale-id"
 );
 
 const bank_transaction_save = apiTransaction("save-bank-transaction");
 const bank_transaction_update = apiTransaction("update-bank-transaction");
 const bank_transaction_delete = apiTransaction("delete-bank-transaction-by-id");
 const bank_transaction_get_transactions = apiTransaction(
-  "get-bank-transactions"
+    "get-bank-transactions"
 );
 const bank_transaction_get_by_id = apiTransaction("get-bank-transaction-by-id");
 
@@ -59,22 +59,22 @@ const itemGroup_get_all_itemGroups = apiItemGroup("get-all-itemGroups");
 const itemGroup_delete = apiItemGroup("delete-itemGroup-by-id");
 
 const report_get_cashier_report_between_date = apiReport(
-  "get-cashier-report-between-date"
+    "get-cashier-report-between-date"
 );
 const report_get_income_report_between_date = apiReport(
-  "get-income-report-between-date"
+    "get-income-report-between-date"
 );
 const report_get_outcome_report_between_date = apiReport(
-  "get-outcome-report-between-date"
+    "get-outcome-report-between-date"
 );
 const report_get_price_report_between_date = apiReport(
-  "get-price-report-between-date"
+    "get-price-report-between-date"
 );
 const report_get_sale_report_between_date = apiReport(
-  "get-sale-report-between-date"
+    "get-sale-report-between-date"
 );
 const report_get_transactions_report_between_date = apiReport(
-  "get-transacrions-report-between-date"
+    "get-transacrions-report-between-date"
 );
 const report_get_html = apiReport("sale-report");
 const get_sale_report = apiReport("get-sale-report");
@@ -96,28 +96,24 @@ const insertMainSetting = apiSettings("save-setting");
 const updateMainSetting = apiSettings("save-setting");
 const getMainSetting = apiSettings("get-setting-by-id");
 
-const insertDeviceSetting = apiSettings("device-settings");
-const updateDeviceSetting = apiSettings("device-settings");
-const getDeviceSetting = apiSettings("device-settings");
-const getDeviceListByBranch = apiSettings("device-settings-list");
-const getDeviceListByBranchForOrder = apiSettings("device-settings-list-order");
-const deleteDeviceSettings = apiSettings("device-settings");
-
-const GetPrinterList = apiSettings("get-printer-list");
-const get_Top_Ten_Item = apiSale("get-top-ten-item");
-const getProfileInfo = apiProfile("");
-
-const itemcode_getManyCustom = apiSku("custom-all");
-const itemcode_getOneBarcode = apiSku("by-barcode");
-const groups_getManyGroups = apiSku("all");
-
-const purchase_getMany = apiPurchase("get-all");
-const purchase_saveOne = apiPurchase("save");
-
-const supplier_getMany = apiSupplier("all");
-const supplier_saveOne = apiSupplier("add");
-const supplier_updateOne = apiSupplier("update");
-
+const insertDeviceSetting = apiSettings("device-settings")
+const updateDeviceSetting = apiSettings("device-settings")
+const getDeviceSetting = apiSettings("device-settings")
+const getDeviceListByBranch = apiSettings("device-settings-list")
+const getDeviceListByBranchForOrder = apiSettings("device-settings-list-order")
+const deleteDeviceSettings = apiSettings("device-settings")
+const GetPrinterList = apiSettings("get-printer-list")
+const get_Top_Ten_Item = apiSale("get-top-ten-item")
+const getProfileInfo = apiProfile("")
+const itemcode_getManyCustom = apiSku("custom-all")
+const itemcode_getOneBarcode = apiSku("by-barcode")
+const groups_getManyGroups = apiSku("all")
+const purchase_getMany = apiPurchase("get-all")
+const purchase_saveOne = apiPurchase("save")
+const supplier_getMany = apiSupplier("all")
+const supplier_saveOne = apiSupplier("add")
+const supplier_updateOne = apiSupplier("update")
+const getPdf = apiPdfGenerator("pdf=generate")
 const getWalletBalance = apiWallet("get-balance");
 const getWalletTransactionHistory = apiWallet("get-history");
 const walletToAccountTransaction = apiWallet("wallet-to-account-transaction");
@@ -126,96 +122,100 @@ const getCardWeb = apiWallet("card-web");
 const getCardList = apiWallet("get-card-list");
 const saveCard = apiWallet("save-card");
 const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction");
+const getReportFile = apiReport("getReportFile")
+
 export default {
-  getWalletBalance,
-  getWalletTransactionHistory,
-  walletToAccountTransaction,
-  walletToWalletTransaction,
-  cardToWalletTransaction,
-  getCardWeb,
-  getCardList,
-  saveCard,
+    getWalletBalance,
+    getWalletTransactionHistory,
+    walletToAccountTransaction,
+    walletToWalletTransaction,
+    cardToWalletTransaction,
+    getCardWeb,
+    getCardList,
+    saveCard,
 
-  transaction_save,
-  transaction_update,
-  transaction_delete,
-  transaction_get_by_id,
-  transaction_get_transactions,
-  transaction_get_transactions_amount_sale_id,
-  transaction_get_transactions_sale_id,
+    transaction_save,
+    transaction_update,
+    transaction_delete,
+    transaction_get_by_id,
+    transaction_get_transactions,
+    transaction_get_transactions_amount_sale_id,
+    transaction_get_transactions_sale_id,
 
-  bank_transaction_save,
-  bank_transaction_update,
-  bank_transaction_delete,
-  bank_transaction_get_transactions,
-  bank_transaction_get_by_id,
+    bank_transaction_save,
+    bank_transaction_update,
+    bank_transaction_delete,
+    bank_transaction_get_transactions,
+    bank_transaction_get_by_id,
 
-  itemCode_get_custom_all_itemcodes,
-  itemCode_save_itemCode,
-  itemCode_update_itemCode,
-  itemCode_get_by_id,
-  itemCode_get_by_barcode,
-  itemCode_delete,
+    itemCode_get_custom_all_itemcodes,
+    itemCode_save_itemCode,
+    itemCode_update_itemCode,
+    itemCode_get_by_id,
+    itemCode_get_by_barcode,
+    itemCode_delete,
 
-  item_save,
-  item_update,
-  //item_get_all_items,
-  item_get_all_complete_items,
-  item_get_item_by_id,
-  item_get_item_by_code,
-  item_delete,
+    item_save,
+    item_update,
+    //item_get_all_items,
+    item_get_all_complete_items,
+    item_get_item_by_id,
+    item_get_item_by_code,
+    item_delete,
 
-  report_get_cashier_report_between_date,
-  report_get_income_report_between_date,
-  report_get_outcome_report_between_date,
-  report_get_price_report_between_date,
-  report_get_sale_report_between_date,
-  report_get_transactions_report_between_date,
-  get_sale_report,
-  report_get_html,
+    report_get_cashier_report_between_date,
+    report_get_income_report_between_date,
+    report_get_outcome_report_between_date,
+    report_get_price_report_between_date,
+    report_get_sale_report_between_date,
+    report_get_transactions_report_between_date,
+    get_sale_report,
 
-  itemGroup_save_itemGroup,
-  itemGroup_update_itemGroup,
-  itemGroup_get_itemGroup_by_id,
-  itemGroup_get_all_itemGroups,
-  itemGroup_delete,
+    itemGroup_save_itemGroup,
+    itemGroup_update_itemGroup,
+    itemGroup_get_itemGroup_by_id,
+    itemGroup_get_all_itemGroups,
+    itemGroup_delete,
 
-  measure_get_all,
-  measure_get_by_id,
+    measure_get_all,
+    measure_get_by_id,
 
-  saleGetMany,
-  saleGetOne,
-  saleDelete,
+    saleGetMany,
+    saleGetOne,
+    saleDelete,
 
-  get_dashboard,
-  get_daily_income,
-  get_dashboard_data_weekly,
+    get_dashboard,
+    get_daily_income,
+    get_dashboard_data_weekly,
 
-  getBranchAll,
-  saveBranch,
-  insertMainSetting,
-  updateMainSetting,
-  getMainSetting,
+    getBranchAll,
+    saveBranch,
+    insertMainSetting,
+    updateMainSetting,
+    getMainSetting,
 
-  insertDeviceSetting,
-  updateDeviceSetting,
-  getDeviceSetting,
+    insertDeviceSetting,
+    updateDeviceSetting,
+    getDeviceSetting,
 
-  GetPrinterList,
-  get_Top_Ten_Item,
+    GetPrinterList,
+    get_Top_Ten_Item,
 
-  groups_getManyGroups,
-  itemcode_getOneBarcode,
+    groups_getManyGroups,
+    itemcode_getOneBarcode,
 
-  purchase_getMany,
-  purchase_saveOne,
+    purchase_getMany,
+    purchase_saveOne,
 
-  supplier_getMany,
-  supplier_saveOne,
-  supplier_updateOne,
-  itemcode_getManyCustom,
-  getProfileInfo,
-  getDeviceListByBranch,
-  getDeviceListByBranchForOrder,
-  deleteDeviceSettings,
+    supplier_getMany,
+    supplier_saveOne,
+    supplier_updateOne,
+    itemcode_getManyCustom,
+    getProfileInfo,
+    getDeviceListByBranch,
+    getDeviceListByBranchForOrder,
+    deleteDeviceSettings,
+
+    getPdf,
+    getReportFile,
 };
