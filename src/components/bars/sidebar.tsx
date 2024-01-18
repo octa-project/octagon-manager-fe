@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
+import { useRouter } from 'next/navigation'
 import Image from "next/image";
 import DropdownUser from "@/src/components/Header/DropdownUser";
 import {
@@ -62,6 +63,7 @@ function LinearProgressWithLabel(props: LinearProgressProps & { value: number })
 
 const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : SidebarProps) => {
     const pathname = usePathname();
+    const router = useRouter();
 
     const trigger = useRef<any>(null);
     const sidebar = useRef<any>(null);
@@ -118,6 +120,10 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : Sideb
             document.querySelector("body")?.classList.remove("sidebar-expanded");
         }
     }, [sidebarExpanded]);
+
+    const navigateWeb = async () => {
+        await router.push("http://localhost:3005/feature_compare");
+    }
 
     return (
         <aside
@@ -207,7 +213,7 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen } : Sideb
                             </div>
                         </div>
                         <div className={"mt-5 mb-5"}>
-                            <Button variant={"contained"} color={"secondary"} fullWidth>
+                            <Button onClick={() => navigateWeb()} variant={"contained"} color={"secondary"} fullWidth>
                                 <span className={"font-bold"}>Багц ахиулах</span>
                             </Button>
                         </div>
