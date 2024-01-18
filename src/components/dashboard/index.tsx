@@ -91,6 +91,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
   };
   getDashboard = async () => {
     try {
+      debugger
       this.setState({ loading: true, error: "" });
       const today = new Date();
       const startDate = this.formatDate(today);

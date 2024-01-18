@@ -218,4 +218,5 @@ export default {
 
     getPdf,
     getReportFile,
+    report_get_html
 };

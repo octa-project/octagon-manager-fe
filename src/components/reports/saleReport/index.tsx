@@ -108,10 +108,17 @@ class SaleReportController extends Component<{}, SaleReportState> {
   };
 
   handleDialog = (value: boolean) => {
-    this.getReportFile();
+    this.saleReportFile();
+    //this.getReportFile();
     //const result = await api.getReportFile.getReportFile();
     this.setState({ open: value });
   };
+
+  saleReportFile = async () => {
+    const result = await api.report_get_html.getSaleReport({});
+    console.log(result);
+    await this.getReportFile();
+  }
 
   getReportFile = async () => {
     try {
