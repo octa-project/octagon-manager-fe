@@ -1,15 +1,6 @@
-import { Button, Card } from "@mui/material";
 import React, { useState } from "react";
-import classNames from "classnames";
-import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
-import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import MainSettings from "@/src/components/settings/main";
-import DeviceSettings from "@/src/components/settings/device";
-import BranchSettings from "@/src/components/settings/branch";
-import PrinterSettings from "@/src/components/settings/printer";
-import AccessSettings from "@/src/components/settings/access";
 import PurchaseMain from "./purchaseMain";
 import PurchaseOrder from "./purchaseOrder";
 
@@ -44,10 +35,10 @@ const PurchaseController = () => {
       </div>
       <div className="bg-white h-full shadow-md rounded-lg">
         <TabContext value={tabValue}>
-          <TabPanel value={"0"} className="p-4 h-full">
+          <TabPanel value={"0"} className="h-full">
             <PurchaseMain />
           </TabPanel>
-          <TabPanel value={"1"} className="p-4 h-full">
+          <TabPanel value={"1"} className="h-full" >
             <PurchaseOrder />
           </TabPanel>
         </TabContext>

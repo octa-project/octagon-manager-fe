@@ -381,14 +381,23 @@ const PurchaseMain = () => {
         <TabPanel value={"0"} className="h-full">
           <div className="flex flex-col col-span-6 gap-3">
             <div className="grid grid-cols-12 gap-3">
+              <div className="col-span-3">
+                <Button
+                  className="thirdButton w-full"
+                  onClick={() => handleTabChange("1")}
+                >
+                  ШИНЭЭР ОРЛОГО БҮРТГЭХ
+                </Button>
+
+              </div>
               <div className="col-span-4">
                 <div className="flex items-center bg-white h-10 w-full rounded shadow border border-[#cbcbcb]">
                   <Input
                     className="text-[#6d758f] w-full h-full rounded border-none"
                     placeholder="Хайх..."
-                    // onChange={(e) =>
-                    //     handleTextSearch(e.target.value)
-                    // }
+                  // onChange={(e) =>
+                  //     handleTextSearch(e.target.value)
+                  // }
                   />
                   <Image
                     src="/items/search.svg"
@@ -399,10 +408,31 @@ const PurchaseMain = () => {
                   />
                 </div>
               </div>
-              <div className="col-span-2">
-                <div className="flex flex-row bg-white h-10 w-full rounded shadow">
+              <div className="col-span-4">
+                <RangePicker
+                  className="bg-white h-10 w-full rounded shadow border border-[#cbcbcb]"
+                  defaultValue={[
+                    dayjs(startDate, dateFormat),
+                    dayjs(endDate, dateFormat),
+                  ]}
+                  format={dateFormat}
+                  onChange={handleSearchDate}
+                />
+              </div>
+              <div className="col-span-1">
+                <IconButton
+                  className="thirdButton w-full"
+                  onClick={() => getPurchases()}
+                >
+                  <SearchIcon className="text-red" />
+                </IconButton>
+              </div>
+
+              <div className="col-span-5 flex flex-row gap-3">
+                <div className="flex flex-col w-full ">
+                  <span className="text-sm">Төлбөрийн төрөл</span>
                   <Select
-                    className="capitalize text-[#6d758f] w-full rounded"
+                    className="capitalize text-[#6d758f] w-full rounded h-10"
                     IconComponent={() => (
                       <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
                         <Image
@@ -423,63 +453,38 @@ const PurchaseMain = () => {
                     <MenuItem value={"2"}>Төлөөгүй</MenuItem>
                   </Select>
                 </div>
+                <div className="flex flex-col w-full ">
+                  <span className="text-sm">Нийлүүлэгч</span>
+                  <Select
+                    className="capitalize text-[#6d758f] w-full rounded h-10"
+                    IconComponent={() => (
+                      <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
+                        <Image
+                          src="/items/filter.svg"
+                          alt="filter"
+                          width={24}
+                          height={24}
+                        />
+                      </div>
+                    )}
+                    value={filterSupplierValue}
+                    onChange={(event) =>
+                      handleFilterSupplierChange(event.target.value as string)
+                    }
+                  >
+                    <MenuItem value={"0"}>Бүгд</MenuItem>
+                    {suppliers.map((value) => (
+                      <MenuItem key={value.id} value={value.id}>
+                        {value.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </div>
               </div>
-              <div className="col-span-5">
-                <RangePicker
-                  className="bg-white h-10 w-full rounded shadow border border-[#cbcbcb]"
-                  defaultValue={[
-                    dayjs(startDate, dateFormat),
-                    dayjs(endDate, dateFormat),
-                  ]}
-                  format={dateFormat}
-                  onChange={handleSearchDate}
-                />
-              </div>
-              <div className="col-span-1">
-                <IconButton
-                  className="thirdButton w-full"
-                  onClick={() => getPurchases()}
-                >
-                  <SearchIcon className="text-red" />
-                </IconButton>
-              </div>
+
+
             </div>
-            <div className="grid grid-cols-6 gap-3">
-              <div className="col-span-2">
-                <Button
-                  className="thirdButton w-full"
-                  onClick={() => handleTabChange("1")}
-                >
-                  ШИНЭЭР ОРЛОГО БҮРТГЭХ
-                </Button>
-              </div>
-              <div className="flex flex-row bg-white h-10 w-full rounded shadow">
-                <Select
-                  className="capitalize text-[#6d758f] w-full rounded"
-                  IconComponent={() => (
-                    <div className="absolute right-3 top-1/2 transform -translate-y-1/2">
-                      <Image
-                        src="/items/filter.svg"
-                        alt="filter"
-                        width={24}
-                        height={24}
-                      />
-                    </div>
-                  )}
-                  value={filterSupplierValue}
-                  onChange={(event) =>
-                    handleFilterSupplierChange(event.target.value as string)
-                  }
-                >
-                  <MenuItem value={"0"}>Бүгд</MenuItem>
-                  {suppliers.map((value) => (
-                    <MenuItem key={value.id} value={value.id}>
-                      {value.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </div>
-            </div>
+
             <div className="h-full overflow-auto">
               <div className="grid grid-cols-3 gap-3 h-full">
                 {purchasesData.map((purchase) => (
@@ -523,7 +528,7 @@ const PurchaseMain = () => {
                   <Select
                     className="h-8 w-44 bg-white"
                     value={purchaseDetail?.branchId}
-                    // onChange={(e) => this.handleSupplier(e.target.value)}
+                  // onChange={(e) => this.handleSupplier(e.target.value)}
                   >
                     {branches.map((value) => (
                       <MenuItem
@@ -555,7 +560,7 @@ const PurchaseMain = () => {
                   <Select
                     className="h-8 w-44 bg-white"
                     value={supplier?.id}
-                    // onChange={(e) =>}
+                  // onChange={(e) =>}
                   >
                     {types.map((value) => (
                       <MenuItem
