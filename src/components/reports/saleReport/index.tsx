@@ -14,6 +14,9 @@ import {
   CardActions,
   CardContent,
   Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   ListItemButton,
   ListItemText,
@@ -32,6 +35,9 @@ import apiPdfGenerator from "../../../api/apiPdfGenerator";
 import api from "@/src/api";
 import { Transition, TransitionProps } from "notistack";
 import CloseIcon from "@mui/icons-material/Close";
+import apiReport from "@/src/api/apiReport";
+import SnackBar from "@/src/components/tools/snackAlert";
+
 
 interface SaleReportState {
   startDate: string;
@@ -40,6 +46,8 @@ interface SaleReportState {
   rowSearchData: any[];
   rowData: any[];
   open: boolean;
+  htmlContent: string;
+  dialogOpen: boolean;
 }
 
 class SaleReportController extends Component<{}, SaleReportState> {
@@ -53,16 +61,47 @@ class SaleReportController extends Component<{}, SaleReportState> {
       rowData: [],
       rowSearchData: [],
       open: false,
+      dialogOpen: false,
+      htmlContent: "",
     };
   }
 
-  getPdf = async () => {
+  // getPdf = async () => {
+  //   try {
+  //     const result = await apiPdfGenerator("").GetPdf();
+  //     if (result.data.code === "200") {
+  //       this.setState({ rowData: result.data.data });
+  //     }
+  //   } catch (error) {}
+  // };
+
+  getHtml = async () => {
     try {
-      const result = await apiPdfGenerator("").GetPdf();
-      if (result.data.code === "200") {
-        this.setState({ rowData: result.data.data });
-      }
-    } catch (error) {}
+      const response = await fetch("file:///D:/Jasper/saleReport.html");
+      const html = await response.text();
+      setHtmlContent(html);
+      this.handleDialog(true);
+    } catch (error) {
+      console.error("Error fetching HTML:", error);
+    }
+  };
+
+  loadHtmlContent = () => {
+    const filePath = "file:///D:/Jasper/saleReport.html";
+  
+    fetch(filePath)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`Failed to fetch HTML: ${response.status}`);
+        }
+        return response.text();
+      })
+      .then(htmlContent => {
+        this.setState({ htmlContent });
+      })
+      .catch(error => {
+        console.error("Error fetching HTML:", error);
+      });
   };
 
   handleSearchDate = (dates: any, dateStrings: any[]) => {
@@ -167,7 +206,20 @@ class SaleReportController extends Component<{}, SaleReportState> {
                 ХААХ
               </Button>
             </div>
-            asdasdfaskjd
+            <Dialog
+              open={this.state.dialogOpen}
+              onClose={() => this.handleDialog(false)}
+            >
+              <DialogTitle>HTML Content</DialogTitle>
+              <DialogContent>
+                <DialogContentText>
+                  {/* Displaying the HTML content using dangerouslySetInnerHTML */}
+                  <div
+                    dangerouslySetInnerHTML={{ __html: this.state.htmlContent }}
+                  />
+                </DialogContentText>
+              </DialogContent>
+            </Dialog>
           </div>
         ) : (
           <div className="grid grid-cols-4 gap-3">
@@ -183,7 +235,10 @@ class SaleReportController extends Component<{}, SaleReportState> {
                   </Typography>
                   <Button
                     variant="outlined"
-                    onClick={() => this.handleDialog(true)}
+                    onClick={async () => {
+                      this.handleDialog(true);
+                      this.getHtml();
+                    }}
                   >
                     Дэлгэрэнгүй
                   </Button>
@@ -199,3 +254,6 @@ class SaleReportController extends Component<{}, SaleReportState> {
 }
 
 export default SaleReportController;
+function setHtmlContent(html: string) {
+  throw new Error("Function not implemented.");
+}

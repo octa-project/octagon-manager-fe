@@ -76,6 +76,7 @@ const report_get_sale_report_between_date = apiReport(
 const report_get_transactions_report_between_date = apiReport(
   "get-transacrions-report-between-date"
 );
+const report_get_html = apiReport("sale-report");
 const get_sale_report = apiReport("get-sale-report");
 
 const measure_get_all = apiMeasure("get-all-measures");
@@ -117,44 +118,6 @@ const supplier_getMany = apiSupplier("all");
 const supplier_saveOne = apiSupplier("add");
 const supplier_updateOne = apiSupplier("update");
 
-<<<<<<< HEAD
-const insertDeviceSetting = apiSettings("device-settings")
-const updateDeviceSetting = apiSettings("device-settings")
-const getDeviceSetting = apiSettings("device-settings")
-const getDeviceListByBranch = apiSettings("device-settings-list")
-const getDeviceListByBranchForOrder = apiSettings("device-settings-list-order")
-const deleteDeviceSettings = apiSettings("device-settings")
-
-
-
-const GetPrinterList = apiSettings("get-printer-list")
-const get_Top_Ten_Item = apiSale("get-top-ten-item")
-const getProfileInfo = apiProfile("")
-
-const itemcode_getManyCustom = apiSku("custom-all")
-const itemcode_getOneBarcode = apiSku("by-barcode")
-const groups_getManyGroups = apiSku("all")
-
-const purchase_getMany = apiPurchase("get-all")
-const purchase_saveOne = apiPurchase("save")
-
-const supplier_getMany = apiSupplier("all")
-const supplier_saveOne = apiSupplier("add")
-const supplier_updateOne = apiSupplier("update")
-
-
-const getWalletBalance = apiWallet("get-balance")
-const getWalletTransactionHistory = apiWallet("get-history")
-const walletToAccountTransaction = apiWallet("wallet-to-account-transaction")
-const cardToWalletTransaction = apiWallet("card-to-wallet")
-const getCardWeb = apiWallet("card-web")
-const getCardList = apiWallet("get-card-list")
-const saveCard = apiWallet("save-card")
-const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction")
-
-const getPdf= apiPdfGenerator("pdf=generate")
-
-=======
 const getWalletBalance = apiWallet("get-balance");
 const getWalletTransactionHistory = apiWallet("get-history");
 const walletToAccountTransaction = apiWallet("wallet-to-account-transaction");
@@ -163,7 +126,6 @@ const getCardWeb = apiWallet("card-web");
 const getCardList = apiWallet("get-card-list");
 const saveCard = apiWallet("save-card");
 const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction");
->>>>>>> dev
 export default {
   getWalletBalance,
   getWalletTransactionHistory,
@@ -210,6 +172,7 @@ export default {
   report_get_sale_report_between_date,
   report_get_transactions_report_between_date,
   get_sale_report,
+  report_get_html,
 
   itemGroup_save_itemGroup,
   itemGroup_update_itemGroup,
@@ -247,19 +210,6 @@ export default {
   purchase_getMany,
   purchase_saveOne,
 
-<<<<<<< HEAD
-    supplier_getMany,
-    supplier_saveOne,
-    supplier_updateOne,
-    itemcode_getManyCustom,
-    getProfileInfo,
-    getDeviceListByBranch,
-    getDeviceListByBranchForOrder,
-    deleteDeviceSettings,
-
-    getPdf
-}
-=======
   supplier_getMany,
   supplier_saveOne,
   supplier_updateOne,
@@ -269,4 +219,3 @@ export default {
   getDeviceListByBranchForOrder,
   deleteDeviceSettings,
 };
->>>>>>> dev
