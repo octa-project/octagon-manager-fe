@@ -14,6 +14,7 @@ import apiSku from "./apiSku";
 import apiPurchase from "./apiPurchase";
 import apiSupplier from "./apiSupplier";
 import apiProfile from "@/src/api/apiProfile";
+import apiPdfGenerator from "./apiPdfGenerator";
 
 
 const transaction_save = apiTransaction("save-transaction")
@@ -112,6 +113,9 @@ const getCardWeb = apiWallet("card-web")
 const getCardList = apiWallet("get-card-list")
 const saveCard = apiWallet("save-card")
 const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction")
+
+const getPdf= apiPdfGenerator("pdf=generate")
+
 export default {
 
     getWalletBalance,
@@ -202,5 +206,7 @@ export default {
     getProfileInfo,
     getDeviceListByBranch,
     getDeviceListByBranchForOrder,
-    deleteDeviceSettings
+    deleteDeviceSettings,
+
+    getPdf
 }
