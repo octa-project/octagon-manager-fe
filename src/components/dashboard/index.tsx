@@ -13,6 +13,7 @@ import TotalProfit from "./totalProfit";
 import TotalSales from "./totalSales";
 import api from "@/src/api";
 import { Dashboard } from "@mui/icons-material";
+import SnackBar from "@/src/components/tools/snackAlert";
 
 interface DashboardControllerState {
   topLeft: number;
@@ -41,7 +42,6 @@ interface DashboardDataWeekly {
 class DashboardController extends Component<{}, DashboardControllerState> {
   constructor(props: any) {
     super(props);
-
     this.state = {
       topLeft: 1,
       topRight: 0,
@@ -183,7 +183,7 @@ class DashboardController extends Component<{}, DashboardControllerState> {
   render() {
     return (
       <div className="grid grid-cols-5">
-        <div className="col-span-4 h-screen bg-[#f7f7f5ff] p-5">
+        <div className="col-span-4 h-screen pr-5">
           <div className="grid grid-rows-5">
             {/* <div className="row-span-1 w-full">aaaa</div> */}
             <div className="row-span-5 w-full">

@@ -1,7 +1,7 @@
 "use client"
-import React, {Component, SyntheticEvent} from "react";
+import React, {Component} from "react";
 import styles from './wallet.module.css';
-import {Box, Button, Card, DialogActions, DialogTitle, IconButton, TableBody, Tooltip, Dialog} from "@mui/material";
+import {Card, Dialog, IconButton, Tooltip, Typography} from "@mui/material";
 import Image from 'next/image'
 import PaymentIcon from '@mui/icons-material/Payment';
 import CurrencyExchangeOutlinedIcon from '@mui/icons-material/CurrencyExchangeOutlined';
@@ -17,7 +17,8 @@ import WalletToAccount from "@/src/components/wallet/wallettoaccount";
 import WalletToWallet from "@/src/components/wallet/wallettowallet";
 import Invoice from "@/src/components/wallet/invoice";
 import {currencyFormatter} from "@/src/utils";
-import {Stack} from "@mui/system";
+import Paper from "@mui/material/Paper";
+import Grid from "@mui/system/Unstable_Grid";
 
 interface Card {
     card_bank_id: number;
@@ -86,18 +87,13 @@ class WalletController extends Component<{}, Dialog> {
         }
     };
 
-    saveCard = async () => {
-        try {
-            await api.saveCard.saveCard(this.phoneNumber).then(res => {
-                if (res.status == 200 && res.data.isSuccess) {
-                    //      this.cardList = res.data.data
-                    console.log("res ", res)
-                }
-            });
-        } catch (error) {
-            console.error("Error fetching data:", error);
-        } finally {
-        }
+    saveCard = () => {
+        api.saveCard.saveCard(this.phoneNumber).then(res => {
+            if (res.status == 200 && res.data.isSuccess) {
+                //      this.cardList = res.data.data
+                console.log("res ", res)
+            }
+        });
     };
 
     getWeb = async () => {
@@ -170,136 +166,147 @@ class WalletController extends Component<{}, Dialog> {
 
     render() {
         return (
-            <div className="bg-white shadow rounded-lg">
-                <div className="flex items-center gap-2 p-3">
-                    <div className=" font-bold w-9/12 text-2xl">PayGate Хэтэвч /{this.phoneNumber}/</div>
-                    <div>
-                        <button className={styles.comp}>
-                            <p className="font-light"> Үлдэгдэл</p>
-                            <p className="font-light"> {currencyFormatter(this.state.accBalance)}</p>
-                        </button>
-                    </div>
-                    <div>
-                        <button className={styles.loan}>
-                            <p className="font-light"> Боломжит зээлийн дүн</p>
-                            <p className="font-light"> 500,000₮</p>
-                        </button>
-                    </div>
-                </div>
-
-                <div className="flex">
-                    <div className="w-8/12 p-6">
-                        <div className="flex ">
-                            <div className="w-5/12">
-                                Орлого хийх
-                                <div className="flex">
-                                    <button className={styles.btn} onClick={() => this.openHandle(1)}>
-                                        <PaymentIcon color="action" sx={{fontSize: 50}}></PaymentIcon>
-                                        <p className="font-light"> Картаар цэнэглэх</p>
-                                        <CardToWallet
-                                            open={this.state.walletDialog}
-                                            onClose={() => this.closeHandle(1)}
-                                            data={this.state.cardList}
-                                            phoneNum={this.phoneNumber}
-                                        />
-                                    </button>
-                                    <button className={styles.btn}>
-                                        <CurrencyExchangeOutlinedIcon color="action"
-                                                                      sx={{fontSize: 50}}></CurrencyExchangeOutlinedIcon>
-                                        <p className="font-light"> Зээлээр цэнэглэх</p>
-                                    </button>
+            <Paper elevation={2} className={"p-6"}>
+                <Grid container spacing={3}>
+                    <Grid xs={12} md={9}>
+                        <div className="flex items-center">
+                            <div className=" font-bold text-2xl">PayGate Хэтэвч /{this.phoneNumber}/</div>
+                        </div>
+                    </Grid>
+                    <Grid xs={12} md={3}>
+                        <div className={"flex justify-between items-center"}>
+                            <div className={"w-50 mr-2"}>
+                                <div className={"bg-secondary dark:bg-graydark flex flex-col p-2 rounded text-center"}>
+                                    <Typography className="font-normal text-sm whitespace-nowrap"> Үлдэгдэл</Typography>
+                                    <Typography
+                                        className="!font-bold text-center"> {currencyFormatter(this.state.accBalance)}</Typography>
                                 </div>
                             </div>
-                            <div className="w-7/12">
+                            <div className={"w-50 ml-2"}>
+                                <div className={"bg-success flex flex-col p-2 rounded text-white text-center"}>
+                                    <label className="font-normal text-sm whitespace-nowrap"> Боломжит зээлийн дүн</label>
+                                    <label
+                                        className="font-bold text-center"> {currencyFormatter(this.state.accBalance)}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </Grid>
+                    <Grid xs={12} md={9} className={"relative"}>
+                        <div>
+                            <Grid container spacing={3}>
+                                <Grid xs={6}>
+                                    Орлого хийх
+                                    <div className="flex">
+
+                                        <button className={styles.btn} onClick={() => this.openHandle(1)}>
+                                            <PaymentIcon color="action" sx={{fontSize: 50}}></PaymentIcon>
+                                            <label className="font-light"> Картаар цэнэглэх</label>
+                                        </button>
+                                        <button className={styles.btn}>
+                                            <CurrencyExchangeOutlinedIcon color="action"
+                                                                          sx={{fontSize: 50}}></CurrencyExchangeOutlinedIcon>
+                                            <label className="font-light"> Зээлээр цэнэглэх</label>
+                                        </button>
+                                    </div>
+                                </Grid>
+                                <Grid xs={6}>
                                 Зарлага гаргах
-                                <div className="flex">
-                                    <button className={styles.btn} onClick={() => this.openHandle(3)}>
-                                        <PaymentsOutlinedIcon color="action"
-                                                              sx={{fontSize: 50}}></PaymentsOutlinedIcon>
-                                        <p className="font-light"> Хувийн дансруу</p>
-                                        <WalletToAccount
-                                            open={this.state.bankDialog}
-                                            onClose={() => this.closeHandle(3)}
-                                            phoneNum={this.phoneNumber}
-                                        />
-                                    </button>
-                                    <button className={styles.btn} onClick={() => this.openHandle(4)}>
-                                        <CachedOutlinedIcon color="action" sx={{fontSize: 50}}></CachedOutlinedIcon>
-                                        <p className="font-light"> Салбар хооронд</p>
-                                        <WalletToWallet
-                                            open={this.state.branchDialog}
-                                            onClose={() => this.closeHandle(4)}
-                                            phoneNum={this.phoneNumber}
-                                        />
-                                    </button>
-                                    <button className={styles.btn} onClick={() => this.openHandle(5)}>
-                                        <DocumentScannerOutlinedIcon color="action"
-                                                                     sx={{fontSize: 50}}></DocumentScannerOutlinedIcon>
-                                        <p className="font-light"> Нэхэмжлэл</p>
-                                        <Invoice
-                                            open={this.state.invoiceDialog}
-                                            onClose={() => this.closeHandle(5)}
-                                        />
-                                        {/*  <Dialog onClose={} open={this.state.invoiceDialog}>
-                                                <DialogTitle> {this.state.invoiceDialog}</DialogTitle>
-                                                <DialogActions>
-                                                    <Button onClick={()=>this.handleClose(this.state.invoiceDialog,"backdropClick")}>Хаах</Button>
-                                                </DialogActions>
-                                            </Dialog>*/}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div>
-                            Гүйлгээний дэлгэрэнгүй
-                        </div>
-                        <div className="ag-theme-alpine" style={{height: 500, width: '100%'}}>
-                            <Transaction phoneNumber={this.phoneNumber}/>
-                        </div>
-                    </div>
-
-                    <div className="w-4/12 bg-slate-100 rounded-lg m-6 p-3">
-                        <div>
-                            <Tooltip title="Карт нэмэх">
-                                <IconButton onClick={() => this.openHandle(6)}>
-                                    <AddCircleIcon color="primary" fontSize="large"/>
-                                </IconButton>
-                            </Tooltip>
-                            <CardWeb
-                                open={this.state.cardWeb}
-                                onClose={() => this.closeHandle(6)}
-                                url={this.state.url}
-                            />
-                            Картын жагсаалт
-                            {this.state.cardList.map((data) => (
-                                <div className=" mb-2 bg-white shadow rounded-2xl text-center max-h-16">
-                                    <div>
-                                        <p className=" font-bold"> {data.card_number}</p>
+                                    <div className="flex">
+                                        <button className={styles.btn} onClick={() => this.openHandle(3)}>
+                                            <PaymentsOutlinedIcon color="action" sx={{fontSize: 50}}></PaymentsOutlinedIcon>
+                                            <label className="font-light"> Хувийн дансруу</label>
+                                        </button>
+                                        <button className={styles.btn} onClick={() => this.openHandle(4)}>
+                                            <CachedOutlinedIcon color="action" sx={{fontSize: 50}}></CachedOutlinedIcon>
+                                            <label className="font-light"> Салбар хооронд</label>
+                                        </button>
+                                        <button className={styles.btn} onClick={() => this.openHandle(5)}>
+                                            <DocumentScannerOutlinedIcon color="action" sx={{fontSize: 50}}></DocumentScannerOutlinedIcon>
+                                            <label className="font-light"> Нэхэмжлэл</label>
+                                        </button>
                                     </div>
+                                </Grid>
+                            </Grid>
+                        </div>
+                        <div>
+                            <Grid container spacing={3}>
+                                <Grid xs={12}>
                                     <div>
-                                        <p> {data.card_bank_name}</p>
+                                        Гүйлгээний дэлгэрэнгүй
                                     </div>
-                                </div>
-                            ))}
+                                    <div className="ag-theme-alpine w-full" style={{height: 500}}>
+                                        <Transaction phoneNumber={this.phoneNumber}/>
+                                    </div>
+                                </Grid>
+                            </Grid>
                         </div>
-                        <div>
-
-                        </div>
-                        <div>
-                            Credit Scoring
-                            <div className="justify-center">
-                                <Image className='rounded-lg'
-                                       src="/img/cs.png"
-                                       width={400}
-                                       height={300}
-                                       alt="Credit Scoring"
+                        {(this.state.walletDialog ||
+                                this.state.invoiceDialog ||
+                                this.state.branchDialog ||
+                                this.state.bankDialog) &&
+                            <div className={"absolute w-full h-full top-0 left-0 z-[2] backdrop-blur-[20px]"}>
+                                <CardToWallet
+                                    open={this.state.walletDialog}
+                                    onClose={() => this.closeHandle(1)}
+                                    data={this.state.cardList}
+                                    phoneNum={this.phoneNumber}
+                                />
+                                <Invoice
+                                    open={this.state.invoiceDialog}
+                                    onClose={() => this.closeHandle(5)}
+                                />
+                                <WalletToWallet
+                                    open={this.state.branchDialog}
+                                    onClose={() => this.closeHandle(4)}
+                                    phoneNum={this.phoneNumber}
+                                />
+                                <WalletToAccount
+                                    open={this.state.bankDialog}
+                                    onClose={() => this.closeHandle(3)}
+                                    phoneNum={this.phoneNumber}
                                 />
                             </div>
+                        }
+                    </Grid>
+                    <Grid xs={12} md={3}>
+                        <div className={"h-full bg-secondary rounded-3xl p-6 flex flex-col dark:bg-boxdark-2"}>
+                            <div>
+                                <CardWeb
+                                    open={this.state.cardWeb}
+                                    onClose={() => this.closeHandle(6)}
+                                    url={this.state.url}
+                                />
+                                <div className={"flex justify-between items-center"}>
+                                    <b>Картын жагсаалт</b>
+                                    <Tooltip title="Карт нэмэх">
+                                        <IconButton onClick={() => this.openHandle(6)} size={"small"}>
+                                            <AddCircleIcon color="primary" fontSize="large"/>
+                                        </IconButton>
+                                    </Tooltip>
+                                </div>
+                                {this.state.cardList.map((data, index) => (
+                                    <div className={"relative h-40"}>
+                                        <div className={`mb-2 bg-white shadow-5 shadow-black rounded-2xl text-center absolute left-0 w-full`} style={{top:index*(-40)+"%"}}>
+                                            <div
+                                                className={"absolute left-[50%] top-[20%] -translate-x-[50%] -translate-y-[50%] rounded bg-opacity-50 bg-black-2 text-white p-1.5"}>
+                                                <p className="font-normal text-lg"> {data.card_number}</p>
+                                                {/*<p> {data.card_bank_name}</p>*/}
+                                            </div>
+                                            <img src={"/creditCards/card1.png"} alt={"card"} className={"w-full pointer-events-none"}/>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                            <div className={"h-full"}>
+                                <b>Зөвхөн таньд</b>
+                                <div className="relative w-full h-full">
+                                    <img src="/img/cs.png" alt={"cscore"} className={"rounded"}/>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </Grid>
+                </Grid>
+            </Paper>
         )
     }
 }

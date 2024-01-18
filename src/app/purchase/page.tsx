@@ -4,11 +4,9 @@ import { SnackbarProvider } from "notistack";
 
 const Purchase = () => {
     return (
-        <SnackbarProvider>
-            <div className="h-full">
-                <PurchaseController />
-            </div>
-        </SnackbarProvider>
+        <div className="h-full">
+            <PurchaseController/>
+        </div>
     )
 }
 
