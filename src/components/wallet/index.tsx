@@ -233,9 +233,6 @@ class WalletController extends Component<{}, Dialog> {
                         <div>
                             <Grid container spacing={3}>
                                 <Grid xs={12}>
-                                    <div>
-                                        Гүйлгээний дэлгэрэнгүй
-                                    </div>
                                     <div className="ag-theme-alpine w-full" style={{height: 500}}>
                                         <Transaction phoneNumber={this.phoneNumber}/>
                                     </div>

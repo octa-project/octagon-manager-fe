@@ -105,6 +105,7 @@ const supplier_updateOne = apiSupplier("update")
 const getPdf = apiPdfGenerator("pdf=generate")
 const getWalletBalance = apiWallet("get-balance");
 const getWalletTransactionHistory = apiWallet("get-history");
+const refreshWalletTransactionHistory = apiWallet("refresh-history");
 const walletToAccountTransaction = apiWallet("wallet-to-account-transaction");
 const cardToWalletTransaction = apiWallet("card-to-wallet");
 const getCardWeb = apiWallet("card-web");
@@ -114,6 +115,7 @@ const walletToWalletTransaction = apiWallet("wallet-to-wallet-transaction");
 const getReportFile = apiReport("getReportFile")
 
 export default {
+    //wallet
     getWalletBalance,
     getWalletTransactionHistory,
     walletToAccountTransaction,
@@ -122,6 +124,7 @@ export default {
     getCardWeb,
     getCardList,
     saveCard,
+    refreshWalletTransactionHistory,
 
     transaction_save,
     transaction_update,

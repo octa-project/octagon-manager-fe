@@ -12,6 +12,7 @@ const apiWallet = (mainRouteName: string) => ({
     getCardList: (phoneNum: any) => axios.get(`${URL_PREFIX}/wallet/${mainRouteName}?phoneNum=${phoneNum}`),
     saveCard: (phoneNum: any) => axios.get(`${URL_PREFIX}/wallet/${mainRouteName}?phoneNum=${phoneNum}`),
     walletToWalletTransaction: (data: any) => axios.post(`${URL_PREFIX}/wallet/${mainRouteName}`,data),
+    refreshWalletTransactionHistory: (data: any) => axios.post(`${URL_PREFIX}/wallet/${mainRouteName}`,data),
 
 })
 
