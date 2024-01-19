@@ -12,7 +12,7 @@ const PurchaseController = () => {
   };
 
   const tabs: TabHeaders[] = [
-    { id: "purchase", name: "ТАТАН АВАЛТ", index: "0" },
+    { id: "purchase", name: "ОРЛОГО", index: "0" },
     { id: "order", name: "ЗАХИАЛГА", index: "1" },
   ];
 
@@ -26,7 +26,8 @@ const PurchaseController = () => {
               onClick={() => tabChange(item.index)}
               className={
                 tabValue === item.index ? "topBarSelected" : "topBarNoSelected"
-              }>
+              }
+            >
               {item.name}
             </div>
           ))}
@@ -37,7 +38,7 @@ const PurchaseController = () => {
           <TabPanel value={"0"} className="h-full">
             <PurchaseMain />
           </TabPanel>
-          <TabPanel value={"1"} className="h-full" >
+          <TabPanel value={"1"} className="h-full">
             <PurchaseOrder />
           </TabPanel>
         </TabContext>
