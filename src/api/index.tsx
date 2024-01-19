@@ -59,24 +59,12 @@ const itemGroup_get_itemGroup_by_id = apiItemGroup("get-itemGroup-by-id");
 const itemGroup_get_all_itemGroups = apiItemGroup("get-all-itemGroups");
 const itemGroup_delete = apiItemGroup("delete-itemGroup-by-id");
 
-const report_get_cashier_report_between_date = apiReport(
-    "get-cashier-report-between-date"
-);
-const report_get_income_report_between_date = apiReport(
-    "get-income-report-between-date"
-);
-const report_get_outcome_report_between_date = apiReport(
-    "get-outcome-report-between-date"
-);
-const report_get_price_report_between_date = apiReport(
-    "get-price-report-between-date"
-);
-const report_get_sale_report_between_date = apiReport(
-    "get-sale-report-between-date"
-);
-const report_get_transactions_report_between_date = apiReport(
-    "get-transacrions-report-between-date"
-);
+const report_get_cashier_report_between_date = apiReport("get-cashier-report-between-date");
+const report_get_income_report_between_date = apiReport("get-income-report-between-date");
+const report_get_outcome_report_between_date = apiReport("get-outcome-report-between-date");
+const report_get_price_report_between_date = apiReport("get-price-report-between-date");
+const report_get_sale_report_between_date = apiReport("get-sale-report-between-date");
+const report_get_transactions_report_between_date = apiReport("get-transacrions-report-between-date");
 const get_sale_report = apiReport("get-sale-report");
 
 const measure_get_all = apiMeasure("get-all-measures");
@@ -120,7 +108,6 @@ const supplier_updateOne = apiSupplier("update");
 
 
 const getPdf = apiPdfGenerator("pdf=generate")
-
 const getWalletBalance = apiWallet("get-balance");
 const getWalletTransactionHistory = apiWallet("get-history");
 const walletToAccountTransaction = apiWallet("wallet-to-account-transaction");

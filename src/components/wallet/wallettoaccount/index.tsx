@@ -9,7 +9,6 @@ import {CloseIcon} from "next/dist/client/components/react-dev-overlay/internal/
 import style from "../wallet.module.css";
 import {classesList} from "ag-grid-react/lib/reactUi/utils";
 import Carousel from "react-material-ui-carousel";
-import Loader from "@/src/components/common/Loader";
 
 interface Props {
     open: boolean;
@@ -20,26 +19,21 @@ interface Props {
 class WalletToAccount extends Component<Props> {
     constructor(props: Props) {
         super(props);
-        this.state = {
-            selectedItem: null,
-            loading: false
+        this.state={
+            selectedItem:null
         }
     }
 
     getBankList = () => {
         return [
             [
-                {id: 1, src: "/img/golomt.png"},
+                {id:1, src:"/img/golomt.png"},
+                {id:2, src:"/img/khan.png"},
+                {id:3, src:"/img/mbank.png"},
             ],
             [
-                {id: 2, src: "/img/khan.png"},
-            ],
-            [
-                {id: 4, src: "/img/tdb.png"}
-            ],
-            [
-                {id: 3, src: "/img/mbank.png"},
-            ]
+                {id:4, src:"/img/tdb.png"}
+                ]
         ]
     }
 
@@ -47,10 +41,9 @@ class WalletToAccount extends Component<Props> {
     account: string | undefined
     desc: string | undefined
 
-    setSelectedItem = (id: number) => this.setState({selectedItem: id})
+    setSelectedItem = (id: number) => this.setState({selectedItem:id})
     sendWalletToBank = async () => {
         try {
-            this.setState({loading: true})
             const body = {
                 account: this.account,
                 account_name: "M bank",
@@ -61,118 +54,112 @@ class WalletToAccount extends Component<Props> {
             }
             await api.walletToAccountTransaction.walletToAccountTransaction(body).then(res => {
                 if (res.status == 200 && res.data.isSuccess) {
-                    SnackBar.success("Амжилттай илгээлээ")
-                    this.props.onClose
-                    this.setState({loading: false})
+                    SnackBar.success("Амжилттай илгээлээ");
                 } else {
-                    SnackBar.error("Амжилтгүй алдаа гарлаа");
-                    this.setState({loading: false})
+                    SnackBar.error("Амжилтгүй");
                 }
             });
 
         } catch (error) {
             console.error("Error fetching data:", error);
-            SnackBar.error("Амжилтгүй алдаа гарлаа");
-            this.setState({loading: false})
         } finally {
         }
     };
 
 
     render() {
-        const {selectedItem}: any = this.state
+        const {selectedItem}:any = this.state
         const {setSelectedItem} = this
         return (
-            this.props.open &&
-            <>
-                <Grid container spacing={3} justifyContent={"center"}>
-                    <Grid xs={12} display={"flex"} justifyContent={"flex-end"}>
-                        <IconButton size={"small"} color={"primary"} onClick={this.props.onClose}>
-                            <CloseIcon/>
-                        </IconButton>
-                    </Grid>
+        this.props.open &&
+        <>
+            <Grid container spacing={3} justifyContent={"center"}>
+                <Grid xs={12} display={"flex"} justifyContent={"flex-end"}>
+                    <IconButton size={"small"} color={"primary"} onClick={this.props.onClose}>
+                        <CloseIcon/>
+                    </IconButton>
                 </Grid>
-                {this.state.loading ? (
-                    <Loader/>
-                ) : (<Grid container spacing={3} justifyContent={"center"} alignItems={"center"} direction={"column"}>
-                        <Grid xs={12}>
-                            <Typography variant={"h5"} textAlign={"center"}>
-                                Хувийн данс руу зарлага хийх
-                            </Typography>
-                        </Grid>
-                        <Grid xs={12} md={6}>
-                            <Carousel swipe navButtonsAlwaysVisible={true} animation={"slide"} autoPlay={false}>
+            </Grid>
+            <Grid container spacing={3} justifyContent={"center"} alignItems={"center"} direction={"column"}>
+                <Grid xs={12}>
+                    <Typography variant={"h5"} textAlign={"center"}>
+                        Хувийн данс руу зарлага хийх
+                    </Typography>
+                </Grid>
+                <Grid xs={12} md={6}>
+                    <Carousel swipe navButtonsAlwaysVisible={true} animation={"slide"} autoPlay={false}>
 
-                                {
-                                    this.getBankList().map(e => {
-                                        return <div className={"flex justify-center"}>
-                                            {e.map(x => <button
-                                                className={classesList(style.bankIcon, (x.id == selectedItem ? style.selected : ""))}
-                                                onClick={() => setSelectedItem(x.id)}>
-                                                <img className='flex items-center'
-                                                     src={x.src}
-                                                     alt="Credit Scoring"/>
-                                            </button>)}
-                                        </div>
+                            {
+                                this.getBankList().map(e=> {
+                                    return <div className={"flex justify-center"}>
+                                        {e.map(x => <button
+                                            className={classesList(style.bankIcon, (x.id == selectedItem ? style.selected : ""))}
+                                            onClick={() => setSelectedItem(x.id)}>
+                                            <img className='flex items-center'
+                                                 src={x.src}
+                                                 alt="Credit Scoring"/>
+                                        </button>)}
+                                    </div>
 
-                                    })
-                                }
-                            </Carousel>
-                        </Grid>
-                        <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
-                            <TextField size={"small"}
-                                       color={"primary"}
-                                       label="Дансны дугаар"
-                                       type="number"
-                                       fullWidth
-                                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                           this.account = event.target.value
-                                       }}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
-                            <TextField size={"small"}
-                                       label="Дансны нэр"
-                                       type="text"
-                                       fullWidth
-                                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                           //this.amount = event.target.value
-                                       }}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
-                            <TextField size={"small"}
-                                       label="Гүйлгээний дүн"
-                                       type="number"
-                                       fullWidth
-                                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                           this.amount = event.target.value
-                                       }}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
-                            <TextField size={"small"}
-                                       rows={3}
-                                       multiline
-                                       fullWidth
-                                       label="Гүйлгээ утга"
-                                       type="text"
-                                       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                           this.setState({amount: event.target.value})
-                                           this.desc = event.target.value
-                                       }}
-                            />
-                        </Grid>
-                        <Grid xs={12} md={3}>
-                            <div className="flex items-center justify-center">
-                                <Button variant={"contained"} color={"primary"} size={"small"} fullWidth
-                                        onClick={this.sendWalletToBank} className={"mt-3"}>Гүйлгээ хийх</Button>
-                            </div>
-                        </Grid>
-                    </Grid>
-                )}
-            </>
-        );
+                                })
+                            }
+                    </Carousel>
+                </Grid>
+                <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
+                    <TextField size={"small"}
+                               color={"primary"}
+                               label="Дансны дугаар"
+                               type="number"
+                               fullWidth
+                               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                   this.account = event.target.value
+                               }}
+                    />
+                </Grid>
+                <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
+                    <TextField size={"small"}
+                               label="Дансны нэр"
+                               type="text"
+                               fullWidth
+                               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                   //this.amount = event.target.value
+                               }}
+                    />
+                </Grid>
+                <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
+                    <TextField size={"small"}
+                               label="Гүйлгээний дүн"
+                               type="number"
+                               fullWidth
+                               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                   this.amount = event.target.value
+                               }}
+                    />
+                </Grid>
+                <Grid xs={12} md={3} display={"flex"} justifyContent={"center"}>
+                    <TextField size={"small"}
+                               rows={3}
+                               multiline
+                               fullWidth
+                               label="Гүйлгээ утга"
+                               type="text"
+                               onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+                                   this.setState({amount: event.target.value})
+                                   this.desc = event.target.value
+                               }}
+                    />
+                </Grid>
+                <Grid xs={12} md={3}>
+                    <div className="flex items-center justify-center">
+                        <Button variant={"contained"} color={"primary"} size={"small"} fullWidth
+                                onClick={this.sendWalletToBank} className={"mt-3"}>Гүйлгээ хийх</Button>
+                    </div>
+                </Grid>
+            </Grid>
+        </>
+
+    )
+        ;
     }
 }
 

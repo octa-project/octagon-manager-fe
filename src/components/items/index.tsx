@@ -456,9 +456,7 @@ class ItemController extends Component<{}, ItemState> {
     debugger;
     const { rowItemCodeSkuData, selectedSkuGroupId } = this.state;
 
-    const items = this.state.downloadAll
-      ? rowItemCodeSkuData
-      : rowItemCodeSkuData.filter((t) => t.groupId === selectedSkuGroupId);
+    const items = rowItemCodeSkuData;
 
     items.forEach((element) => {
       const convertedItem: ItemCode = {
@@ -733,7 +731,7 @@ class ItemController extends Component<{}, ItemState> {
         barcode: itemCode?.barcode,
         name: itemCode?.name,
         sellPrice: itemCode?.sellPrice,
-        purchasePrice: itemCode?.costPrice,
+        costPrice: itemCode?.costPrice,
         measureId: itemCode?.measureId,
         qty: itemCode?.qty,
         isDeleted: false,
@@ -746,7 +744,7 @@ class ItemController extends Component<{}, ItemState> {
         if (result.data.code === "200") {
           SnackBar.success(`Амжилттай хадгаллаа: ${body.name} ${body.barcode}`);
           this.setItemCodeState(false, this.state.nonSelectedItemCode);
-          this.getItems();
+          this.getItemCodes();
         } else {
           throw new Error("Failed data");
         }
@@ -756,7 +754,7 @@ class ItemController extends Component<{}, ItemState> {
         if (result.data.code === "200") {
           SnackBar.success(`Амжилттай заслаа : ${body.name} ${body.barcode}`);
           this.setItemCodeState(false, this.state.nonSelectedItemCode);
-          this.getItems();
+          this.getItemCodes();
         } else {
           SnackBar.warning(`Алдаа гарлаа : ${result.data.message}`);
         }

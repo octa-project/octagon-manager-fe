@@ -4,9 +4,9 @@
   "private": true,
   "scripts": {
     "clean": "rm -rf node_modules dist build",
-    "dev": "next dev",
+    "dev": "next dev -p 3002",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 3002",
     "lint": "next lint"
   },
   "dependencies": {
@@ -42,7 +42,7 @@
     "react-number-format": "^5.3.1",
     "react-string-replace": "^1.1.1",
     "styled-components": "^6.1.1",
-    "sweetalert2": "^11.10.3"
+    "sweetalert2": "^11.6.13"
   },
   "devDependencies": {
     "@types/node": "^20",

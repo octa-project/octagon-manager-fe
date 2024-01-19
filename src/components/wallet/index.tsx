@@ -21,7 +21,6 @@ import Paper from "@mui/material/Paper";
 import Grid from "@mui/system/Unstable_Grid";
 
 interface Card {
-    card_id: number;
     card_bank_id: number;
     card_bank_name: string;
     card_number: any;
@@ -133,12 +132,11 @@ class WalletController extends Component<{}, Dialog> {
         }
 
         if (value === 5) {
-
+            this.getWeb()
             this.setState({invoiceDialog: true})
         }
 
         if (value === 6) {
-            this.getWeb()
             this.setState({cardWeb: true});
         }
     };
@@ -177,18 +175,18 @@ class WalletController extends Component<{}, Dialog> {
                     </Grid>
                     <Grid xs={12} md={3}>
                         <div className={"flex justify-between items-center"}>
-                            <div className={"w-50 mr-2 "}>
-                                <div className={"bg-secondary dark:bg-graydark flex flex-col p-2 rounded-3xl text-center"}>
+                            <div className={"w-50 mr-2"}>
+                                <div className={"bg-secondary dark:bg-graydark flex flex-col p-2 rounded text-center"}>
                                     <Typography className="font-normal text-sm whitespace-nowrap"> Үлдэгдэл</Typography>
                                     <Typography
                                         className="!font-bold text-center"> {currencyFormatter(this.state.accBalance)}</Typography>
                                 </div>
                             </div>
-                            <div className={"w-50 mr-6"}>
-                                <div className={"bg-success flex flex-col p-2 rounded-3xl text-white text-center"}>
+                            <div className={"w-50 ml-2"}>
+                                <div className={"bg-success flex flex-col p-2 rounded text-white text-center"}>
                                     <label className="font-normal text-sm whitespace-nowrap"> Боломжит зээлийн дүн</label>
                                     <label
-                                        className="font-bold text-center"> 500,000₮</label>
+                                        className="font-bold text-center"> {currencyFormatter(this.state.accBalance)}</label>
                                 </div>
                             </div>
                         </div>
@@ -202,12 +200,12 @@ class WalletController extends Component<{}, Dialog> {
 
                                         <button className={styles.btn} onClick={() => this.openHandle(1)}>
                                             <PaymentIcon color="action" sx={{fontSize: 50}}></PaymentIcon>
-                                            <label className="text-sm font-light"> Картаар цэнэглэх</label>
+                                            <label className="font-light"> Картаар цэнэглэх</label>
                                         </button>
                                         <button className={styles.btn}>
                                             <CurrencyExchangeOutlinedIcon color="action"
                                                                           sx={{fontSize: 50}}></CurrencyExchangeOutlinedIcon>
-                                            <label className="text-sm font-light"> Зээлээр цэнэглэх</label>
+                                            <label className="font-light"> Зээлээр цэнэглэх</label>
                                         </button>
                                     </div>
                                 </Grid>
@@ -216,15 +214,15 @@ class WalletController extends Component<{}, Dialog> {
                                     <div className="flex">
                                         <button className={styles.btn} onClick={() => this.openHandle(3)}>
                                             <PaymentsOutlinedIcon color="action" sx={{fontSize: 50}}></PaymentsOutlinedIcon>
-                                            <label className="text-sm font-light"> Хувийн дансруу</label>
+                                            <label className="font-light"> Хувийн дансруу</label>
                                         </button>
                                         <button className={styles.btn} onClick={() => this.openHandle(4)}>
                                             <CachedOutlinedIcon color="action" sx={{fontSize: 50}}></CachedOutlinedIcon>
-                                            <label className="text-sm font-light"> Салбар хооронд</label>
+                                            <label className="font-light"> Салбар хооронд</label>
                                         </button>
                                         <button className={styles.btn} onClick={() => this.openHandle(5)}>
                                             <DocumentScannerOutlinedIcon color="action" sx={{fontSize: 50}}></DocumentScannerOutlinedIcon>
-                                            <label className="text-sm font-light"> Нэхэмжлэл</label>
+                                            <label className="font-light"> Нэхэмжлэл</label>
                                         </button>
                                     </div>
                                 </Grid>
@@ -288,12 +286,13 @@ class WalletController extends Component<{}, Dialog> {
                                 </div>
                                 {this.state.cardList.map((data, index) => (
                                     <div className={"relative h-40"}>
-                                        <div className={`mb-2 bg-white shadow-5 shadow-black rounded-2xl text-center absolute border-white border-2 left-0 w-full`} style={{top:index*(-40)+"%"}}>
-                                            <div className={"absolute left-[50%] top-[30%] -translate-x-[50%] -translate-y-[50%] rounded bg-opacity-20 bg-black-2 text-white p-1.5"}>
+                                        <div className={`mb-2 bg-white shadow-5 shadow-black rounded-2xl text-center absolute left-0 w-full`} style={{top:index*(-40)+"%"}}>
+                                            <div
+                                                className={"absolute left-[50%] top-[20%] -translate-x-[50%] -translate-y-[50%] rounded bg-opacity-50 bg-black-2 text-white p-1.5"}>
                                                 <p className="font-normal text-lg"> {data.card_number}</p>
                                                 {/*<p> {data.card_bank_name}</p>*/}
                                             </div>
-                                            <img src={"/creditCards/mbankcard.png"} alt={"card"} className={"w-full pointer-events-none"}/>
+                                            <img src={"/creditCards/card1.png"} alt={"card"} className={"w-full pointer-events-none"}/>
                                         </div>
                                     </div>
                                 ))}
