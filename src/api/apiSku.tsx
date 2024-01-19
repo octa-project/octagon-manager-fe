@@ -4,7 +4,7 @@ import axios from "axios";
 export const URL_PREFIX = "http://localhost:8400";
 
 const apiSku = (mainRouteName: string) => ({
-  getManyCustom: () => axios.get(`${URL_PREFIX}/itemcode/${mainRouteName}`),
+  getManyCustom: () => axios.get(`${URL_PREFIX}/item-code/${mainRouteName}`),
   getManyGroups: () => axios.get(`${URL_PREFIX}/group/${mainRouteName}`),
   getOneBarcode: (barcode: string) =>
     axios.get(`${URL_PREFIX}/item-code/${mainRouteName}?barcode=${barcode}`),

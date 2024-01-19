@@ -456,9 +456,7 @@ class ItemController extends Component<{}, ItemState> {
     debugger;
     const { rowItemCodeSkuData, selectedSkuGroupId } = this.state;
 
-    const items = this.state.downloadAll
-      ? rowItemCodeSkuData
-      : rowItemCodeSkuData.filter((t) => t.groupId === selectedSkuGroupId);
+    const items = rowItemCodeSkuData;
 
     items.forEach((element) => {
       const convertedItem: ItemCode = {
