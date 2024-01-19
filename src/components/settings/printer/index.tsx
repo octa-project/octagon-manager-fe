@@ -3,6 +3,8 @@ import {Component, useState} from "react";
 import {formatMoney} from "@/src/components/tools/utils";
 import * as React from "react";
 import api from "@/src/api";
+import CustomModal from "@/src/components/settings/printer/Modal";
+import DialogForSettings from "@/src/components/settings/printer/DialogForSettings";
 
 
 class PrinterSettings extends Component<{}, SettingsPrinterState> {
@@ -12,6 +14,8 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
         this.state = {
             first: false,
             open: false,
+            modalOpen: false,
+            modalClose: true,
             secondaryOpen: false,
             selectedPrinter: {
                 id: "",
@@ -20,7 +24,10 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                 printType: 0,
                 branchId: 0,
                 branchName: "",
-                isActive: false
+                active: true,
+                retailDeviceName: "",
+                ipAddress:"",
+                cashierPrinter: true
             },
             nonSelectedPrinter: {
                 id: "",
@@ -29,7 +36,10 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                 printType: 0,
                 branchId: 0,
                 branchName: "",
-                isActive: false
+                active: true,
+                retailDeviceName: "",
+                ipAddress:"",
+                cashierPrinter: true
             },
             printersData: [],
             printersSearchData: [],
@@ -45,9 +55,6 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
         this.getPrinters()
     }
 
-    handleValueChange = () => {
-
-    }
 
     getPrinters = () => {
 
@@ -56,23 +63,25 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
     getList = async () => {
         const result = api.getDeviceListByBranch.GetDeviceSettingsListByBranch(1).then(res => {
             this.setState({printersData: res.data.data}, () => {
-                console.log(this.state.printersData);
+
             });
         })
     }
 
     getListForOrder = async () => {
         const result = api.getDeviceListByBranchForOrder.GetDeviceSettingsListByBranchForOrder(1).then(res => {
-            this.setState({printersData: res.data.data}, () => {
-                console.log(this.state.printersData);
+            this.setState({printersSearchData: res.data.data}, () => {
+
+
             });
         })
     }
 
 
-    cashierPrinterOnclickHandler = () => {
+    cashierPrinterOnclickHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
+
         this.getList().then(r => {
-            console.log(r)
+
         });
         console.log("sda")
         this.setState({open: true}, () => {
@@ -82,7 +91,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
     }
 
-    purchasePrinterOnclickHandler = () => {
+    purchasePrinterOnclickHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
         this.getListForOrder().then(r => {
             console.log(r)
         });
@@ -96,11 +105,21 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
     deletePrinter = (id: any) => {
         const result = api.deleteDeviceSettings.DeleteDeviceSettings(id).then(res => {
-            this.setState({printersData: res.data.data}, () => {
-                console.log(this.state.printersData);
-            });
-        })
+           this.getList().then(r =>{
+               if (this.state.printersData.length == 0){
+                   this.setState({open:false})
+               }
+           })
+        });
     }
+
+     openModal = () => {
+         this.setState({modalOpen:true})
+    };
+
+     closeModal = () => {
+         this.setState({modalOpen:false})
+    };
 
     render() {
 
@@ -119,37 +138,35 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
 
             <div className="h-full">
                 <div className="flex flex-col">
-                    <div className="grid grid-rows-2">
-                        <div className="row-span-1">
                             <div className="grid grid-cols-2">
                                 <div className="flex flex-col col-span-1">
                                     <div className="flex flex-row grid grid-cols-3">
                                         <div className="NormalText col-span-1">
                                             Кассын принтер
                                         </div>
-                                        <Switch defaultChecked className="SelectedSwitch col-span-1"/>
-                                        <Button className="secondaryButton col-span-1"
-                                                onClick={this.cashierPrinterOnclickHandler}>
-                                            харах
-                                        </Button>
+                                        <Switch     checked={this.state.open}
+                                                    onChange={this.cashierPrinterOnclickHandler}
+                                                    className="SelectedSwitch col-span-1"/>
+                                        {/*<Button className="secondaryButton col-span-1"*/}
+                                        {/*        onClick={this.cashierPrinterOnclickHandler}>*/}
+                                        {/*    харах*/}
+                                        {/*</Button>*/}
                                     </div>
                                     <div className="flex flex-row grid grid-cols-3">
                                         <div className="NormalText col-span-1">
                                             Захилагын принтер
                                         </div>
-                                        <Switch defaultChecked className="SelectedSwitch col-span-1"/>
-                                        <Button className="secondaryButton col-span-1 "
-                                                onClick={this.purchasePrinterOnclickHandler}>
-                                            харах
-                                        </Button>
+                                        <Switch checked={this.state.secondaryOpen}
+                                                onChange={this.purchasePrinterOnclickHandler}
+                                                className="SelectedSwitch col-span-1"/>
+                                        {/*<Button className="secondaryButton col-span-1 "*/}
+                                        {/*        onClick={this.purchasePrinterOnclickHandler}>*/}
+                                        {/*    харах*/}
+                                        {/*</Button>*/}
                                     </div>
                                 </div>
-                                <div className="col-span-1">
-
-                                </div>
-                            </div>
                         </div>
-                        <div className="row-span-1 h-full">
+                        <div className="flex flex-col">
                             <Card className="w-full h-full shadow rounded">
                                 {this.state.open && (<Table size="small">
                                     <TableHead className="bg-[#8a91a5] h-14">
@@ -179,13 +196,17 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.branchName}</TableCell>
+                                                        className="font-sans text-[#8a91a5] ">{row.retailDeviceName}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.branchId}</TableCell>
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.ownerName}</TableCell>
+                                                        className="font-sans text-[#8a91a5] ">
+                                                        <Switch defaultChecked={row.active} className="SelectedSwitch col-span-1">
+
+                                                        </Switch>
+                                                    </TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">
                                                         <Button
@@ -198,6 +219,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                             <>
                                                 {skeleten.map((row) =>
                                                     <TableRow key={row}>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
@@ -220,6 +242,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                 нэр</TableCell>
                                             <TableCell className="font-sans text-white font-semibold">Төрөл</TableCell>
                                             <TableCell className="font-sans text-white font-semibold">test</TableCell>
+                                            <TableCell className="font-sans text-white font-semibold">Үйлдэлүүд</TableCell>
                                         </TableRow>
                                     </TableHead>
                                     <TableBody>
@@ -233,10 +256,11 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                     <EditIcon />
                                   </IconButton>
                                 </TableCell> */}
+
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.id}</TableCell>
+                                                        className="font-sans  text-[#8a91a5] ">{row.id}</TableCell>
                                                     <TableCell
-                                                        className="font-sans text-[#8a91a5] ">{row.branchName}</TableCell>
+                                                        className="font-sans text-[#8a91a5] ">{row.retailDeviceName}</TableCell>
                                                     <TableCell
                                                         className="font-sans text-[#8a91a5] ">{row.name}</TableCell>
                                                     <TableCell
@@ -257,6 +281,7 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                         <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
+                                                        <TableCell><Skeleton variant="rounded" height={20}/></TableCell>
                                                     </TableRow>
                                                 )}
                                             </>
@@ -264,9 +289,17 @@ class PrinterSettings extends Component<{}, SettingsPrinterState> {
                                     </TableBody>
                                 </Table>)}
 
+                                <Button className="bg-red text-white w-1/6 hover:" onClick={()=>this.openModal()}>
+
+                                    Нэмэх</Button>
+                                <DialogForSettings   open={this.state.modalOpen}
+                                                     onClose={ this.closeModal}>
+
+                                </DialogForSettings>
+
                             </Card>
                         </div>
-                    </div>
+
                 </div>
             </div>
         );

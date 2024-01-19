@@ -29,7 +29,6 @@ import SnackBar from "@/src/components/tools/snackAlert";
 import SearchIcon from "@mui/icons-material/Search";
 
 const PurchaseMain = () => {
-
   const inputBarcode = useRef<any>(null);
 
   const [searchText, setSearchText] = useState("");
@@ -67,8 +66,8 @@ const PurchaseMain = () => {
   useEffect(() => {
     if (first) return;
     first = true;
-    getSuppliers();
-    getPurchases();
+    getSuppliers().then((res) => console.log(res));
+    getPurchases().then((res) => console.log(res));
     setBranches(["Салбар 1"]);
   }, []);
 
@@ -109,7 +108,7 @@ const PurchaseMain = () => {
       items: [],
       supplierId: "0",
       branchId: "0",
-      date: "",
+      createdDate: "",
       totalAmount: 0,
       totalDiscount: 0,
       totalQty: 0,
@@ -144,7 +143,9 @@ const PurchaseMain = () => {
         setPurchaseDetail((prevPurchase) => {
           if (prevPurchase) {
             const updatedItems = prevPurchase.items.map((item) =>
-              item.barcode === barcodeText ? { ...item, qty: item.qty + 1 } : item
+              item.barcode === barcodeText
+                ? { ...item, qty: item.qty + 1 }
+                : item
             );
 
             return {
@@ -194,9 +195,9 @@ const PurchaseMain = () => {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
+    if (e.key === "Enter") {
       handleTextSearch();
-      setBarcodeText("")
+      setBarcodeText("");
     }
   };
 
@@ -270,7 +271,7 @@ const PurchaseMain = () => {
             }),
             supplierId: item.supplierId.toString(),
             supplierName: supplierName || "---",
-            date: item.date,
+            createdDate: item.createdDate,
             totalAmount: item.totalAmount,
             totalDiscount: item.totalDiscount,
             totalQty: item.totalQty,
@@ -405,7 +406,7 @@ const PurchaseMain = () => {
       const result = await api.purchase_saveOne.saveOne(body);
       if (result.data.code === "200") {
         SnackBar.success("Татан авалт амжилттай хийгдлээ");
-        handleTabChange("0")
+        handleTabChange("0");
         getPurchases();
         return true;
       } else {
@@ -416,7 +417,6 @@ const PurchaseMain = () => {
       return false;
     }
   };
-
 
   return (
     <div className="flex flex-col h-full">
@@ -431,16 +431,15 @@ const PurchaseMain = () => {
                 >
                   ШИНЭЭР ОРЛОГО БҮРТГЭХ
                 </Button>
-
               </div>
               <div className="col-span-4">
                 <div className="flex items-center bg-white h-10 w-full rounded shadow border border-[#cbcbcb]">
                   <Input
                     className="text-[#6d758f] w-full h-full rounded border-none"
                     placeholder="Хайх..."
-                  // onChange={(e) =>
-                  //     handleTextSearch(e.target.value)
-                  // }
+                    // onChange={(e) =>
+                    //     handleTextSearch(e.target.value)
+                    // }
                   />
                   <Image
                     src="/items/search.svg"
@@ -524,8 +523,6 @@ const PurchaseMain = () => {
                   </Select>
                 </div>
               </div>
-
-
             </div>
 
             <div className="h-full overflow-auto">
@@ -551,7 +548,7 @@ const PurchaseMain = () => {
               </div>
               <div>
                 {" "}
-                <Button onClick={() => saveUpdatePurchase()}>ТӨЛӨХ</Button>
+                <Button onClick={() => saveUpdatePurchase()}>ХАДГАЛАХ</Button>
               </div>
             </div>
             <div> Орлогын бүртгэл</div>
@@ -572,7 +569,7 @@ const PurchaseMain = () => {
                   <Select
                     className="h-8 w-44 bg-white"
                     value={purchaseDetail?.branchId}
-                  // onChange={(e) => this.handleSupplier(e.target.value)}
+                    // onChange={(e) => this.handleSupplier(e.target.value)}
                   >
                     {branches.map((value) => (
                       <MenuItem
@@ -604,7 +601,7 @@ const PurchaseMain = () => {
                   <Select
                     className="h-8 w-44 bg-white"
                     value={supplier?.id}
-                  // onChange={(e) =>}
+                    // onChange={(e) =>}
                   >
                     {types.map((value) => (
                       <MenuItem

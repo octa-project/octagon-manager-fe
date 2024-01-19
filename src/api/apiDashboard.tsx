@@ -1,6 +1,6 @@
 import axios from "axios"
 
-export const URL_PREFIX = process.env.REACT_APP_IS_PROD ? process.env.REACT_APP_PROD_URL_PREFIX : "http://43.231.114.193:7002";
+export const URL_PREFIX = process.env.REACT_APP_IS_PROD ? process.env.REACT_APP_PROD_URL_PREFIX : "http://localhost:7002";
 
 const apiDashboard = (mainRouteName: string) => ({
 

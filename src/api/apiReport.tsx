@@ -10,7 +10,7 @@ const apiReport = (mainRouteName: string) => ({
     getOutcomeReportByBetweenDate: (data: any) => axios.post(`${URL_PREFIX}/report/${mainRouteName}`, data),
     getPriceReportByBetweenDate: (data: any) => axios.post(`${URL_PREFIX}/report/${mainRouteName}`, data),
     getSaleReportByBetweenDate: (data: any) => axios.post(`${URL_PREFIX}/report/${mainRouteName}`, data),
-    getSaleReport: () => axios.get(`${URL_PREFIX}/report/${mainRouteName}`),
+    getSaleReport: (data: any) => axios.post(`${URL_PREFIX}/report/${mainRouteName}`, data),
     getTransactionsByBetweenDate: (data: any) => axios.post(`${URL_PREFIX}/report/${mainRouteName}`, data),
     getReportFile: () => axios.get(`${URL_PREFIX}/report/${mainRouteName}`),
 

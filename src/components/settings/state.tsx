@@ -10,6 +10,12 @@ interface TextFieldCustom {
     paramName: keyof MainSettings;
 }
 
+interface TextFieldCustomForPrinter {
+    id: string;
+    title: string
+    paramName: keyof Printer;
+}
+
 interface Printer {
     id: string;
     name: string;
@@ -17,12 +23,29 @@ interface Printer {
     printType: number;
     branchId: number;
     branchName: string;
-    isActive: boolean;
+    active: boolean;
+    ipAddress: string;
+    cashierPrinter: boolean;
+    retailDeviceName:string;
+
+}
+
+interface PrinterState{
+    printer: Printer;
+}
+
+interface PrinterRegisterState{
+    printer: Printer;
+    value: string;
+    computerName: string;
+    printerName: string[];
 }
 
 interface SettingsPrinterState {
     first: boolean;
     open: boolean;
+    modalOpen: boolean;
+    modalClose: boolean;
     secondaryOpen: boolean;
     selectedPrinter: Printer;
     nonSelectedPrinter: Printer;
@@ -43,6 +66,7 @@ interface MainSettings {
     isActive: boolean,
     isDeleted: boolean,
     branchId: number,
+    motto: string
 
 }
 

@@ -14,6 +14,9 @@ import {
   CardActions,
   CardContent,
   Dialog,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   IconButton,
   ListItemButton,
   ListItemText,
@@ -32,15 +35,21 @@ import apiPdfGenerator from "../../../api/apiPdfGenerator";
 import api from "@/src/api";
 import { Transition, TransitionProps } from "notistack";
 import CloseIcon from "@mui/icons-material/Close";
-
+import apiReport from "@/src/api/apiReport";
+import SnackBar from "@/src/components/tools/snackAlert";
 interface SaleReportState {
   startDate: string;
   endDate: string;
-  reports: number[];
+  reports: Report[];
   rowSearchData: any[];
   rowData: any[];
   open: boolean;
-  reportFile: any
+  reportFile: any;
+}
+
+interface Report {
+  id: number;
+  name: string;
 }
 
 class SaleReportController extends Component<{}, SaleReportState> {
@@ -50,11 +59,15 @@ class SaleReportController extends Component<{}, SaleReportState> {
     this.state = {
       startDate: moment().format("YYYY-MM-DD 00:00:00"),
       endDate: moment().format("YYYY-MM-DD 23:59:59"),
-      reports: [1, 2, 3, 4],
+      reports: [
+        { id: 1, name: "БОРЛУУЛАЛТЫН ТАЙЛАН" },
+        { id: 2, name: "БУЦААЛТЫН ТАЙЛАН" },
+        { id: 3, name: "БОРЛУУЛАЛТЫН ДЭЛГЭРЭНГҮЙ ТАЙЛАН" },
+      ],
       rowData: [],
       rowSearchData: [],
       open: false,
-      reportFile: ''
+      reportFile: "",
     };
   }
 
@@ -66,6 +79,7 @@ class SaleReportController extends Component<{}, SaleReportState> {
       }
     } catch (error) {}
   };
+
 
   handleSearchDate = (dates: any, dateStrings: any[]) => {
     this.setState({
@@ -94,13 +108,17 @@ class SaleReportController extends Component<{}, SaleReportState> {
   };
 
   handleDialog = (value: boolean) => {
-    this.getReportFile();
+    this.saleReportFile();
+    //this.getReportFile();
     //const result = await api.getReportFile.getReportFile();
     this.setState({ open: value });
   };
 
-
-
+  saleReportFile = async () => {
+    const result = await api.report_get_html.getSaleReport({});
+    console.log(result);
+    await this.getReportFile();
+  }
 
   getReportFile = async () => {
     try {
@@ -190,23 +208,25 @@ class SaleReportController extends Component<{}, SaleReportState> {
             <div dangerouslySetInnerHTML={{ __html: this.state.reportFile.data }}></div> 
           </div>
         ) : (
-          <div className="grid grid-cols-4 gap-3">
+          <div className="grid grid-cols-3 gap-3">
             {this.state.reports.map((report, index) => (
-              <Card key={index} className="col-span-1 w-full shadow">
+              <Card key={index} className="col-span-1 w-full shadow-md">
                 <CardContent>
-                  <Typography
-                    sx={{ fontSize: 18 }}
-                    color="text.secondary"
-                    gutterBottom
-                  >
-                    БОРЛУУЛАЛТЫН ТАЙЛАН
-                  </Typography>
-                  <Button
+                  <div className="flex flex-col justify-between">
+                    <Typography
+                      sx={{ fontSize: 18 }}
+                      color="text.secondary"
+                      gutterBottom
+                    >
+                      {report.name}
+                    </Typography>
+                    <Button
                     variant="outlined"
                     onClick={() => this.handleDialog(true)}
                   >
                     Дэлгэрэнгүй
                   </Button>
+                  </div>
                   {/* Other content */}
                 </CardContent>
               </Card>

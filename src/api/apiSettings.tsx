@@ -7,13 +7,14 @@ const apiSettings = (mainRouteName: string) => ({
     GetMainSettings:(id:any ) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`),
     UpdateMainSettings:(data:any) => axios.put(`${URL_PREFIX}/setting/${mainRouteName}`, data),
 
-    InsertDeviceSettings:(data:any) => axios.post(`${URL_PREFIX}/setting/${mainRouteName}`, data),
+    InsertDeviceSettings:(data:any) => axios.put(`${URL_PREFIX}/setting/${mainRouteName}`, data),
     UpdateDeviceSettings:(data:any) => axios.post(`${URL_PREFIX}/setting/${mainRouteName}`, data),
-    GetDeviceSettings:(id:any) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
+    GetDeviceSettings:(id:any) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}&deviceName=MCSH-PC-2316`, id),
     GetDeviceSettingsListByBranch:(id:any) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
     GetDeviceSettingsListByBranchForOrder:(id:any) => axios.get(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
     DeleteDeviceSettings:(id:any) => axios.delete(`${URL_PREFIX}/setting/${mainRouteName}?id=${id}`, id),
 
+    GetListOfPrinters:() => axios.get(`${URL_PREFIX}/setting/${mainRouteName}`),
     GetPrinterList:() => axios.get(`${URL_PREFIX}/setting/${mainRouteName}`)
 })
 export default apiSettings

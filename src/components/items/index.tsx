@@ -87,6 +87,11 @@ class ItemController extends Component<{}, ItemState> {
         measureId: 0,
         measureName: "",
         createdDate: "",
+        branchId: 0,
+        expirationId: "",
+        itemGroupId: 0,
+        properSize: 0,
+        packSize: 0,
       },
       nonSelectedItemCode: {
         id: 0,
@@ -99,6 +104,11 @@ class ItemController extends Component<{}, ItemState> {
         measureId: 0,
         measureName: "",
         createdDate: "",
+        branchId: 0,
+        expirationId: "",
+        itemGroupId: 0,
+        properSize: 0,
+        packSize: 0,
       },
       selectedItemGroup: {
         id: 0,
@@ -470,6 +480,11 @@ class ItemController extends Component<{}, ItemState> {
         measureName: "",
         qty: 1,
         createdDate: element.createdDate,
+        branchId: 0,
+        expirationId: "",
+        itemGroupId: 0,
+        properSize: 0,
+        packSize: 0,
       };
       this.saveUpdateItemCode(convertedItem);
     });
@@ -866,6 +881,11 @@ class ItemController extends Component<{}, ItemState> {
           measureName: resultItemCode.measureName,
           qty: 1,
           createdDate: resultItemCode.createdDate,
+          branchId: 0,
+          expirationId: "",
+          itemGroupId: 0,
+          properSize: 0,
+          packSize: 0,
         };
 
         this.setState({ selectedItemCode });
@@ -1408,6 +1428,11 @@ class ItemController extends Component<{}, ItemState> {
                                                     measureId: 1,
                                                     measureName: "",
                                                     createdDate: "",
+                                                    branchId: 0,
+                                                    expirationId: "",
+                                                    itemGroupId: 0,
+                                                    properSize: 0,
+                                                    packSize: 0,
                                                   })
                                                 }
                                               >
