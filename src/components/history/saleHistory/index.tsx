@@ -1,234 +1,298 @@
-import React, { Component } from "react";
-import { AgGridReact } from "ag-grid-react";
-import "ag-grid-community/styles/ag-grid.css";
-import "ag-grid-community/styles/ag-theme-alpine.css";
-import apiSale from "@/src/api/apiSale";
-import { DatePicker, Input } from "antd";
-import Image from "next/image";
-import dayjs from "dayjs";
-import moment from "moment";
+"use client";
 import {
   Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   IconButton,
-  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
 } from "@mui/material";
+import { useEffect, useState } from "react";
+import ClearIcon from "@mui/icons-material/Clear";
+import { DatePicker, Input } from "antd";
+import moment from "moment";
+import dayjs from "dayjs";
 import api from "@/src/api";
-import {
-  ArrowRight as ArrowRightIcon,
-  ArrowDropDown as ArrowDropDownIcon,
-  Edit as EditIcon,
-  Checklist as ChecklistIcon,
-  Add as AddIcon,
-  Autorenew as AutorenewIcon,
-} from "@mui/icons-material";
-import { formatMoney, formatQty, formatDate } from "../../tools/utils";
+import dynamic from "next/dynamic";
+import { Details, DetailsSharp, More } from "@mui/icons-material";
+import { Console } from "console";
+import ViewListIcon from "@mui/icons-material/ViewList";
+import { formatMoney } from "../../tools/utils";
+import SnackBar from "@/src/components/tools/snackAlert";
 
-interface SaleHistoryState {
-  startDate: string;
-  endDate: string;
-  skeleten: number[];
-  rowData: Sale[];
-  rowSearchData: Sale[]; // Added rowSearchData to the state
+const HistoryController = () => {
+  // utils
+  const [searchText, setSearchText] = useState("");
 
-  rowItemData: SaleItem[];
-  rowSearchItemData: SaleItem[]; // Added rowSearchData to the state
-}
+  // Payment
+  const [payments, setPaymentsValue] = useState<Transaction[]>([]);
 
-class SaleHistoryController extends Component<{}, SaleHistoryState> {
-  constructor(props: any) {
-    super(props);
+  // sale
+  const [sale, setSaleValue] = useState<Sale>();
+  const [sales, setSalesValue] = useState<SaleHistory[]>([]);
+  const [saleItems, setSaleItemsValue] = useState<SaleItem[]>([]);
 
-    this.state = {
-      startDate: moment().format("YYYY-MM-DD 00:00:00"),
-      endDate: moment().format("YYYY-MM-DD 23:59:59"),
-      skeleten: [1, 2, 3, 4, 5],
-      rowData: [],
-      rowSearchData: [], 
+  let startDate = moment().format("YYYY-MM-DD 00:00:00");
+  let endDate = moment().format("YYYY-MM-DD 23:59:59");
+  // local Storage
+  const [mySale, setMySale] = useState<Sale | null>(null);
+  const updateData = (value: Sale) => {
+    setMySale(value);
+    localStorage.setItem("mySale", JSON.stringify(value));
+  };
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchText(e.target.value);
+  };
+  const handleClearButtonClick = () => {
+    setSearchText("");
+  };
+  const filteredSales = sales.filter((row) => {
+    const searchTextDigits = searchText.replace(/\D/g, ""); // Remove non-numeric characters from searchText
+    const totalAmountDigits = formatMoney(row.totalAmount).replace(/\D/g, ""); // Remove non-numeric characters from totalAmount
 
-      rowItemData: [], 
-      rowSearchItemData: [], 
-    };
-  }
+    // Check if totalAmount contains the search text
+    return totalAmountDigits.includes(searchTextDigits);
+  });
+  const handleSearchDate = (dates: any, dateStrings: any[]) => {
+    (startDate = dateStrings[0] + " 00:00:00"),
+      (endDate = dateStrings[1] + " 00:00:00"),
+      console.log("onchange:", startDate, endDate);
+  };
+  const [openDialog, setOpenDialog] = useState(false);
 
-  first: boolean = false;
-  componentDidMount() {
-    if (this.first) return;
-    this.first = true;
-    this.getSale();
-  }
+  const handleOpenDialog = (id: number) => {
+    getSaleItemsBySaleId(id);
+    setOpenDialog(true);
+  };
+  const handleCloseDialog = () => {
+    console.log("adsadadsd");
+    setOpenDialog(false);
+  };
 
-  getSale = async () => {
+  const getSalesByDate = async () => {
     try {
-      const startDate = moment(this.state.startDate).format(
-        "YYYY-MM-DD HH:mm:ss"
-      );
-      const endDate = moment(this.state.endDate).format("YYYY-MM-DD HH:mm:ss");
-
-      const result = await api.saleGetMany.GetMany(startDate, endDate);
+      console.log("startDate:", startDate, endDate);
+      const result = await api.sale_getMany.getMany(startDate, endDate);
       if (result.data.code === "200") {
-        this.setState({ rowData: result.data.data });
-        this.setState({ rowSearchData: result.data.data });
+        if (result.data.data) {
+          const initSales: SaleHistory[] = result.data.data;
+          setSalesValue(initSales);
+        } else SnackBar.success("data flgf");
+      } else {
+        SnackBar.error("Алдаа гарлаа : " + result.data.message);
       }
     } catch (error) {
-      // Handle error
+      SnackBar.error("Алдаа гарлаа : " + error);
     }
   };
 
-  handleSearchDate = (dates: any, dateStrings: any[]) => {
-    this.setState({
-      startDate: dateStrings[0] + " 00:00:00",
-      endDate: dateStrings[1] + " 23:59:59",
-    });
-  };
-
-  handleTextSearch = (text: string) => {
-    const lowercaseText = text.toLowerCase();
-
-    if (text === "") {
-      this.setState({ rowSearchData: this.state.rowData });
-    } else {
-      const filteredRowData = this.state.rowData.filter((item) => {
-        return Object.values(item).some((value) => {
-          if (typeof value === "string") {
-            const lowercaseValue = value.toLowerCase();
-            return lowercaseValue.includes(lowercaseText);
-          }
-          return false;
-        });
-      });
-
-      this.setState({ rowSearchData: filteredRowData });
+  const getSaleItemsBySaleId = async (id: number) => {
+    try {
+      const result = await api.sale_items_getMany_bySaleId.getManyBySaleId(id);
+      if (result.data.code === "200") {
+        if (result.data.data) {
+          const saleItems: SaleItem[] = result.data.data;
+          setSaleItemsValue(saleItems);
+        } else SnackBar.success("data flgf");
+      } else {
+        SnackBar.error("Алдаа гарлаа : " + result.data.message);
+      }
+    } catch (error) {
+      SnackBar.error("Алдаа гарлаа : " + error);
     }
   };
 
-  render() {
-    const { RangePicker } = DatePicker;
-    const dateFormat = "YYYY-MM-DD";
-    
-    return (
-      <div className="flex flex-col">
-        <div className="flex-row">
-          <div className="grid grid-cols-4">
-            <div className="col-span-1">
-              <RangePicker
-                className="text-xl h-8 shadow w-full"
-                defaultValue={[
-                  dayjs(this.state.startDate, dateFormat),
-                  dayjs(this.state.endDate, dateFormat),
-                ]}
-                format={dateFormat}
-                onChange={this.handleSearchDate}
-              />
-            </div>
-            <div className="col-span-1 pl-5">
-              <Button className="button" onClick={this.getSale}>
-                ШҮҮХ
-              </Button>
-            </div>
+  let first: boolean = true;
+  useEffect(() => {
+    if (first) {
+      getSalesByDate();
+    }
+    first = false;
+  }, []);
 
-            <div className="col-span-2">
-              <div className="flex items-center bg-white h-8 w-full rounded-md shadow border border-[#cbcbcb]">
-                <Input
-                  className="capitalize text-[#6d758f] w-full h-full rounded-2xl border-none pl-3 pr-8"
-                  placeholder="Хайх..."
-                  onChange={(e) => this.handleTextSearch(e.target.value)}
-                />
-                <Image
-                  src="/items/search.svg"
-                  alt="icon"
-                  width={24}
-                  height={24}
-                  className="mr-5 cursor-pointer"
-                />
-              </div>
-            </div>
+  // search and create
+  const dateFormat = "YYYY-MM-DD";
+
+  const getItemByBarcode = () => {};
+  const { RangePicker } = DatePicker;
+
+  return (
+    <div className="flex flex-col h-screen">
+      <div className="flex flex-col w-full h-14">
+        <div className="grid grid-cols-10 gap-5">
+          <Input
+            className="w-full col-span-4"
+            placeholder="Төлөх дүнээр Хайх..."
+            onChange={handleSearchInputChange}
+          />
+
+          <div className="col-span-3 flex flex-row gap-3">
+            <RangePicker
+              className="w-5/6 h-full"
+              defaultValue={[
+                dayjs(startDate, dateFormat),
+                dayjs(endDate, dateFormat),
+              ]}
+              onChange={handleSearchDate}
+            />
+            <Button
+              onClick={getSalesByDate}
+              variant="contained"
+              className="w-1/6"
+            >
+              ШҮҮХ
+            </Button>
           </div>
         </div>
-        <div className="bg-white flex-initial w-full h-full pt-2">
-          <Table>
-            <TableHead className="bg-[#8a91a5] h-14">
-              <TableRow className="bg-[#8a91a5]">
-                <TableCell className=" font-semibold text-white ">
-                  <ChecklistIcon />
+      </div>
+      <div className="h-full w-full">
+        <div className="grid grid-10"></div>
+        <div className="w-full h-full">
+          <Table size="small">
+            <TableHead className="bg-[#8a91a5] h-10">
+              <TableRow>
+                <TableCell>
+                  <span className="text-white font-sans font-bold">№</span>
                 </TableCell>
-                <TableCell
-                  className=" font-semibold text-white "
-                  align="center"
-                >
-                  №
+                <TableCell>
+                  <span className="text-white font-sans font-bold">Огноо</span>
                 </TableCell>
-                <TableCell
-                  className=" font-semibold text-white "
-                  align="center"
-                >
-                  ОГНОО
+                <TableCell>
+                  <span className="text-white font-sans font-bold">
+                    Барааны тоо
+                  </span>
                 </TableCell>
-                <TableCell className=" font-semibold text-white " align="left">
-                  НИЙТ ТОО
+                <TableCell>
+                  <span className="text-white font-sans font-bold">
+                    Төлөх дүн
+                  </span>
                 </TableCell>
-                <TableCell className=" font-semibold text-white " align="left">
-                  НИЙТ ДҮН
+                <TableCell>
+                  <span className="text-white font-sans font-bold">
+                    Төлсөн дүн
+                  </span>
+                </TableCell>
+                <TableCell align="left">
+                  <span className="text-white font-sans font-bold">НЭР</span>
+                </TableCell>{" "}
+                <TableCell align="right">
+                  <span className="text-white font-sans font-bold">
+                    Бараанууд
+                  </span>
                 </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.rowSearchData.length > 0 ? (
-                this.state.rowSearchData.map((row) => (
-                  <TableRow key={row.id}>
-                    <TableCell align="center">
-                      <IconButton
-                        className="w-8 h-8"
-                        // onClick={() => this.handleItemRowAddClick(row)}
-                      >
-                        <EditIcon />
-                      </IconButton>
+              {filteredSales.map((row) => (
+                <TableRow key={row.id}>
+                  <TableCell className=" text-[#8a91a5] ">
+                    <span>{filteredSales.indexOf(row) + 1}</span>
+                  </TableCell>
+                  <TableCell className=" text-[#8a91a5] ">
+                    <span>{row.createdDate}</span>
+                  </TableCell>
+                  <TableCell className=" text-[#8a91a5] ">
+                    <span>{row.totalQty}</span>
+                  </TableCell>
+                  <TableCell className=" text-[#8a91a5] ">
+                    <span>{formatMoney(row.totalAmount)}</span>
+                  </TableCell>
+                  <TableCell className=" text-[#8a91a5] ">
+                    <span>{formatMoney(row.totalPaidAmount)}</span>
+                  </TableCell>
+                  <TableCell className=" text-[#8a91a5] " align="left">
+                    {"Zoloo"}
+                  </TableCell>
+                  <TableCell align="right">
+                    <IconButton
+                      className="w-8 h-8"
+                      onClick={() => handleOpenDialog(row.id)}
+                      color="primary"
+                    >
+                      <ViewListIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Dialog open={openDialog} onClose={handleCloseDialog}>
+            <DialogTitle>Борлуулсан бараа</DialogTitle>
+            <DialogContent>
+              <Table>
+                <TableHead className="bg-[#8a91a5] h-10">
+                  <TableRow>
+                    <TableCell>
+                      <span className="text-white font-sans font-bold">№</span>
                     </TableCell>
-                    <TableCell className=" text-[#8a91a5] ">{row.id}</TableCell>
-                    <TableCell className=" text-[#8a91a5] ">
-                      {row.formatDate}
+                    <TableCell>
+                      <span className="text-white font-sans font-bold">
+                        БАРКОД
+                      </span>
                     </TableCell>
-                    <TableCell className=" text-[#8a91a5] " align="right">
-                      {formatQty(row.qty)}
+                    <TableCell>
+                      <span className="text-white font-sans font-bold">
+                        НЭР
+                      </span>
                     </TableCell>
-                    <TableCell className=" text-[#8a91a5] " align="right">
-                      {formatMoney(row.sellPrice)}
+                    <TableCell>
+                      <span className="text-white font-sans font-bold">
+                        ЗАРАХ ҮНЭ
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-white font-sans font-bold">
+                        ТОО
+                      </span>
+                    </TableCell>
+                    <TableCell>
+                      <span className="text-white font-sans font-bold">
+                        Дүн
+                      </span>
                     </TableCell>
                   </TableRow>
-                ))
-              ) : (
-                <>
-                  {this.state.skeleten.map((row) => (
-                    <TableRow key={row}>
-                      <TableCell>
-                        <Skeleton variant="rounded" height={20} />
+                </TableHead>
+                <TableBody className="overflow-y-auto">
+                  {saleItems.map((row) => (
+                    <TableRow key={row.id}>
+                      <TableCell className=" text-[#8a91a5] ">
+                        <span>{saleItems.indexOf(row) + 1}</span>
                       </TableCell>
-                      <TableCell>
-                        <Skeleton variant="rounded" height={20} />
+                      <TableCell className=" text-[#8a91a5] ">
+                        <span>{row.itemBarcode}</span>
                       </TableCell>
-                      <TableCell>
-                        <Skeleton variant="rounded" height={20} />
+                      <TableCell className=" text-[#8a91a5] ">
+                        <span>{row.itemName}</span>
                       </TableCell>
-                      <TableCell>
-                        <Skeleton variant="rounded" height={20} />
+                      <TableCell className=" text-[#8a91a5] ">
+                        <span>{formatMoney(row.unitSalePrice)}</span>
                       </TableCell>
-                      <TableCell>
-                        <Skeleton variant="rounded" height={20} />
+                      <TableCell className=" text-[#8a91a5] ">
+                        <span>{row.qty}</span>
+                      </TableCell>
+                      <TableCell className=" text-[#8a91a5] " align="right">
+                        {row.totalSalePrice}
                       </TableCell>
                     </TableRow>
                   ))}
-                </>
-              )}
-            </TableBody>
-          </Table>
+                </TableBody>
+              </Table>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={handleCloseDialog} color="primary">
+                Хаах
+              </Button>
+            </DialogActions>
+          </Dialog>
         </div>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
-export default SaleHistoryController;
+export default HistoryController;
