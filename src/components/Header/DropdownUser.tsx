@@ -83,8 +83,8 @@ const DropdownUser = ({ sideBarMini }: { sideBarMini: Boolean }) => {
           }`}
         >
           <Image
-            width={100}
-            height={100}
+            width={50}
+            height={50}
             src={"/assets/images/user.png"}
             alt="User"
           />
@@ -93,9 +93,13 @@ const DropdownUser = ({ sideBarMini }: { sideBarMini: Boolean }) => {
           <>
             <span className="text-left lg:block">
               <span className="block text-sm font-medium text-black dark:text-white">
-                {data?.firstName}
+                {/* {data?.firstName} */}
+                Демо хэрэглэгч
               </span>
-              <span className="block text-xs">{data?.role}</span>
+              <span className="block text-xs">
+                {/* {data?.role} */}
+                  Менежер
+                </span>
             </span>
             <svg
               className="fill-current sm:block"

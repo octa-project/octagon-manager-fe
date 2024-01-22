@@ -3,13 +3,27 @@ import DarkModeSwitcher from "./DarkModeSwitcher";
 import DropdownMessage from "./DropdownMessage";
 import DropdownNotification from "./DropdownNotification";
 import Image from "next/image";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Additional from "@/src/components/Header/Additional";
+import moment from "moment";
 
 const Header = (props: {
   sidebarOpen: string | boolean | undefined;
   setSidebarOpen: (arg0: boolean) => void;
 }) => {
+
+  const [currentDateTime, setCurrentDateTime] = useState(new Date());
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentDateTime(new Date());
+    }, 1000);
+    return () => clearInterval(intervalId);
+  }, []);
+
+  const formattedDateTime = moment().format("YYYY-MM-DD HH:mm:ss");
+
+
   return (
     <header className="sticky top-0 z-999 flex w-full bg-white drop-shadow-1 dark:bg-boxdark dark:drop-shadow-none">
       <div className="flex flex-grow items-center justify-between px-4 shadow-2 h-10">
@@ -72,10 +86,10 @@ const Header = (props: {
           <form action="" method="POST">
             <div className="relative dark:text-white">
               <span className={"font-medium pr-5"}>
-                Demo Store
+                Demo Manager
               </span>
               <span>
-                2023-11-30 Пүрэв гараг
+                {formattedDateTime}
               </span>
             </div>
           </form>
