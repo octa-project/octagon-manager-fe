@@ -2,7 +2,6 @@ import apiItem from "./apiItem";
 import apiItemCode from "./apiItemCode";
 import apiReport from "./apiReport";
 import apiTransaction from "./apiTransaction";
-import api from "@/src/api";
 import apiItemGroup from "./apiItemGroup";
 import apiMeasure from "./apiMeasure";
 import apiSale from "./apiSale";
@@ -14,7 +13,6 @@ import apiSku from "./apiSku";
 import apiPurchase from "./apiPurchase";
 import apiSupplier from "./apiSupplier";
 import apiProfile from "@/src/api/apiProfile";
-import apiPdfGenerator from "./apiPdfGenerator";
 import apiMiddleware from "@/src/api/apiMiddleware";
 import apiHistory from "./apiHistory";
 
@@ -24,17 +22,17 @@ const transaction_delete = apiTransaction("delete-transaction-by-id");
 const transaction_get_by_id = apiTransaction("get-transaction-by-id");
 const transaction_get_transactions = apiTransaction("get-transactions");
 const transaction_get_transactions_amount_sale_id = apiTransaction(
-  "get-transaction-amount-by-sale-id"
+    "get-transaction-amount-by-sale-id"
 );
 const transaction_get_transactions_sale_id = apiTransaction(
-  "get-transaction-by-sale-id"
+    "get-transaction-by-sale-id"
 );
 
 const bank_transaction_save = apiTransaction("save-bank-transaction");
 const bank_transaction_update = apiTransaction("update-bank-transaction");
 const bank_transaction_delete = apiTransaction("delete-bank-transaction-by-id");
 const bank_transaction_get_transactions = apiTransaction(
-  "get-bank-transactions"
+    "get-bank-transactions"
 );
 const bank_transaction_get_by_id = apiTransaction("get-bank-transaction-by-id");
 
@@ -138,90 +136,80 @@ export default {
     getCardList,
     saveCard,
     refreshWalletTransactionHistory,
-  sale_items_getMany_bySaleId,
-  sale_getMany,
+    sale_items_getMany_bySaleId,
+    sale_getMany,
+    transaction_save,
+    transaction_update,
+    transaction_delete,
+    transaction_get_by_id,
+    transaction_get_transactions,
+    transaction_get_transactions_amount_sale_id,
+    transaction_get_transactions_sale_id,
 
-  getWalletBalance,
-  getWalletTransactionHistory,
-  walletToAccountTransaction,
-  walletToWalletTransaction,
-  cardToWalletTransaction,
-  getCardWeb,
-  getCardList,
-  saveCard,
+    bank_transaction_save,
+    bank_transaction_update,
+    bank_transaction_delete,
+    bank_transaction_get_transactions,
+    bank_transaction_get_by_id,
 
-  transaction_save,
-  transaction_update,
-  transaction_delete,
-  transaction_get_by_id,
-  transaction_get_transactions,
-  transaction_get_transactions_amount_sale_id,
-  transaction_get_transactions_sale_id,
+    itemCode_get_custom_all_itemcodes,
+    itemCode_save_itemCode,
+    itemCode_update_itemCode,
+    itemCode_get_by_id,
+    itemCode_get_by_barcode,
+    itemCode_delete,
 
-  bank_transaction_save,
-  bank_transaction_update,
-  bank_transaction_delete,
-  bank_transaction_get_transactions,
-  bank_transaction_get_by_id,
+    item_save,
+    item_update,
+    //item_get_all_items,
+    item_get_all_complete_items,
+    item_get_item_by_id,
+    item_get_item_by_code,
+    item_delete,
 
-  itemCode_get_custom_all_itemcodes,
-  itemCode_save_itemCode,
-  itemCode_update_itemCode,
-  itemCode_get_by_id,
-  itemCode_get_by_barcode,
-  itemCode_delete,
+    report_get_cashier_report_between_date,
+    report_get_income_report_between_date,
+    report_get_outcome_report_between_date,
+    report_get_price_report_between_date,
+    report_get_sale_report_between_date,
+    report_get_transactions_report_between_date,
+    get_sale_report,
 
-  item_save,
-  item_update,
-  //item_get_all_items,
-  item_get_all_complete_items,
-  item_get_item_by_id,
-  item_get_item_by_code,
-  item_delete,
+    itemGroup_save_itemGroup,
+    itemGroup_update_itemGroup,
+    itemGroup_get_itemGroup_by_id,
+    itemGroup_get_all_itemGroups,
+    itemGroup_delete,
 
-  report_get_cashier_report_between_date,
-  report_get_income_report_between_date,
-  report_get_outcome_report_between_date,
-  report_get_price_report_between_date,
-  report_get_sale_report_between_date,
-  report_get_transactions_report_between_date,
-  get_sale_report,
+    measure_get_all,
+    measure_get_by_id,
 
-  itemGroup_save_itemGroup,
-  itemGroup_update_itemGroup,
-  itemGroup_get_itemGroup_by_id,
-  itemGroup_get_all_itemGroups,
-  itemGroup_delete,
+    saleGetMany,
+    saleGetOne,
+    saleDelete,
 
-  measure_get_all,
-  measure_get_by_id,
+    get_dashboard,
+    get_daily_income,
+    get_dashboard_data_weekly,
 
-  saleGetMany,
-  saleGetOne,
-  saleDelete,
+    getBranchAll,
+    saveBranch,
+    insertMainSetting,
+    updateMainSetting,
+    getMainSetting,
 
-  get_dashboard,
-  get_daily_income,
-  get_dashboard_data_weekly,
+    insertDeviceSetting,
+    updateDeviceSetting,
+    getDeviceSetting,
 
-  getBranchAll,
-  saveBranch,
-  insertMainSetting,
-  updateMainSetting,
-  getMainSetting,
+    GetPrinterList,
+    get_Top_Ten_Item,
 
-  insertDeviceSetting,
-  updateDeviceSetting,
-  getDeviceSetting,
+    groups_getManyGroups,
+    itemcode_getOneBarcode,
 
-  GetPrinterList,
-  get_Top_Ten_Item,
-
-  groups_getManyGroups,
-  itemcode_getOneBarcode,
-
-  purchase_getMany,
-  purchase_saveOne,
+    purchase_getMany,
+    purchase_saveOne,
 
 
     supplier_getMany,
@@ -234,10 +222,9 @@ export default {
     deleteDeviceSettings,
 
 
-
     getComputerName,
     getListOfPrinters,
     getReportFile,
 
-  report_get_html,
+    report_get_html,
 };

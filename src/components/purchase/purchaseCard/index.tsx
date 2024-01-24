@@ -13,7 +13,7 @@ import { formatMoney, formatQty } from "../../tools/utils";
 
 interface CardProps {
   purchase: Purchase;
-  onPayClick: (purchaseId: string) => void;
+  onPayClick: (purchaseId: number) => void;
   onDetailClick: (purchase: Purchase) => void;
 }
 

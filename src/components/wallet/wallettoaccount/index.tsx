@@ -16,13 +16,19 @@ interface Props {
     onClose: any;
     phoneNum: any;
 }
+interface State {
+    loading:boolean,
+    selectedItem:any,
+    amount: number
+}
 
-class WalletToAccount extends Component<Props> {
+class WalletToAccount extends Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
             selectedItem: null,
-            loading: false
+            loading: false,
+            amount: 0
         }
     }
 
@@ -158,7 +164,7 @@ class WalletToAccount extends Component<Props> {
                                        label="Гүйлгээ утга"
                                        type="text"
                                        onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                           this.setState({amount: event.target.value})
+                                           this.setState({amount: parseInt(event.target.value)})
                                            this.desc = event.target.value
                                        }}
                             />

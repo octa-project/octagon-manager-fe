@@ -1,16 +1,12 @@
-import React, { Component, Fragment } from "react";
-import { AgGridReact } from "ag-grid-react";
+import React, {Component} from "react";
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-alpine.css";
-import apiSale from "@/src/api/apiSale";
-import { DatePicker, Input } from "antd";
+import {DatePicker, Input} from "antd";
 import Image from "next/image";
-import dayjs from "dayjs";
 import moment from "moment";
-import { Button, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow } from "@mui/material";
+import {Button, MenuItem, Select, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
 import api from "@/src/api";
-import items from '../../../app/items/page';
-import { formatMoney } from "../../tools/utils";
+import {formatMoney} from "../../tools/utils";
 
 interface PurchaseDetailState {
     startDate: string;
@@ -33,10 +29,10 @@ class PurchaseDetailController extends Component<ChooseCardProps, PurchaseDetail
             startDate: moment().format("YYYY-MM-DD 00:00:00"),
             endDate: moment().format("YYYY-MM-DD 23:59:59"),
             data: {
-                id: "0",
+                id: 0,
                 items: [],
                 supplierId: "",
-                date: "",
+                createdDate: "",
                 totalAmount: 0,
                 totalDiscount: 0,
                 totalQty: 0,
@@ -48,10 +44,10 @@ class PurchaseDetailController extends Component<ChooseCardProps, PurchaseDetail
                 branchId: "0"
             },
             nonData: {
-                id: "0",
+                id: 0,
                 items: [],
                 supplierId: "",
-                date: "",
+                createdDate: "",
                 totalAmount: 0,
                 totalDiscount: 0,
                 totalQty: 0,
@@ -73,7 +69,7 @@ class PurchaseDetailController extends Component<ChooseCardProps, PurchaseDetail
         if (this.first) return
         this.first = true
         this.getSuppliers()
-        if (this.state.data.id !== "0") {
+        if (this.state.data.id !== 0) {
 
         }
 

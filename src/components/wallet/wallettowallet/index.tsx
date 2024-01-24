@@ -1,8 +1,7 @@
-import React, {Component, SyntheticEvent} from "react";
+import React, {Component} from "react";
 import 'ag-grid-community/styles/ag-grid.css';
 import 'ag-grid-community/styles/ag-theme-alpine.css';
 import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@mui/material";
-import styles from "@/src/components/wallet/wallet.module.css";
 import api from "@/src/api";
 import SnackBar from "@/src/components/tools/snackAlert";
 import Loader from "@/src/components/common/Loader";
@@ -12,8 +11,11 @@ interface Props {
     onClose: any;
     phoneNum: any;
 }
+interface State {
+    loading: boolean
+}
 
-class WalletToWallet extends Component<Props> {
+class WalletToWallet extends Component<Props, State> {
 
     constructor(props: Props) {
         super(props);
@@ -37,18 +39,16 @@ class WalletToWallet extends Component<Props> {
             await api.walletToWalletTransaction.walletToWalletTransaction(body).then(res => {
                 if (res.status == 200 && res.data.isSuccess) {
                     SnackBar.success("Амжилттай илгээлээ");
-                    this.setState({loading: false})
                 } else {
                     SnackBar.error("Амжилтгүй алдаа гарлаа");
-                    this.setState({loading: false})
                 }
             });
 
         } catch (error) {
             console.error("Error fetching data:", error);
             SnackBar.error("Амжилтгүй алдаа гарлаа");
-            this.setState({loading: false})
         } finally {
+            this.setState({loading: false})
         }
     };
 
@@ -56,10 +56,11 @@ class WalletToWallet extends Component<Props> {
         this.props.onClose();
     };
 
-    render() {
+    render(){
+        const { loading } = this.state
         return (
             <div>
-                {this.state.loading ? (
+                {loading ? (
                     <Loader/>
                 ) : (
                     <Dialog onClose={this.close} open={this.props.open}>

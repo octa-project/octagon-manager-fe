@@ -24,13 +24,18 @@ interface Props {
     phoneNum: any;
     data: Card[]
 }
+interface State {
+    loading: boolean;
+    amount: number;
+}
 
-class CardToWallet extends Component<Props> {
+class CardToWallet extends Component<Props,State> {
 
     constructor(props: Props) {
         super(props);
         this.state = {
-            loading: false
+            loading: false,
+            amount: 0
         };
     }
 
@@ -64,8 +69,9 @@ class CardToWallet extends Component<Props> {
         }
     };
 
-    handleCarouselChange = (index) => {
-        this.cardId = this.props.data[index].card_id;
+    handleCarouselChange = (index: number | undefined) => {
+        if(index)
+            this.cardId = this.props.data[index].card_id;
     };
 
     render() {
@@ -113,7 +119,7 @@ class CardToWallet extends Component<Props> {
                                 size={"small"}
                                 fullWidth
                                 onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
-                                    this.setState({amount: event.target.value})
+                                    this.setState({amount: parseInt(event.target.value)})
                                     this.amount = event.target.value
                                 }}
                             />

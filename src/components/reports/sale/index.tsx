@@ -43,11 +43,12 @@ interface getSale {
 }
 interface AgReportState {
   mounted: boolean;
-  startDate: string;
-  endDate: string;
+  startDate?: string;
+  endDate?: string;
   columnDefs: any[];
   defaultColDef: any;
   rowData: any[];
+  autoGroupColumnDef: any;
 }
 
 class SaleReport extends Component<{}, AgReportState> {

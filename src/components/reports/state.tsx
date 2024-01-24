@@ -3,4 +3,5 @@ interface AgReportState {
     defaultColDef: any;
     autoGroupColumnDef: any;
     rowData: any[];
+    loading?: boolean
 }

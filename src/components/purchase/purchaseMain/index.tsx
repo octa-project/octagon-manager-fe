@@ -237,7 +237,7 @@ const PurchaseMain = () => {
     setTabValue("1");
   };
 
-  const handleCardPayClick = (purchaseId: string) => {
+  const handleCardPayClick = (purchaseId: number) => {
     alert(`Button clicked for purchase ID: ${purchaseId}`);
   };
 

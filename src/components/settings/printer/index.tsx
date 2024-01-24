@@ -1,9 +1,7 @@
 import {Button, Card, Skeleton, Switch, Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import {Component, useState} from "react";
-import {formatMoney} from "@/src/components/tools/utils";
 import * as React from "react";
+import {Component} from "react";
 import api from "@/src/api";
-import CustomModal from "@/src/components/settings/printer/Modal";
 import DialogForSettings from "@/src/components/settings/printer/DialogForSettings";
 
 
